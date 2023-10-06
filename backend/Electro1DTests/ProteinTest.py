@@ -1,6 +1,6 @@
 # @author Amr Mualla
 # Testing for Protein Class
-# To run: python3 -m unittest src.Electro1DTests.ProteinTest
+# To run: python3 -m unittest backend.Electro1DTests.ProteinTest
 import unittest
 from backend.Electro1D.Protein import Protein
 

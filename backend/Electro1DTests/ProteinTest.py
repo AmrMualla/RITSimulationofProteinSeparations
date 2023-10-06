@@ -2,7 +2,7 @@
 # Testing for Protein Class
 # To run: python3 -m unittest src.Electro1DTests.ProteinTest
 import unittest
-from src.Electro1D.Protein import Protein
+from backend.Electro1D.Protein import Protein
 
 class TestProtein(unittest.TestCase):
 

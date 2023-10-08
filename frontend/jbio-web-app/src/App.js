@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <code>RIT Science - </code> Simulation of Protein Simulation.
         </p>
         <a
           className="App-link"

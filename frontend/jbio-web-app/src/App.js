@@ -1,25 +1,20 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Sidebar from './components/Sidebar.js';
 import './App.css';
 
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          <code>RIT Science - </code> Simulation of Protein Simulation.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+    return (
+        <div className="app-container">
+            <Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+            <div className="content">
+                {/* Content goes here */}
+                <div className="simulation"></div>
+            </div>
+        </div>
+    );
 }
 
 export default App;

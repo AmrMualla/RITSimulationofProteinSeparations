@@ -204,3 +204,6 @@ button {
   color: royalblue;
 }
 
+.toggle-btn:hover span {
+  background-color: royalblue;
+}

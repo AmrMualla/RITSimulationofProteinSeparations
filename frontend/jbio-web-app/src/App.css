@@ -180,4 +180,27 @@ button {
   padding-left: 10px;
 }
 
+.instructions-icon,
+.contact-icon,
+.github-icon {
+    transition: all 0.3s ease;
+}
+
+.hoverable-text {
+  color: black; 
+  transition: color 0.3s ease; 
+}
+
+.hoverable-text:hover {
+  color: royalblue;
+}
+
+.hoverable-text a, .hoverable-text a:visited {
+  color: inherit; /* Ensures the anchor inherits the color of its parent */
+  text-decoration: none; /* Removes the default underline of hyperlinks */
+}
+
+.hoverable-text a:hover {
+  color: royalblue;
+}
 

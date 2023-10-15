@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Sidebar({ isOpen, toggle }) {
+    const [isHoveredGithub, setHoveredGithub] = useState(false);
+    const [isHoveredInfo, setHoveredInfo] = useState(false);
+    const [isHoveredUser, setHoveredUser] = useState(false);
+    
     return (
         <div className="container">
             <div className={isOpen ? "sidebar" : "sidebar sidebar-collapsed"}>
@@ -12,23 +16,44 @@ function Sidebar({ isOpen, toggle }) {
 
                 { !isOpen && (
                     <div className="icon-list">
-                        <span>1DE</span>
-                        <span>2DE</span>
-                        <img src="information-button.png" alt="" className="instructions-icon" />
-                        <img src="user.png" alt="" className="contact-icon" />
+                        <span className="hoverable-text">1DE</span>
+                        <span className="hoverable-text">2DE</span>
+                        
+                        <img 
+                            src={isHoveredInfo ? "/information-button-hover.png" : "/information-button.png"} 
+                            alt="Information" 
+                            className="instructions-icon"
+                            onMouseEnter={() => setHoveredInfo(true)}
+                            onMouseLeave={() => setHoveredInfo(false)}
+                        />
+
+                        <img 
+                            src={isHoveredUser ? "/user-hover.png" : "/user.png"} 
+                            alt="User" 
+                            className="contact-icon"
+                            onMouseEnter={() => setHoveredUser(true)}
+                            onMouseLeave={() => setHoveredUser(false)}
+                        />
+
                         <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">
-                            <img src="github-sign.png" alt="" className="github-icon" />
+                            <img 
+                                src={isHoveredGithub ? "/github-sign-hover.png" : "/github-sign.png"} 
+                                alt="Github" 
+                                className="github-icon"
+                                onMouseEnter={() => setHoveredGithub(true)}
+                                onMouseLeave={() => setHoveredGithub(false)}
+                            />
                         </a>
                     </div>
                 )}
 
                 { isOpen && (
                     <ul className="menu">
-                        <li>1D Electrophoresis</li>
-                        <li>2D Electrophoresis</li>
-                        <li>Instructions</li>
-                        <li>Contact</li>
-                        <li><a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">Github</a></li>
+                        <li className="hoverable-text">1D Electrophoresis</li>
+                        <li className="hoverable-text">2D Electrophoresis</li>
+                        <li className="hoverable-text">Instructions</li>
+                        <li className="hoverable-text">Contact</li>
+                        <li className="hoverable-text"><a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">Github</a></li>
                     </ul>
                 )}
             </div>

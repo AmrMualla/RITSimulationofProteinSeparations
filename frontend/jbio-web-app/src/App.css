@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'PPFragment-SansRegular';
+  src: url('../public/fonts/PPFragment-SansRegular.woff2') format('woff2');
+}
+
+
 .App {
   text-align: center;
 }
@@ -43,21 +49,39 @@ button {
   cursor: pointer;
 }
 
-.sidebar {
-  width: 250px; /* Or your desired width for the expanded sidebar */
-  transition: width 0.3s ease; /* Smooth transition */
+.container {
+  display: flex;
+  align-items: start;
 }
 
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding-left: 60px; 
+  transition: padding-left 0.3s ease;
+}
+
+.sidebar + .sidebar-header {
+  padding-left: 0px; 
+}
+
+.sidebar.sidebar-collapsed + .sidebar-header {
+  padding-left: 30px; 
+}
+
+.sidebar {
+  width: 250px;
+  transition: width 0.3s ease;
+  z-index: 2;
+}
 
 .App {
-  transition: margin-left 0.3s ease; /* Smooth transition */
+  transition: margin-left 0.3s ease;
 }
-
 
 .sidebar + .App {
-  margin-left: 250px; /* The width of the expanded sidebar */
+  margin-left: 250px;
 }
-
 
 .sidebar-collapsed {
   width: 50px;
@@ -66,15 +90,13 @@ button {
   flex-direction: column;
   align-items: center;
   padding: 10px 0;
-  z-index: 3;
 }
-
 
 .icon-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;  /* Spacing between items */
+  gap: 10px;
 }
 
 .icon-list span {
@@ -89,12 +111,12 @@ button {
 }
 
 .sidebar-header button {
-  background-color: #333;  
-  color: #fff;  
+  background-color: #333;
+  color: #fff;
   border: none;
-  padding: 10px;
+  padding: 30px;
   cursor: pointer;
-  font-size: 24px;  
+  font-size: 24px;
 }
 
 .sidebar-header button:focus {
@@ -109,7 +131,7 @@ button {
   border: none;
   padding: 10px;
   cursor: pointer;
-  font-size: 24px; 
+  font-size: 24px;
   z-index: 10;
   width: 40px;
   height: 40px;
@@ -129,20 +151,33 @@ button {
   outline: none;
 }
 
-
-.instructions-icon {
-  width: 32px; 
-  height: auto;  
-}
-.github-icon {
-  width: 32px; 
-  height: auto;  
-}
+.instructions-icon,
+.github-icon,
 .contact-icon {
-  width: 32px; 
-  height: auto;  
+  width: 32px;
+  height: auto;
 }
 
+.menu {
+  list-style-type: none;
+  padding-left: 0;
+}
 
+.sidebar-title {
+  font-family: 'PPFragment-SansRegular', sans-serif;
+  font-size: 28px;
+}
+
+.menu li, .menu a {
+  font-family: 'PPFragment-SansRegular', sans-serif;
+}
+
+.menu li {
+  margin-bottom: 10px; 
+}
+
+.menu {
+  padding-left: 10px;
+}
 
 

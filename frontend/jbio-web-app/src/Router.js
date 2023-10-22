@@ -1,10 +1,10 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import About from './components/About.js';
-import Two from './components/Two.js';
+import OneDE from './components/OneDE.js';
+import TwoDE from './components/TwoDE.js';
+import Instructions from './components/Instructions.js';
+import Contact from './components/Contact.js';
 
 function Router() {
     const router = createBrowserRouter([
@@ -13,8 +13,20 @@ function Router() {
         element: <About />,
       },
       {
-        path: "two",
-        element: <Two />,
+        path: "1de",
+        element: <OneDE />,
+      },
+      {
+        path: "2de",
+        element: <TwoDE />,
+      },
+      {
+        path: "instructions",
+        element: <Instructions />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
       },
     ]);
     return <RouterProvider router={router} />

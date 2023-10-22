@@ -16,24 +16,29 @@ function Sidebar({ isOpen, toggle }) {
 
                 { !isOpen && (
                     <div className="icon-list">
-                        <span className="hoverable-text">1DE</span>
-                        <span className="hoverable-text">2DE</span>
+                        <span className="hoverable-text"><a href="/">a</a></span>
+                        <span className="hoverable-text"><a href="1de">1DE</a></span>
+                        <span className="hoverable-text"><a href="2de">2DE</a></span>
                         
-                        <img 
-                            src={isHoveredInfo ? "/information-button-hover.png" : "/information-button.png"} 
-                            alt="Information" 
-                            className="instructions-icon"
-                            onMouseEnter={() => setHoveredInfo(true)}
-                            onMouseLeave={() => setHoveredInfo(false)}
-                        />
+                        <a href="instructions">
+                            <img
+                                src={isHoveredInfo ? "/information-button-hover.png" : "/information-button.png"}
+                                alt="Information"
+                                className="instructions-icon"
+                                onMouseEnter={() => setHoveredInfo(true)}
+                                onMouseLeave={() => setHoveredInfo(false)}
+                            />
+                        </a>
 
-                        <img 
-                            src={isHoveredUser ? "/user-hover.png" : "/user.png"} 
-                            alt="User" 
-                            className="contact-icon"
-                            onMouseEnter={() => setHoveredUser(true)}
-                            onMouseLeave={() => setHoveredUser(false)}
-                        />
+                        <a href="contact">
+                            <img
+                                src={isHoveredUser ? "/user-hover.png" : "/user.png"}
+                                alt="User"
+                                className="contact-icon"
+                                onMouseEnter={() => setHoveredUser(true)}
+                                onMouseLeave={() => setHoveredUser(false)}
+                            />
+                        </a>
 
                         <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">
                             <img 
@@ -49,10 +54,11 @@ function Sidebar({ isOpen, toggle }) {
 
                 { isOpen && (
                     <ul className="menu">
-                        <li className="hoverable-text">1D Electrophoresis</li>
-                        <li className="hoverable-text">2D Electrophoresis</li>
-                        <li className="hoverable-text">Instructions</li>
-                        <li className="hoverable-text">Contact</li>
+                        <li className="hoverable-text"><a href="/">About</a></li>
+                        <li className="hoverable-text"><a href="1de">1D Electrophoresis</a></li>
+                        <li className="hoverable-text"><a href="2de">2D Electrophoresis</a></li>
+                        <li className="hoverable-text"><a href="instructions">Instructions</a></li>
+                        <li className="hoverable-text"><a href="contact">Contact</a></li>
                         <li className="hoverable-text"><a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">Github</a></li>
                     </ul>
                 )}

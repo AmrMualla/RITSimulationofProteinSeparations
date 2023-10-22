@@ -1,7 +1,7 @@
 function OneDE() {
     return (
-        <div>
-
+        <div className="1de">
+            <h1>1DE page</h1>
         </div>
     );
 }

@@ -19,36 +19,42 @@ function Sidebar({ isOpen, toggle }) {
                         <span className="hoverable-text"><a href="/">a</a></span>
                         <span className="hoverable-text"><a href="1de">1DE</a></span>
                         <span className="hoverable-text"><a href="2de">2DE</a></span>
-                        
-                        <a href="instructions">
-                            <img
-                                src={isHoveredInfo ? "/information-button-hover.png" : "/information-button.png"}
-                                alt="Information"
-                                className="instructions-icon"
-                                onMouseEnter={() => setHoveredInfo(true)}
-                                onMouseLeave={() => setHoveredInfo(false)}
-                            />
-                        </a>
 
-                        <a href="contact">
-                            <img
-                                src={isHoveredUser ? "/user-hover.png" : "/user.png"}
-                                alt="User"
-                                className="contact-icon"
-                                onMouseEnter={() => setHoveredUser(true)}
-                                onMouseLeave={() => setHoveredUser(false)}
-                            />
-                        </a>
+                        <span>
+                            <a href="instructions">
+                                <img
+                                    src={isHoveredInfo ? "/information-button-hover.png" : "/information-button.png"}
+                                    alt="Information"
+                                    className="instructions-icon"
+                                    onMouseEnter={() => setHoveredInfo(true)}
+                                    onMouseLeave={() => setHoveredInfo(false)}
+                                />
+                            </a>
+                        </span>
 
-                        <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">
-                            <img 
-                                src={isHoveredGithub ? "/github-sign-hover.png" : "/github-sign.png"} 
-                                alt="Github" 
-                                className="github-icon"
-                                onMouseEnter={() => setHoveredGithub(true)}
-                                onMouseLeave={() => setHoveredGithub(false)}
-                            />
-                        </a>
+                        <span>
+                            <a href="contact">
+                                <img
+                                    src={isHoveredUser ? "/user-hover.png" : "/user.png"}
+                                    alt="User"
+                                    className="contact-icon"
+                                    onMouseEnter={() => setHoveredUser(true)}
+                                    onMouseLeave={() => setHoveredUser(false)}
+                                />
+                            </a>
+                        </span>
+
+                        <span>
+                            <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">
+                                <img
+                                    src={isHoveredGithub ? "/github-sign-hover.png" : "/github-sign.png"}
+                                    alt="Github"
+                                    className="github-icon"
+                                    onMouseEnter={() => setHoveredGithub(true)}
+                                    onMouseLeave={() => setHoveredGithub(false)}
+                                />
+                            </a>
+                        </span>
                     </div>
                 )}
 

@@ -12,10 +12,7 @@ function App() {
     return (
         <div className="app-container">
             <Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
-            <div className="content">
-                {/* Content goes here */}
-                <div className="simulation">{Router()}</div>
-            </div>
+            <Router isOpen={isSidebarOpen} />
         </div>
     );
 }

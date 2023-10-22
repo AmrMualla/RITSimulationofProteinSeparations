@@ -1,7 +1,7 @@
 function Instructions() {
     return (
-        <div>
-
+        <div className="instructions">
+            <h1>Instructions page</h1>
         </div>
     );
 }

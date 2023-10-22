@@ -6,7 +6,7 @@ import TwoDE from './components/TwoDE.js';
 import Instructions from './components/Instructions.js';
 import Contact from './components/Contact.js';
 
-function Router() {
+function Router({isOpen}) {
     const router = createBrowserRouter([
       {
         path: "/",
@@ -29,7 +29,11 @@ function Router() {
         element: <Contact />,
       },
     ]);
-    return <RouterProvider router={router} />
+    return (
+        <div className={isOpen ? "content" : "content-collapsed"}>
+            <RouterProvider router={router} />
+        </div>
+    );
 }
 
 export default Router;

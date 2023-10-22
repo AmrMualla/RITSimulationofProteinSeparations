@@ -52,27 +52,31 @@ button {
 .container {
   display: flex;
   align-items: start;
+  position: fixed;
+  padding-top: 1px;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
-  padding-left: 60px; 
+  padding-left: 220px;
   transition: padding-left 0.3s ease;
 }
 
 .sidebar + .sidebar-header {
-  padding-left: 0px; 
+  padding-left: 220px;
 }
 
 .sidebar.sidebar-collapsed + .sidebar-header {
-  padding-left: 30px; 
+  padding-left: 70px;
 }
 
 .sidebar {
-  width: 250px;
+  border-right: 1px solid #ddd;
   transition: width 0.3s ease;
   z-index: 2;
+  height: 100vh;
+  position: fixed;
 }
 
 .App {
@@ -84,12 +88,11 @@ button {
 }
 
 .sidebar-collapsed {
-  width: 50px;
   border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0;
+  padding: 0 10px;
 }
 
 .icon-list {
@@ -108,6 +111,7 @@ button {
   background-color: #f0f0f0;
   border-radius: 8px;
   font-weight: bold;
+  vertical-align: middle;
 }
 
 .sidebar-header button {
@@ -173,11 +177,19 @@ button {
 }
 
 .menu li {
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 40px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  font-weight: bold;
 }
 
 .menu {
-  padding-left: 10px;
+  padding: 0 10px;
 }
 
 .instructions-icon,
@@ -187,8 +199,9 @@ button {
 }
 
 .hoverable-text {
-  color: black; 
-  transition: color 0.3s ease; 
+  color: black;
+  transition: color 0.3s ease;
+  text-align: center;
 }
 
 .hoverable-text:hover {
@@ -206,4 +219,12 @@ button {
 
 .toggle-btn:hover span {
   background-color: royalblue;
+}
+
+.content {
+  padding: 50px 0 0 220px;
+}
+
+.content-collapsed{
+  padding: 50px 0 0 70px;
 }

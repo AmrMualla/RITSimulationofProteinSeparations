@@ -70,7 +70,7 @@ function Sidebar({ isOpen, toggle }) {
                 )}
             </div>
             <div className="sidebar-header">
-                <span className="sidebar-title">JBioFramework</span>
+                <a href="/"><span><img id="basil-logo" src="/basil-logo.png" alt="Basil" /></span></a>
             </div>
         </div>
     );

@@ -53,7 +53,6 @@ button {
   display: flex;
   align-items: start;
   position: fixed;
-  padding-top: 1px;
 }
 
 .sidebar-header {
@@ -62,6 +61,11 @@ button {
   padding-left: 220px;
   transition: padding-left 0.3s ease;
 }
+
+#basil-logo {
+  width: 200px;
+}
+
 .sidebar + .sidebar-header {
   padding-left: 220px;
 }
@@ -76,6 +80,7 @@ button {
   position: fixed;
   width: 200px;
   transition: width 0.3s ease;
+  background-color: #F76902;
 }
 
 .App {

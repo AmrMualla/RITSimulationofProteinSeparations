@@ -53,6 +53,7 @@ button {
   display: flex;
   align-items: start;
   position: fixed;
+  width: 100%;
 }
 
 .sidebar-header {
@@ -60,6 +61,8 @@ button {
   align-items: center;
   padding-left: 220px;
   transition: padding-left 0.3s ease;
+  width: 100%;
+  background-color: white;
 }
 
 #basil-logo {
@@ -173,6 +176,7 @@ button {
 .menu {
   list-style-type: none;
   padding-left: 0;
+  margin: 0;
 }
 
 .sidebar-title {
@@ -235,7 +239,25 @@ button {
   transition: padding-left 0.3s ease;
 }
 
-.content-collapsed{
+.content-collapsed {
   padding: 50px 0 0 70px;
   transition: padding-left 0.3s ease;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  line-height: 2;
+}
+
+.grid-item {
+  padding: 0 10px;
+  border: 1px solid #F76902;
+  border-radius: 5px;
+  box-shadow: 5px 10px #F76902;
+  margin-right: 20px;
+}
+
+.section-header {
+  color: #F76902;
 }

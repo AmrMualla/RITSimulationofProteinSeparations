@@ -4,6 +4,7 @@ function Sidebar({ isOpen, toggle }) {
     const [isHoveredGithub, setHoveredGithub] = useState(false);
     const [isHoveredInfo, setHoveredInfo] = useState(false);
     const [isHoveredUser, setHoveredUser] = useState(false);
+    const [isHoveredAbout, setHoveredAbout] = useState(false);
     
     return (
         <div className="container">
@@ -16,14 +17,24 @@ function Sidebar({ isOpen, toggle }) {
 
                 { !isOpen && (
                     <div className="icon-list">
-                        <a href="/"><span className="hoverable-text">a</span></a>
+                        <a href="about">
+                            <span>
+                                <img
+                                    src={isHoveredAbout ? "/information-button-hover.png" : "/information-button.png"}
+                                    alt="Information"
+                                    className="instructions-icon"
+                                    onMouseEnter={() => setHoveredAbout(true)}
+                                    onMouseLeave={() => setHoveredAbout(false)}
+                                />
+                            </span>
+                        </a>
                         <a href="1de"><span className="hoverable-text">1DE</span></a>
                         <a href="2de"><span className="hoverable-text">2DE</span></a>
 
                         <a href="instructions">
                             <span>
                                 <img
-                                    src={isHoveredInfo ? "/information-button-hover.png" : "/information-button.png"}
+                                    src={isHoveredInfo ? "/list-hover.png" : "/list.png"}
                                     alt="Information"
                                     className="instructions-icon"
                                     onMouseEnter={() => setHoveredInfo(true)}

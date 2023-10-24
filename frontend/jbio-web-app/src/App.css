@@ -63,6 +63,7 @@ button {
   transition: padding-left 0.3s ease;
   width: 100%;
   background-color: white;
+  border-bottom: 2px solid #F76902;
 }
 
 #basil-logo {
@@ -235,18 +236,18 @@ button {
 
 /* Content rules */
 .content {
-  padding: 50px 0 0 220px;
+  padding: 60px 0 0 220px;
   transition: padding-left 0.3s ease;
 }
 
 .content-collapsed {
-  padding: 50px 0 0 70px;
+  padding: 60px 0 0 70px;
   transition: padding-left 0.3s ease;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
   line-height: 2;
 }
 
@@ -255,7 +256,7 @@ button {
   border: 1px solid #F76902;
   border-radius: 5px;
   box-shadow: 5px 10px #F76902;
-  margin-right: 20px;
+  margin: 0 20px 20px 0;
 }
 
 .section-header {

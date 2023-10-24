@@ -17,8 +17,8 @@ function Sidebar({ isOpen, toggle }) {
 
                 { !isOpen && (
                     <div className="icon-list">
-                        <span>
-                            <a href="about">
+                        <a href="/">
+                            <span>
                                 <img
                                     src={isHoveredAbout ? "/information-button-hover.png" : "/information-button.png"}
                                     alt="Information"
@@ -26,13 +26,13 @@ function Sidebar({ isOpen, toggle }) {
                                     onMouseEnter={() => setHoveredAbout(true)}
                                     onMouseLeave={() => setHoveredAbout(false)}
                                 />
-                            </a>
-                        </span>
-                        <span className="hoverable-text"><a href="1de">1DE</a></span>
-                        <span className="hoverable-text"><a href="2de">2DE</a></span>
+                            </span>
+                        </a>
+                        <a href="1de"><span className="hoverable-text">1DE</span></a>
+                        <a href="2de"><span className="hoverable-text">2DE</span></a>
 
-                        <span>
-                            <a href="instructions">
+                        <a href="instructions">
+                            <span>
                                 <img
                                     src={isHoveredInfo ? "/list-hover.png" : "/list.png"}
                                     alt="Information"
@@ -40,11 +40,11 @@ function Sidebar({ isOpen, toggle }) {
                                     onMouseEnter={() => setHoveredInfo(true)}
                                     onMouseLeave={() => setHoveredInfo(false)}
                                 />
-                            </a>
-                        </span>
+                            </span>
+                        </a>
 
-                        <span>
-                            <a href="contact">
+                        <a href="contact">
+                            <span>
                                 <img
                                     src={isHoveredUser ? "/user-hover.png" : "/user.png"}
                                     alt="User"
@@ -52,11 +52,11 @@ function Sidebar({ isOpen, toggle }) {
                                     onMouseEnter={() => setHoveredUser(true)}
                                     onMouseLeave={() => setHoveredUser(false)}
                                 />
-                            </a>
-                        </span>
+                            </span>
+                        </a>
 
-                        <span>
-                            <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">
+                        <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">
+                            <span>
                                 <img
                                     src={isHoveredGithub ? "/github-sign-hover.png" : "/github-sign.png"}
                                     alt="Github"
@@ -64,24 +64,24 @@ function Sidebar({ isOpen, toggle }) {
                                     onMouseEnter={() => setHoveredGithub(true)}
                                     onMouseLeave={() => setHoveredGithub(false)}
                                 />
-                            </a>
-                        </span>
+                            </span>
+                        </a>
                     </div>
                 )}
 
                 { isOpen && (
                     <ul className="menu">
-                        <li className="hoverable-text"><a href="/">About</a></li>
-                        <li className="hoverable-text"><a href="1de">1D Electrophoresis</a></li>
-                        <li className="hoverable-text"><a href="2de">2D Electrophoresis</a></li>
-                        <li className="hoverable-text"><a href="instructions">Instructions</a></li>
-                        <li className="hoverable-text"><a href="contact">Contact</a></li>
-                        <li className="hoverable-text"><a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer">Github</a></li>
+                        <a href="/"><li className="hoverable-text">About</li></a>
+                        <a href="1de"><li className="hoverable-text">1D Electrophoresis</li></a>
+                        <a href="2de"><li className="hoverable-text">2D Electrophoresis</li></a>
+                        <a href="instructions"><li className="hoverable-text">Instructions</li></a>
+                        <a href="contact"><li className="hoverable-text">Contact</li></a>
+                        <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer"><li className="hoverable-text">Github</li></a>
                     </ul>
                 )}
             </div>
             <div className="sidebar-header">
-                <span className="sidebar-title">JBioFramework</span>
+                <a href="/"><span><img id="basil-logo" src="/basil-logo.png" alt="Basil" /></span></a>
             </div>
         </div>
     );

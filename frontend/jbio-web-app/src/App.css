@@ -53,7 +53,7 @@ button {
   display: flex;
   align-items: start;
   position: fixed;
-  padding-top: 1px;
+  width: 100%;
 }
 
 .sidebar-header {
@@ -61,22 +61,30 @@ button {
   align-items: center;
   padding-left: 220px;
   transition: padding-left 0.3s ease;
+  width: 100%;
+  background-color: white;
+  border-bottom: 2px solid #F76902;
+}
+
+#basil-logo {
+  width: 200px;
 }
 
 .sidebar + .sidebar-header {
   padding-left: 220px;
 }
-
 .sidebar.sidebar-collapsed + .sidebar-header {
   padding-left: 70px;
 }
 
 .sidebar {
   border-right: 1px solid #ddd;
-  transition: width 0.3s ease;
   z-index: 2;
   height: 100vh;
   position: fixed;
+  width: 200px;
+  transition: width 0.3s ease;
+  background-color: #F76902;
 }
 
 .App {
@@ -93,6 +101,8 @@ button {
   flex-direction: column;
   align-items: center;
   padding: 0 10px;
+  width: 40px;
+  transition: width 0.3s ease;
 }
 
 .icon-list {
@@ -100,18 +110,20 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  width: 100%;
 }
 
-.icon-list span {
+.icon-list a, .icon-list a span {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
   height: 40px;
+  width: 100%;
   background-color: #f0f0f0;
   border-radius: 8px;
   font-weight: bold;
   vertical-align: middle;
+  transition: padding-left 0.3s ease;
 }
 
 .sidebar-header button {
@@ -165,6 +177,7 @@ button {
 .menu {
   list-style-type: none;
   padding-left: 0;
+  margin: 0;
 }
 
 .sidebar-title {
@@ -181,11 +194,15 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 180px;
+  width: parent;
   height: 40px;
   background-color: #f0f0f0;
   border-radius: 8px;
   font-weight: bold;
+}
+
+.menu li a {
+  transition: padding-left 0.3s ease;
 }
 
 .menu {
@@ -208,23 +225,40 @@ button {
   color: royalblue;
 }
 
-.hoverable-text a, .hoverable-text a:visited {
+.menu a, .menu a:visited, .icon-list a, .icon-list a:visited {
   color: inherit; /* Ensures the anchor inherits the color of its parent */
   text-decoration: none; /* Removes the default underline of hyperlinks */
-}
-
-.hoverable-text a:hover {
-  color: royalblue;
 }
 
 .toggle-btn:hover span {
   background-color: royalblue;
 }
 
+/* Content rules */
 .content {
-  padding: 50px 0 0 220px;
+  padding: 60px 0 0 220px;
+  transition: padding-left 0.3s ease;
 }
 
-.content-collapsed{
-  padding: 50px 0 0 70px;
+.content-collapsed {
+  padding: 60px 0 0 70px;
+  transition: padding-left 0.3s ease;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  line-height: 2;
+}
+
+.grid-item {
+  padding: 0 10px;
+  border: 1px solid #F76902;
+  border-radius: 5px;
+  box-shadow: 5px 10px #F76902;
+  margin: 0 20px 20px 0;
+}
+
+.section-header {
+  color: #F76902;
 }

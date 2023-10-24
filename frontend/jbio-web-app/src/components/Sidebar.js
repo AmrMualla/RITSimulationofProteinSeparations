@@ -17,7 +17,7 @@ function Sidebar({ isOpen, toggle }) {
 
                 { !isOpen && (
                     <div className="icon-list">
-                        <a href="about">
+                        <a href="/">
                             <span>
                                 <img
                                     src={isHoveredAbout ? "/information-button-hover.png" : "/information-button.png"}

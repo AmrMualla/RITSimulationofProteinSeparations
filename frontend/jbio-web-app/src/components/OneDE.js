@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../ElectrophoresisCell.css';
 
 const OneDE = () => {
-  const [wellsCount, setWellsCount] = useState(10); // Initial count set to 10
+  const [wellsCount, setWellsCount] = useState(10);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -22,6 +22,7 @@ const OneDE = () => {
         <button className="button1de" onClick={handleAddWell} disabled={wellsCount === 15}>
           Add Well
         </button>
+        <label className="wellCountLabel">Current Wells: {wellsCount}</label>
         <button className="button1de" onClick={handleDropWell} disabled={wellsCount === 1}>
           Drop Well
         </button>
@@ -30,7 +31,10 @@ const OneDE = () => {
       <div className="electrophoresis-cell">
         <div className="wells-container">
           {Array.from({ length: wellsCount }).map((_, idx) => (
-            <div key={idx} className="well"></div>
+            <React.Fragment key={idx}>
+              { idx !== 0 && <div className="divider"></div> }
+              <div className="well"></div>
+            </React.Fragment>
           ))}
         </div>
       </div>

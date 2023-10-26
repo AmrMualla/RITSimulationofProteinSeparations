@@ -68,7 +68,7 @@ button {
   transition: padding-left 0.3s ease;
   width: 100%;
   background-color: white;
-  border-bottom: 2px solid #F76902;
+  border-bottom: 2px solid #6f8ce4;
   z-index: 1;
 }
 
@@ -92,7 +92,7 @@ button {
   width: 200px;
   padding: 0 10px;
   transition: width 0.3s ease;
-  background-color: #F76902;
+  background-color: #6f8ce4;
 }
 
 .sidebar + .App {
@@ -255,7 +255,7 @@ button {
 }
 
 .navbar a:hover h2 {
-  color: #fd9f5b;
+  color: royalblue;
 }
 
 .grid-container {
@@ -266,14 +266,14 @@ button {
 
 .grid-item {
   padding: 0 10px;
-  border: 1px solid #F76902;
+  border: 1px solid #6f8ce4;
   border-radius: 5px;
-  box-shadow: 5px 10px #F76902;
+  box-shadow: 5px 10px #6f8ce4;
   margin: 0 20px 20px 0;
 }
 
 .section-header {
-  color: #F76902;
+  color: #6f8ce4;
   text-decoration: none;
   padding-top: 90px;
   margin-top: -90px;

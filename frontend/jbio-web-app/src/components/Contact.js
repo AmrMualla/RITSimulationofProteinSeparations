@@ -4,56 +4,54 @@ function Contact() {
             <h1 className="page-header">Contact</h1>
             <div className="grid-container">
                 <div class="grid-item">
-                    <h2 className="section-header">Email</h2>
+                    <h2 className="section-header">Team Members</h2>
                     <ul>
-                        <li>John Doe</li>
+                        <li>Amr Mualla</li>
                         <ul>
-                            <li>Work: email@email.com</li>
-                            <li>Work: (xxx) xxx-xxxx</li>
+                            <li>Email: am3576@rit.edu</li>
+                            <li>Phone: (xxx) xxx-xxxx</li>
                         </ul>
-                        <li>Jane Doe</li>
+                        <li>Beck Anderson</li>
                         <ul>
-                            <li>Work: email@email.com</li>
-                            <li>Work: (xxx) xxx-xxxx</li>
+                            <li>Email: bea1935@rit.edu</li>
+                            <li>Phone: (716) 640-2894</li>
                         </ul>
-                        <li>Simon Petrikov</li>
+                        <li>Chase Amador</li>
                         <ul>
-                            <li>Work: email@email.com</li>
-                            <li>Work: (xxx) xxx-xxxx</li>
+                            <li>Email: cma6320@rit.edu</li>
+                            <li>Phone: (203) 725-4442</li>
+                        </ul>
+                        <li>Landon Heatly</li>
+                        <ul>
+                            <li>Email: lbh1442@rit.edu</li>
+                            <li>Phone: (xxx) xxx-xxxx</li>
+                        </ul>
+                        <li>Mack Leonard</li>
+                        <ul>
+                            <li>Email: mml2034@rit.edu</li>
+                            <li>Phone: (203) 731-9620</li>
                         </ul>
                     </ul>
                 </div>
                 <div class="grid-item">
-                    <h2 className="section-header">Phone</h2>
+                    <h2 className="section-header">Team Coach</h2>
                     <ul>
-                        <li>John Doe</li>
+                        <li>Mark Wilson</li>
                         <ul>
-                            <li>Work: (xxx) xxx-xxxx</li>
-                            <li>Office: (xxx) xxx-xxxx</li>
-                            <li>Personal: (xxx) xxx-xxxx</li>
-                        </ul>
-                        <li>Jane Doe</li>
-                        <ul>
-                            <li>Work: (xxx) xxx-xxxx</li>
+                            <li>Email: mwvse@rit.edu</li>
                             <li>Office: (xxx) xxx-xxxx</li>
                             <li>Personal: (xxx) xxx-xxxx</li>
                         </ul>
                     </ul>
                 </div>
                 <div class="grid-item">
-                    <h2 className="section-header">NCBI Blast</h2>
+                    <h2 className="section-header">Project Sponsor</h2>
                     <ul>
-                        <li>John Doe</li>
+                        <li>Dr. Paul Craig</li>
                         <ul>
-                            <li>Username: BlastUser</li>
-                            <li>
-                                Favorite proteins:
-                                <ul>
-                                    <li>Protein 1</li>
-                                    <li>Protein 2</li>
-                                    <li>Protein 3</li>
-                                </ul>
-                            </li>
+                            <li>Email: pac8612@rit.edu</li>
+                            <li>Office: (xxx) xxx-xxxx</li>
+                            <li>Personal: (xxx) xxx-xxxx</li>
                         </ul>
                     </ul>
                 </div>

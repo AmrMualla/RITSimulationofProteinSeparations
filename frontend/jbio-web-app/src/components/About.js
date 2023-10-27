@@ -1,8 +1,14 @@
 function About() {
     return (
         <div>
+            <div className="navbar">
+                <a href="#project-purpose"><h2 className="section-header">Project Purpose</h2></a>
+                <a href="#commercial-use"><h2 className="section-header">Commercial Use</h2></a>
+                <a href="#project-owner"><h2 className="section-header">Project Owner</h2></a>
+                <a href="#developers"><h2 className="section-header">Developers</h2></a>
+            </div>
             <h1 className="page-header">About</h1>
-            <h2 className="section-header">Project Purpose</h2>
+            <h2 className="section-header" id="project-purpose">Project Purpose</h2>
             <p>
                 scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
                 eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
@@ -11,7 +17,7 @@ function About() {
                 eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
                 non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
             </p>
-            <h2 className="section-header">Commercial Use</h2>
+            <h2 className="section-header" id="commercial-use">Commercial Use</h2>
                 <ul>
                     <li>Students and teachers: Free</li>
                     <li>Under 50 audience members: Free</li>
@@ -20,14 +26,14 @@ function About() {
                     <li>Publish online: $100000000</li>
                 </ul>
                 <p>Piracy is not a victimless crime</p>
-            <h2 className="section-header">Project Owner</h2>
+            <h2 className="section-header" id="project-owner">Project Owner</h2>
             <p>
                 Lorem ipsum dolor sit amet
             </p>
             <div className="grid-container">
                 <div className="grid-item">
                     <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="profile-icon" style={{width:200 + "px"}} />
-                    <figcaption style={{fontSize:20 + "px"}}>John Doe</figcaption>
+                    <figcaption style={{fontSize: 20 + "px"}}>John Doe</figcaption>
                     <p>
                         scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
                         eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
@@ -35,7 +41,7 @@ function About() {
                     </p>
                 </div>
             </div>
-            <h2 className="section-header">Developers</h2>
+            <h2 className="section-header" id="developers">Developers</h2>
             <p>Lorem ipsum dolor sit amet</p>
             <div className="grid-container">
                 <div className="grid-item">

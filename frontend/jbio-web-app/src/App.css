@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 @font-face {
   font-family: 'PPFragment-SansRegular';
   src: url('../public/fonts/PPFragment-SansRegular.woff2') format('woff2');
@@ -6,6 +10,7 @@
 
 .App {
   text-align: center;
+  transition: margin-left 0.3s ease;
 }
 
 .App-logo {
@@ -59,11 +64,12 @@ button {
 .sidebar-header {
   display: flex;
   align-items: center;
-  padding-left: 220px;
+  padding-left: 230px;
   transition: padding-left 0.3s ease;
   width: 100%;
   background-color: white;
-  border-bottom: 2px solid #F76902;
+  border-bottom: 2px solid #6f8ce4;
+  z-index: 1;
 }
 
 #basil-logo {
@@ -71,24 +77,22 @@ button {
 }
 
 .sidebar + .sidebar-header {
-  padding-left: 220px;
+  padding-left: 230px;
 }
 .sidebar.sidebar-collapsed + .sidebar-header {
   padding-left: 70px;
 }
 
 .sidebar {
-  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
   z-index: 2;
   height: 100vh;
   position: fixed;
   width: 200px;
+  padding: 0 10px;
   transition: width 0.3s ease;
-  background-color: #F76902;
-}
-
-.App {
-  transition: margin-left 0.3s ease;
+  background-color: #6f8ce4;
 }
 
 .sidebar + .App {
@@ -96,12 +100,13 @@ button {
 }
 
 .sidebar-collapsed {
-  border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 0 10px;
+  z-index: 2;
+  height: 100vh;
+  position: fixed;
   width: 40px;
+  padding: 0 10px;
   transition: width 0.3s ease;
 }
 
@@ -172,11 +177,12 @@ button {
 .contact-icon {
   width: 32px;
   height: auto;
+  transition: all 0.3s ease;
 }
 
 .menu {
   list-style-type: none;
-  padding-left: 0;
+  padding: 0;
   margin: 0;
 }
 
@@ -205,16 +211,6 @@ button {
   transition: padding-left 0.3s ease;
 }
 
-.menu {
-  padding: 0 10px;
-}
-
-.instructions-icon,
-.contact-icon,
-.github-icon {
-    transition: all 0.3s ease;
-}
-
 .hoverable-text {
   color: black;
   transition: color 0.3s ease;
@@ -236,13 +232,30 @@ button {
 
 /* Content rules */
 .content {
-  padding: 60px 0 0 220px;
+  padding: 60px 0 0 230px;
   transition: padding-left 0.3s ease;
 }
 
 .content-collapsed {
   padding: 60px 0 0 70px;
   transition: padding-left 0.3s ease;
+}
+
+.navbar {
+  display: flex;
+  position: fixed;
+  margin-top: -60px;
+  margin-left: 260px;
+  z-index: 2;
+}
+
+.navbar a {
+  text-decoration: none;
+  margin-right: 30px;
+}
+
+.navbar a:hover h2 {
+  color: royalblue;
 }
 
 .grid-container {
@@ -253,12 +266,15 @@ button {
 
 .grid-item {
   padding: 0 10px;
-  border: 1px solid #F76902;
+  border: 1px solid #6f8ce4;
   border-radius: 5px;
-  box-shadow: 5px 10px #F76902;
+  box-shadow: 5px 10px #6f8ce4;
   margin: 0 20px 20px 0;
 }
 
 .section-header {
-  color: #F76902;
+  color: #6f8ce4;
+  text-decoration: none;
+  padding-top: 90px;
+  margin-top: -90px;
 }

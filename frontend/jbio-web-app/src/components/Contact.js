@@ -9,7 +9,7 @@ function Contact() {
                         <li>Amr Mualla</li>
                         <ul>
                             <li>Email: am3576@rit.edu</li>
-                            <li>Phone: (xxx) xxx-xxxx</li>
+                            <li>Phone: (347) 631-7359</li>
                         </ul>
                         <li>Beck Anderson</li>
                         <ul>
@@ -24,7 +24,7 @@ function Contact() {
                         <li>Landon Heatly</li>
                         <ul>
                             <li>Email: lbh1442@rit.edu</li>
-                            <li>Phone: (xxx) xxx-xxxx</li>
+                            <li>Phone: (203) 832-9841</li>
                         </ul>
                         <li>Mack Leonard</li>
                         <ul>

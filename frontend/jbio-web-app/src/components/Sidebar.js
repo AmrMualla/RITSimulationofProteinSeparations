@@ -30,6 +30,7 @@ function Sidebar({ isOpen, toggle }) {
                         </a>
                         <a href="1de"><span className="hoverable-text">1DE</span></a>
                         <a href="2de"><span className="hoverable-text">2DE</span></a>
+                        <a href="template"><span className="hoverable-text">T</span></a>
 
                         <a href="instructions">
                             <span>
@@ -74,6 +75,7 @@ function Sidebar({ isOpen, toggle }) {
                         <a href="/"><li className="hoverable-text">About</li></a>
                         <a href="1de"><li className="hoverable-text">1D Electrophoresis</li></a>
                         <a href="2de"><li className="hoverable-text">2D Electrophoresis</li></a>
+                        <a href="template"><li className="hoverable-text">Template</li></a>
                         <a href="instructions"><li className="hoverable-text">Instructions</li></a>
                         <a href="contact"><li className="hoverable-text">Contact</li></a>
                         <a href="https://github.com/AmrMualla/RITSimulationofProteinSimulations" target="_blank" rel="noopener noreferrer"><li className="hoverable-text">Github</li></a>

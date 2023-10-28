@@ -5,6 +5,7 @@ import OneDE from './components/OneDE.js';
 import TwoDE from './components/TwoDE.js';
 import Instructions from './components/Instructions.js';
 import Contact from './components/Contact.js';
+import Template from './components/Template.js';
 
 function Router({isOpen}) {
     const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function Router({isOpen}) {
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "template",
+        element: <Template />,
       },
     ]);
     return (

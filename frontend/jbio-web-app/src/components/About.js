@@ -1,3 +1,5 @@
+import paul from './images/PaulPhoto.jpg';
+
 function About() {
     return (
         <div>
@@ -10,12 +12,11 @@ function About() {
             <h1 className="page-header">About</h1>
             <h2 className="section-header" id="project-purpose">Project Purpose</h2>
             <p>
-                scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.  scelerisque et.
-                Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
+                JBioFramework (JBF) is a set of chemical simulations frequently used in chemistry,
+                biochemistry, and proteomics research. It's main purpose is to allow for simplified simulation
+                of proteins for academic and research opportunities. It is owned and operated by the RIT College of
+                Science under the watch of Paul Craig. It is continuously being worked on with collaboration
+                between the RIT College of Science and the RIT Software Engineering Department.
             </p>
             <h2 className="section-header" id="commercial-use">Commercial Use</h2>
                 <ul>
@@ -32,9 +33,20 @@ function About() {
             </p>
             <div className="grid-container">
                 <div className="grid-item">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="profile-icon" style={{width:200 + "px"}} />
-                    <figcaption style={{fontSize: 20 + "px"}}>John Doe</figcaption>
-                    <p>
+                    <img src={paul} alt="profile-icon" style={{
+                        borderRadius: "50%",
+                        width: 200 + "px",
+                        height: 200 + "px",
+                        background: "red",
+                        display: "grid",
+                        justifyContent: "center"
+                    }}/>
+                    <figcaption style={{
+                        fontSize: 20 + "px",
+                        display: "grid",
+                        justifyContent: "center"
+                    }}>Paul Craig</figcaption>
+                    <p style={{marginLeft: "auto"}}>
                         scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
                         eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
                         non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.

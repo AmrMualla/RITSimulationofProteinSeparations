@@ -38,9 +38,8 @@ function Contact() {
                     <ul>
                         <li>Mark Wilson</li>
                         <ul>
-                            <li>Email: mwvse@rit.edu</li>
-                            <li>Office: (xxx) xxx-xxxx</li>
-                            <li>Personal: (xxx) xxx-xxxx</li>
+                            <li>RIT Email: mwvse@rit.edu</li>
+                            <li>Personal Email: mwilson1962@gmail.com</li>
                         </ul>
                     </ul>
                 </div>
@@ -50,8 +49,7 @@ function Contact() {
                         <li>Dr. Paul Craig</li>
                         <ul>
                             <li>Email: pac8612@rit.edu</li>
-                            <li>Office: (xxx) xxx-xxxx</li>
-                            <li>Personal: (xxx) xxx-xxxx</li>
+                            <li>Office Phone: (585) 475-6145</li>
                         </ul>
                     </ul>
                 </div>

@@ -1,4 +1,4 @@
-.profileIcon {
+.profile-icon {
     border-radius: 50%;
     width: 200px;
     height: 200px;
@@ -8,7 +8,34 @@
     justify-content: center;
 }
 
-.profileTitle {
+.profile-title {
     font-size: 20px;
     margin-left: 75px;
+}
+
+.historic-icon {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    background: red;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.historic-title {
+    font-size: 16px;
+}
+
+.historic-grid {
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr 4fr;
+}
+
+.historic-grid-item {
+    padding: 0 10px;
+    border: 1px solid #6f8ce4;
+    border-radius: 5px;
+    box-shadow: 5px 10px #6f8ce4;
+    margin: 0 20px 20px 0;
 }

@@ -4,6 +4,7 @@ import chase from "./images/Chase_Amador.png";
 import amr from "./images/Amr_Mualla.png";
 import landon from "./images/Landon_Heatly.png";
 import mack from './images/Mack_Leonard.png';
+import mark from './images/Mark_Elliot_Zuckerberg.jpg';
 import './About.css';
 
 function About() {
@@ -13,7 +14,8 @@ function About() {
                 <a href="#project-purpose"><h2 className="section-header">Project Purpose</h2></a>
                 <a href="#commercial-use"><h2 className="section-header">Commercial Use</h2></a>
                 <a href="#project-owner"><h2 className="section-header">Project Owner</h2></a>
-                <a href="#developers"><h2 className="section-header">Developers</h2></a>
+                <a href="#current-developers"><h2 className="section-header">Current Developers</h2></a>
+                <a href="#historic-developers"><h2 className="section-header">Historic Developers</h2></a>
             </div>
             <h1 className="page-header">About</h1>
             <h2 className="section-header" id="project-purpose">Project Purpose</h2>
@@ -41,8 +43,8 @@ function About() {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <img className="profileIcon" src={paul} alt="profile-icon"/>
-                        <figcaption className="profileTitle">Paul Craig</figcaption>
+                        <img className="profile-icon" src={paul} alt="profile-icon"/>
+                        <figcaption className="profile-title">Paul Craig</figcaption>
                     </div>
                     <p style={{marginLeft: "auto"}}>
                         Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979,
@@ -53,40 +55,49 @@ function About() {
                     </p>
                 </div>
             </div>
-            <h2 className="section-header" id="developers">Developers</h2>
-            <p>Lorem ipsum dolor sit amet</p>
+            <h2 className="section-header" id="current-developers">Current Developers</h2>
             <div className="grid-container">
                 <div className="grid-item">
-                    <img className="profileIcon" src={chase} alt="profile-icon"/>
-                    <figcaption className="profileTitle">Chase Amador</figcaption>
+                    <img className="profile-icon" src={chase} alt="profile-icon"/>
+                    <figcaption className="profile-title">Chase Amador</figcaption>
                     <p>
                         Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img className="profileIcon" src={beck} alt="profile-icon"/>
-                    <figcaption className="profileTitle">Beck Anderson</figcaption>
+                    <img className="profile-icon" src={beck} alt="profile-icon"/>
+                    <figcaption className="profile-title">Beck Anderson</figcaption>
                     <p>
                         Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img className="profileIcon" src={landon} alt="profile-icon"/>
-                    <figcaption className="profileTitle">Landon Heatly</figcaption>
+                    <img className="profile-icon" src={landon} alt="profile-icon"/>
+                    <figcaption className="profile-title">Landon Heatly</figcaption>
                     <p>
                         Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img className="profileIcon" src={mack} alt="profile-icon"/>
-                    <figcaption className="profileTitle">Mack Leonard</figcaption>
+                    <img className="profile-icon" src={mack} alt="profile-icon"/>
+                    <figcaption className="profile-title">Mack Leonard</figcaption>
                     <p>
                         Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img className="profileIcon" src={amr} alt="profile-icon"/>
-                    <figcaption className="profileTitle">Amr Mualla</figcaption>
+                    <img className="profile-icon" src={amr} alt="profile-icon"/>
+                    <figcaption className="profile-title">Amr Mualla</figcaption>
+                    <p>
+                        Bio here...
+                    </p>
+                </div>
+            </div>
+            <h2 className="section-header" id="historic-developers">Historic Developers</h2>
+            <div className="historic-grid">
+                <div className="historic-grid-item">
+                    <img className="historic-icon" src={mark} alt="profile-icon"/>
+                    <figcaption className="historic-title">Mark Zuckerberg</figcaption>
                     <p>
                         Bio here...
                     </p>

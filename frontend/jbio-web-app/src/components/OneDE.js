@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../ElectrophoresisCell.css';
 
 const OneDE = () => {
-  const [wellsCount, setWellsCount] = useState(10);
+  const [wellsCount, setWellsCount] = useState(5);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -18,11 +18,13 @@ const OneDE = () => {
 
   return (
     <div className="electrophoresis-wrapper">
+
+      <label className="wellCountLabel">Current Wells: {wellsCount}</label>  {/* Moved above the buttons */}
+
       <div className="buttons-container-1de">
         <button className="button1de" onClick={handleAddWell} disabled={wellsCount === 15}>
           Add Well
         </button>
-        <label className="wellCountLabel">Current Wells: {wellsCount}</label>
         <button className="button1de" onClick={handleDropWell} disabled={wellsCount === 1}>
           Drop Well
         </button>
@@ -38,6 +40,7 @@ const OneDE = () => {
           ))}
         </div>
       </div>
+      <div className="acrylamide-gel"></div>
     </div>
   );
 }

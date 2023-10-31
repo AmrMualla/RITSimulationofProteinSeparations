@@ -1,0 +1,14 @@
+.profileIcon {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    background: red;
+    margin: 20px;
+    display: grid;
+    justify-content: center;
+}
+
+.profileTitle {
+    font-size: 20px;
+    margin-left: 75px;
+}

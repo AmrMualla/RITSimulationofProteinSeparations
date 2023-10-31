@@ -1,4 +1,10 @@
 import paul from './images/PaulPhoto.jpg';
+import beck from "./images/Beck_Anderson.png";
+import chase from "./images/Chase_Amador.png";
+import amr from "./images/Amr_Mualla.png";
+import landon from "./images/Landon_Heatly.png";
+import mack from './images/Mack_Leonard.png';
+import './About.css';
 
 function About() {
     return (
@@ -28,28 +34,22 @@ function About() {
                 </ul>
                 <p>Piracy is not a victimless crime</p>
             <h2 className="section-header" id="project-owner">Project Owner</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
             <div className="grid-container">
                 <div className="grid-item">
-                    <img src={paul} alt="profile-icon" style={{
-                        borderRadius: "50%",
-                        width: 200 + "px",
-                        height: 200 + "px",
-                        background: "red",
-                        display: "grid",
-                        justifyContent: "center"
-                    }}/>
-                    <figcaption style={{
-                        fontSize: 20 + "px",
-                        display: "grid",
-                        justifyContent: "center"
-                    }}>Paul Craig</figcaption>
+                    <div style={{
+                        display: 'grid',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <img className="profileIcon" src={paul} alt="profile-icon"/>
+                        <figcaption className="profileTitle">Paul Craig</figcaption>
+                    </div>
                     <p style={{marginLeft: "auto"}}>
-                        scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                        eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                        non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
+                        Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979,
+                        and his Ph.D. in Biological Chemistry from The University of Michigan in 1985.
+                        Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood clotting;
+                        1985-1988), he spent five years as an analytical biochemistry at BioQuant, Inc., in
+                        Ann Arbor, Michigan before joining RIT in 1993.
                     </p>
                 </div>
             </div>
@@ -57,39 +57,38 @@ function About() {
             <p>Lorem ipsum dolor sit amet</p>
             <div className="grid-container">
                 <div className="grid-item">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="profile-icon" style={{width:200 + "px"}} />
-                    <figcaption style={{fontSize:20 + "px"}}>John Doe</figcaption>
+                    <img className="profileIcon" src={chase} alt="profile-icon"/>
+                    <figcaption className="profileTitle">Chase Amador</figcaption>
                     <p>
-                        scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                        eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                        non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
+                        Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="profile-icon" style={{width:200 + "px"}} />
-                    <figcaption style={{fontSize:20 + "px"}}>Also John Doe</figcaption>
+                    <img className="profileIcon" src={beck} alt="profile-icon"/>
+                    <figcaption className="profileTitle">Beck Anderson</figcaption>
                     <p>
-                        scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                        eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                        non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
+                        Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="profile-icon" style={{width:200 + "px"}} />
-                    <figcaption style={{fontSize:20 + "px"}}>Jane Doe (No relation)</figcaption>
+                    <img className="profileIcon" src={landon} alt="profile-icon"/>
+                    <figcaption className="profileTitle">Landon Heatly</figcaption>
                     <p>
-                        scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                        eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                        non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
+                        Bio here...
                     </p>
                 </div>
                 <div className="grid-item">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="profile-icon" style={{width:200 + "px"}} />
-                    <figcaption style={{fontSize:20 + "px"}}>Simon Petrikov</figcaption>
+                    <img className="profileIcon" src={mack} alt="profile-icon"/>
+                    <figcaption className="profileTitle">Mack Leonard</figcaption>
                     <p>
-                        scelerisque et. Maecenas non nisi pellentesque, consectetur ante ac, dignissim massa. Phasellus
-                        eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
-                        non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
+                        Bio here...
+                    </p>
+                </div>
+                <div className="grid-item">
+                    <img className="profileIcon" src={amr} alt="profile-icon"/>
+                    <figcaption className="profileTitle">Amr Mualla</figcaption>
+                    <p>
+                        Bio here...
                     </p>
                 </div>
             </div>

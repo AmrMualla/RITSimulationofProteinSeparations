@@ -13,7 +13,7 @@
     right: 5%;
     height: 150px;
     background-color: #FFF;
-    z-index: 1;
+    z-index: 2;
 }
 
 .electrophoresis-cell {
@@ -28,13 +28,16 @@
 
 .buttons-container-1de {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;  /* Changed from column to row */
     align-items: center;
-    margin-right: 20px;
+    gap: 10px;            /* Spacing between items */
 }
 
+
 .wellCountLabel {
-    margin-bottom: 10px;
+    position: relative;
+    left: 175px;
+    margin-bottom: 100px;
     font-weight: bold;
     font-size: 1.2em;
 }
@@ -55,17 +58,43 @@
 .divider {
     width: 30px;
     height: 120px;
-    background-color: #C0C0C0;
+    background: linear-gradient(to top, #B0B0B0, #D0D0D0);
     position: relative; 
     top: -20px;
+    box-shadow: 
+        -5px 0px 10px rgba(0, 0, 0, 0.1), 
+         5px 0px 10px rgba(0, 0, 0, 0.1),
+        0px -5px 10px rgba(0, 0, 0, 0.1), 
+        0px 5px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px 5px 0 0;
 }
+
 
 .well {
     flex: 1;
     height: 100px;
-    background-color: #ffffff;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1), 0px -5px 10px rgba(0, 0, 0, 0.1);
+    background: radial-gradient(circle at center, #FFF, #EEE 80%, #CCC 100%);
+    box-shadow: 
+        -10px 0px 15px rgba(0, 0, 0, 0.1), 
+         10px 0px 15px rgba(0, 0, 0, 0.1), 
+        0px -5px 10px rgba(0, 0, 0, 0.1), 
+        0px 10px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-radius: 5px 5px 0 0;
 }
+
+.well::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 5%;
+    right: 5%;
+    height: 5px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+    border-radius: 50% 50% 0 0;
+}
+
+
 
 .button1de {
     padding: 10px 20px;
@@ -86,3 +115,17 @@
     background-color: #ddd;
     cursor: not-allowed;
 }
+
+.acrylamide-gel {
+    position: absolute;
+    right: -210px;
+    bottom: 10px;
+    transform: translateX(-50%);
+    width: 950px;
+    height: 150px;
+    background-color: #007BFF; /* Blue color for the gel */
+    border-radius: 0 0 5px 5px; /* Make the bottom corners rounded */
+    z-index: 1; /* Keep it below the wells */
+}
+
+

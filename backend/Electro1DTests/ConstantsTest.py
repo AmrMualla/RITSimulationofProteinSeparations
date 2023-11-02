@@ -3,6 +3,8 @@
 # To run: python3 -m unittest backend.Electro1DTests.ConstantsTest
 import unittest
 
+from backend.Electro1D.Constants import Constants
+
 class TestConstants(unittest.TestCase):
 
     def test_convert_color_to_rgb(self):

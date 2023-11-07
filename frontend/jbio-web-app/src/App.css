@@ -272,6 +272,13 @@ button {
   margin: 0 20px 20px 0;
 }
 
+.navbar-header {
+  color: #6f8ce4;
+  text-decoration: none;
+  padding-top: 90px;
+  margin-top: -90px;
+}
+
 .section-header {
   color: #6f8ce4;
   text-decoration: none;

@@ -2,9 +2,9 @@ function Instructions() {
     return (
         <div>
             <div className="navbar">
-                <a href="#1de"><h2 className="section-header">1DE</h2></a>
-                <a href="#2de"><h2 className="section-header">2DE</h2></a>
-                <a href="#3de"><h2 className="section-header">3DE</h2></a>
+                <a href="#1de"><h2 className="navbar-header">1DE</h2></a>
+                <a href="#2de"><h2 className="navbar-header">2DE</h2></a>
+                <a href="#3de"><h2 className="navbar-header">3DE</h2></a>
             </div>
             <h1 className="page-header">Instructions</h1>
             <h2 className="section-header" id="1de">One-Dimensional Gel Electrophoresis</h2>

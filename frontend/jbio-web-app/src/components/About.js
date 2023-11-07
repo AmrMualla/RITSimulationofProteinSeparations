@@ -11,12 +11,13 @@ function About() {
     return (
         <div>
             <div className="navbar">
-                <a href="#project-purpose"><h2 className="section-header">Project Purpose</h2></a>
-                <a href="#commercial-use"><h2 className="section-header">Commercial Use</h2></a>
-                <a href="#project-owner"><h2 className="section-header">Project Owner</h2></a>
-                <a href="#current-developers"><h2 className="section-header">Current Developers</h2></a>
-                <a href="#historic-developers"><h2 className="section-header">Historic Developers</h2></a>
+                <a href="#project-purpose"><h2 className="navbar-header">Project Purpose</h2></a>
+                <a href="#commercial-use"><h2 className="navbar-header">Commercial Use</h2></a>
+                <a href="#project-owner"><h2 className="navbar-header">Project Owner</h2></a>
+                <a href="#current-developers"><h2 className="navbar-header">Current Developers</h2></a>
+                <a href="#historic-developers"><h2 className="navbar-header">Historic Developers</h2></a>
             </div>
+      
             <h1 className="page-header">About</h1>
             <h2 className="section-header" id="project-purpose">Project Purpose</h2>
             <p>

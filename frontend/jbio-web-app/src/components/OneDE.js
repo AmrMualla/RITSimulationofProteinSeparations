@@ -3,6 +3,7 @@ import '../ElectrophoresisCell.css';
 
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(5);
+  const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -18,14 +19,15 @@ const OneDE = () => {
 
   return (
     <div className="electrophoresis-wrapper">
-
-      <label className="wellCountLabel">Current Wells: {wellsCount}</label>  {/* Moved above the buttons */}
-
+      
+      <label className="wellCountLabel">Current Wells: {wellsCount}</label>
+      <label className="acrylamide-percentage-label">Acrylamide %: </label>
+      <div className="options-box"></div>
       <div className="buttons-container-1de">
-        <button className="button1de" onClick={handleAddWell} disabled={wellsCount === 15}>
+        <button className="button1deadd" onClick={handleAddWell} disabled={wellsCount === 15}>
           Add Well
         </button>
-        <button className="button1de" onClick={handleDropWell} disabled={wellsCount === 1}>
+        <button className="button1dedrop" onClick={handleDropWell} disabled={wellsCount === 1}>
           Drop Well
         </button>
       </div>
@@ -40,7 +42,18 @@ const OneDE = () => {
           ))}
         </div>
       </div>
-      <div className="acrylamide-gel"></div>
+      <div className="acrylamide-gel-top"></div>
+      <div className="acrylamide-gel-bottom"></div>
+
+      <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>  {/* Acrylamide label */}
+      
+      <div className="acrylamide-dropdown-section">
+        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
+          <option value="7.5%">7.5%</option>
+          <option value="10%">10%</option>
+          <option value="15%">15%</option>
+        </select>
+      </div>
     </div>
   );
 }

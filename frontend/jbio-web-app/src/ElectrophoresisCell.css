@@ -1,8 +1,10 @@
 .electrophoresis-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: auto;
 }
 
 .electrophoresis-cell::before {
@@ -17,30 +19,34 @@
 }
 
 .electrophoresis-cell {
-    width: 850px;
-    height: 850px;
+    flex-shrink: 0;
+    width: 46em; /* Consider using max-width to contain this within the viewport */
+    height: 46em;
     background-color: #C0C0C0;
     position: relative;
-    border: 3px solid #000;
+    border-top: 0.1875em solid #000;
+    border-left: 0.1875em solid #000;
+    border-right: 0.1875em solid #000;
+    border-bottom: none;
     border-radius: 5px;
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 0 0.9375em 0.1875em rgba(0, 0, 0, 0.1) inset;
+    z-index: 3;
+    left: 17em;
+    top: 10em;
 }
 
 .buttons-container-1de {
-    display: flex;
-    flex-direction: row;  /* Changed from column to row */
-    align-items: center;
-    gap: 10px;            /* Spacing between items */
-}
-
-
-.wellCountLabel {
     position: relative;
-    left: 175px;
-    margin-bottom: 100px;
-    font-weight: bold;
-    font-size: 1.2em;
+    flex-shrink: 0;
+    display: flex;
+    gap: 1em;
+    bottom: -13em;
+    z-index: 2;
+    left: -35.2em;            
 }
+
+
+
 
 .wells-container {
     position: absolute;
@@ -96,7 +102,8 @@
 
 
 
-.button1de {
+.button1deadd, .button1dedrop {
+    flex-shrink: 0;
     padding: 10px 20px;
     background-color: royalblue;
     border: none;
@@ -104,7 +111,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
+   
 }
 
 .button1de:hover {
@@ -116,16 +123,88 @@
     cursor: not-allowed;
 }
 
-.acrylamide-gel {
-    position: absolute;
-    right: -210px;
-    bottom: 10px;
-    transform: translateX(-50%);
-    width: 950px;
-    height: 150px;
-    background-color: #007BFF; /* Blue color for the gel */
-    border-radius: 0 0 5px 5px; /* Make the bottom corners rounded */
-    z-index: 1; /* Keep it below the wells */
+.acrylamide-gel-top {
+    flex-shrink: 0;
+    position: relative;
+    left: 17em;
+    bottom: 38em;
+    width: 53em;
+    height: 9.375em;
+    border: 3px solid #000;
+    background-color: #00FFFF; 
+    border-radius: 0 0 5px 5px; 
+    z-index: 1; 
 }
 
+.acrylamide-gel-bottom {
+    flex-shrink: 0;
+    position: relative;
+    left: 17em;
+    bottom: 8em;
+    width: 53em;
+    height: 9.375em;
+    border: 3px solid #000;
+    background-color: #00FFFF; 
+    border-radius: 0 0 5px 5px; 
+    z-index: 1; 
+}
+
+
+.acrylamide-label {
+    flex-shrink: 0;
+    font-weight: bold;
+    left: -5em;
+    bottom: 9.6em;
+    position: relative;
+    z-index: 1;
+
+}
+
+.acrylamide-dropdown-section {
+    right: 30rem; 
+    bottom: 53rem;
+    position: relative;
+    z-index: 1;
+    padding: 10px 20px;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.options-box {
+    flex-shrink: 0;
+    position: relative;
+    left: -30em;
+    bottom: -60em;
+    width: 25em;
+    height: 49em;
+    border: 3px solid #4682A9;
+    background-color: #749BC2; 
+    border-radius: 0 0 5px 5px; 
+    z-index: 1; 
+}
+
+.wellCountLabel{
+    flex-shrink: 0;
+    position: relative;
+    left: -31em;
+    bottom: -53em;
+    z-index: 2; 
+    font-weight: bold;
+    font-size: 1.2em;
+    
+}
+
+.acrylamide-percentage-label{
+    flex-shrink: 0;
+    position: relative;
+    left: -31.5em;
+    bottom: -56.3em;
+    z-index: 2;
+    font-weight: bold;
+    font-size: 1.2em; 
+}
 

@@ -1,10 +1,10 @@
-import paul from './images/PaulPhoto.jpg';
-import beck from "./images/Beck_Anderson.png";
-import chase from "./images/Chase_Amador.png";
-import amr from "./images/Amr_Mualla.png";
-import landon from "./images/Landon_Heatly.png";
-import mack from './images/Mack_Leonard.png';
-import mark from './images/Mark_Elliot_Zuckerberg.jpg';
+import paul from './about_images/PaulPhoto.jpg';
+import beck from "./about_images/Beck_Anderson.png";
+import chase from "./about_images/Chase_Amador.png";
+import amr from "./about_images/Amr_Mualla.png";
+import landon from "./about_images/Landon_Heatly.png";
+import mack from './about_images/Mack_Leonard.png';
+import placeholder from './about_images/placeholder.png';
 import './About.css';
 
 function About() {
@@ -96,8 +96,8 @@ function About() {
             <h2 className="section-header" id="historic-developers">Historic Developers</h2>
             <div className="historic-grid">
                 <div className="historic-grid-item">
-                    <img className="historic-icon" src={mark} alt="profile-icon"/>
-                    <figcaption className="historic-title">Mark Zuckerberg</figcaption>
+                    <img className="historic-icon" src={placeholder} alt="profile-icon"/>
+                    <figcaption className="historic-title">Place Holder</figcaption>
                     <p>
                         Bio here...
                     </p>

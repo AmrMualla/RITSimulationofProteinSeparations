@@ -232,20 +232,20 @@ button {
 
 /* Content rules */
 .content {
-  padding: 60px 20px 0 250px;
-  transition: padding 0.3s ease;
+  padding: 60px 0 0 230px;
+  transition: padding-left 0.3s ease;
 }
 
 .content-collapsed {
-  padding: 60px 60px 0 150px;
-  transition: padding 0.3s ease;
+  padding: 60px 0 0 70px;
+  transition: padding-left 0.3s ease;
 }
 
 .navbar {
   display: flex;
   position: fixed;
   margin-top: -60px;
-  margin-left: 210px;
+  margin-left: 260px;
   z-index: 2;
 }
 

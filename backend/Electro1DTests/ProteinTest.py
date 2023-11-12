@@ -49,6 +49,15 @@ class TestProtein(unittest.TestCase):
         self.protein.set_width(10)
         self.assertEqual(self.protein.width, 10)
 
+    def test_get_decider(self):
+        self.protein.decider = 1
+        self.assertEqual(self.protein.get_decider(), 1)
+
+    def test_set_decider(self):
+        self.protein.decider = 0
+        self.protein.set_decider(1)
+        self.assertEqual(self.protein.get_decider(), 1)
+
     def test_set_concentration(self):
         self.protein.set_concentration(5)
         self.assertEqual(self.protein.concentration, 5)

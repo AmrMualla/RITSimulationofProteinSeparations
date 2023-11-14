@@ -24,7 +24,7 @@
     height: 46em;
     background-color: #C0C0C0;
     position: relative;
-    border-top: 0.1875em solid #000;
+    border-top: none;
     border-left: 0.1875em solid #000;
     border-right: 0.1875em solid #000;
     border-bottom: none;
@@ -207,4 +207,58 @@
     font-weight: bold;
     font-size: 1.2em; 
 }
+
+.redwire-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    width: 3.75em;
+    top: 118.5em;
+    left: 41.85em;
+}
+
+.blackwire-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    width: 3.75em;
+    top: 65.7em;
+    right: 7.8em;
+}
+
+.redwireextended-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    height: 42.06em;
+    width: 60px;
+    top: 120em;
+    left: 41.85em;
+}
+
+.voltage-value-label{
+    flex-shrink: 0;
+    position: relative;
+    left: -30.1em;
+    top: 118em;
+    z-index: 2;
+    font-weight: bold;
+    font-size: 1.2em; 
+}
+
+.voltage-dropdown-section {
+    right: 30rem;
+    top: 143.8em; 
+    position: relative;
+    z-index: 2;
+    padding: 10px 20px;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
 

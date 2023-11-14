@@ -4,6 +4,7 @@ import '../ElectrophoresisCell.css';
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(5);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
+  const [voltageValue, setvoltageValue] = useState('50V');
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -18,8 +19,20 @@ const OneDE = () => {
   };
 
   return (
+    
     <div className="electrophoresis-wrapper">
-      
+      <div className="voltage-dropdown-section">
+        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
+          <option value="50V">50V</option>
+          <option value="100V">100V</option>
+          <option value="150V">150V</option>
+          <option value="200V">200V</option>
+        </select>
+      </div>
+      <label className="voltage-value-label">Voltage: </label>
+      <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextended-image" />
+      <img src="/redwire.png" alt="Red Wire" className="redwire-image" />
+      <img src="/blackwire.png" alt="Black Wire" className="blackwire-image" />
       <label className="wellCountLabel">Current Wells: {wellsCount}</label>
       <label className="acrylamide-percentage-label">Acrylamide %: </label>
       <div className="options-box"></div>

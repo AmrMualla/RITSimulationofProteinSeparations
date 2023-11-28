@@ -8,5 +8,5 @@ test('renders TwoDE component', () => {
 
   // Check if the component renders the correct header
   expect(getByText('2DE page')).toBeInTheDocument();
-
+  
 });

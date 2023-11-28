@@ -1,6 +1,8 @@
 # Protein Class represents properties and behaviors related to a protein.
 # Note: GUI-related fragments have been removed from this class.
 # @author Amr Mualla & Bader Alharbi
+from Bio import SeqIO
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
 class Protein:
 
     # Initializes a new instance of the Protein class.
@@ -111,3 +113,31 @@ class Protein:
     def get_distance(self):
         self.distance = self.scale_factor * (self.y1 - self.start_y)
         return self.distance
+
+    # Utilizes Biopython SeqIO library to parse through a fasta file given by the user and collect
+    # information stored within the file
+    # @return: Sequence identifier, amino acid sequence, length of amino acid sequence
+    def parse_protein(self, file):
+        seq_id = ""
+        sequence = ""
+        seq_len = 0
+        seq_name = ""
+        for seq_record in SeqIO.parse(file, "fasta"):
+            seq_id = seq_record.id
+            sequence = seq_record.seq
+            seq_len = len(seq_record)
+            seq_name = seq_record.description
+        return seq_id, sequence, seq_len, seq_name
+
+    # Utilizes the ProteinAnalysis object to get a sequence of amino acids and calculate the molecular weight
+    # @return: molecular weight of the protein from fasta file given by user
+    def get_mw(self, file):
+        seq = ProteinAnalysis(self.parse_protein(file)[1])
+        self.mw = seq.molecular_weight()
+        return self.mw
+
+    # Utilizes the ProteinAnalysis object to get a sequence of amino acids and finds the number of amino acids
+    # @return: the number of amino acids from fasta file given by user
+    def get_amino_acid_count(self, file):
+        seq = ProteinAnalysis(self.parse_protein(file)[1])
+        return seq.count_amino_acids()

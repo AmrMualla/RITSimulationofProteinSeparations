@@ -40,7 +40,7 @@
     flex-shrink: 0;
     display: flex;
     gap: 1em;
-    bottom: -13em;
+    bottom: -20.3em;
     z-index: 2;
     left: -35.2em;            
 }
@@ -111,14 +111,38 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-   
 }
 
-.button1de:hover {
-    background-color: #3259f3;
+.typeFile, .typeFolder, .submitUpload {
+    padding: 10px 20px;
+    height: 3em;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: .8em; 
 }
 
-.button1de:disabled {
+.typeFile {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.typeFolder {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.submitUpload {
+    border-radius: 5px;
+}
+
+.button1deadd:hover, .button1dedrop:hover, .uploadType:hover, .submitUpload:hover {
+    background-color: #5e7bef;
+}
+
+.button1deadd:disabled, .button1dedrop:disabled {
     background-color: #ddd;
     cursor: not-allowed;
 }
@@ -162,7 +186,7 @@
 
 .acrylamide-dropdown-section {
     right: 30rem; 
-    bottom: 53rem;
+    bottom: 46rem;
     position: relative;
     z-index: 1;
     padding: 10px 20px;
@@ -187,11 +211,32 @@
     z-index: 1; 
 }
 
+.uploadContainer {
+    top: 142em;
+    left: -31.7em;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.upload{
+    flex-shrink: 0;
+    display: flex;
+    position: relative;
+    z-index: 2;
+}
+
+.uploadTypeContainer{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
 .wellCountLabel{
     flex-shrink: 0;
     position: relative;
     left: -31em;
-    bottom: -53em;
+    bottom: -59em;
     z-index: 2; 
     font-weight: bold;
     font-size: 1.2em;
@@ -202,7 +247,7 @@
     flex-shrink: 0;
     position: relative;
     left: -31.5em;
-    bottom: -56.3em;
+    bottom: -62em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
@@ -240,7 +285,7 @@
     flex-shrink: 0;
     position: relative;
     left: -30.1em;
-    top: 118em;
+    top: 124em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
@@ -248,7 +293,7 @@
 
 .voltage-dropdown-section {
     right: 30rem;
-    top: 143.8em; 
+    top: 151em; 
     position: relative;
     z-index: 2;
     padding: 10px 20px;

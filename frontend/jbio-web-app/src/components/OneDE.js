@@ -5,6 +5,7 @@ const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(5);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
   const [voltageValue, setvoltageValue] = useState('50V');
+  const [folderUpload, setFolderUpload] = useState(false);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -21,6 +22,27 @@ const OneDE = () => {
   return (
     
     <div className="electrophoresis-wrapper">
+      <div className='uploadContainer'>
+        <div className='uploadTypeContainer'>
+          <button onClick={() => setFolderUpload(false)} className="typeFile" style={folderUpload ? {} : {border:"black 1px solid", backgroundColor:"#2253e7"}}>file</button>
+          <button onClick={() => setFolderUpload(true)} className="typeFolder" style={folderUpload ? {border:"black 1px solid", backgroundColor:"#2253e7"} : {}}>folder</button>
+        </div>
+        <form className='upload'>
+          { !folderUpload && (
+            <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
+              <label htmlFor="uploaded" className="submitUpload" style={{marginBottom:-50 + 'px'}}>Select File</label>
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} />
+            </div>
+          )}
+          { folderUpload && (
+            <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
+              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" />
+            </div>
+          )}
+          <input className="submitUpload" type="submit" />
+        </form>
+      </div>
       <div className="voltage-dropdown-section">
         <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
           <option value="50V">50V</option>

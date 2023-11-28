@@ -1,4 +1,12 @@
+"""
+Class to hold information about Parameters for Python GUI, likely
+not necessary since frontend will be handled by Javascript.
+@author Bader Alharbi, Mack Leonard
+"""
+
+
 import tkinter as tk
+
 
 class Protein:
     def __init__(self, name, full_name, abbr, mw, color):

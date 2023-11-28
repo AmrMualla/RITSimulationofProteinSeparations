@@ -32,7 +32,7 @@
     box-shadow: 0 0 0.9375em 0.1875em rgba(0, 0, 0, 0.1) inset;
     z-index: 3;
     left: 17em;
-    top: 10em;
+    top: -70em;
 }
 
 .buttons-container-1de {
@@ -40,7 +40,7 @@
     flex-shrink: 0;
     display: flex;
     gap: 1em;
-    bottom: -20.3em;
+    bottom: 60.3em;
     z-index: 2;
     left: -35.2em;            
 }
@@ -114,6 +114,7 @@
 }
 
 .typeFile, .typeFolder, .submitUpload {
+    position: relative;
     padding: 10px 20px;
     height: 3em;
     background-color: royalblue;
@@ -122,6 +123,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: .8em; 
+    bottom: 90em;
 }
 
 .typeFile {
@@ -151,7 +153,7 @@
     flex-shrink: 0;
     position: relative;
     left: 17em;
-    bottom: 38em;
+    bottom: 118em;
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
@@ -164,7 +166,7 @@
     flex-shrink: 0;
     position: relative;
     left: 17em;
-    bottom: 8em;
+    bottom: 88em;
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
@@ -178,7 +180,7 @@
     flex-shrink: 0;
     font-weight: bold;
     left: -5em;
-    bottom: 9.6em;
+    bottom: 89.6em;
     position: relative;
     z-index: 1;
 
@@ -186,7 +188,7 @@
 
 .acrylamide-dropdown-section {
     right: 30rem; 
-    bottom: 46rem;
+    bottom: 124rem;
     position: relative;
     z-index: 1;
     padding: 10px 20px;
@@ -202,7 +204,7 @@
     flex-shrink: 0;
     position: relative;
     left: -30em;
-    bottom: -60em;
+    bottom: 20em;
     width: 25em;
     height: 49em;
     border: 3px solid #4682A9;
@@ -236,7 +238,7 @@
     flex-shrink: 0;
     position: relative;
     left: -31em;
-    bottom: -59em;
+    bottom: 8em;
     z-index: 2; 
     font-weight: bold;
     font-size: 1.2em;
@@ -247,7 +249,7 @@
     flex-shrink: 0;
     position: relative;
     left: -31.5em;
-    bottom: -62em;
+    bottom: 1.5em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
@@ -258,7 +260,7 @@
     position: relative;
     z-index: 2;
     width: 3.75em;
-    top: 118.5em;
+    top: 38.5em;
     left: 41.85em;
 }
 
@@ -267,7 +269,7 @@
     position: relative;
     z-index: 2;
     width: 3.75em;
-    top: 65.7em;
+    top: -14.3em;
     right: 7.8em;
 }
 
@@ -275,9 +277,9 @@
     flex-shrink: 0;
     position: relative;
     z-index: 1;
-    height: 42.06em;
+    height: 50em;
     width: 60px;
-    top: 120em;
+    top: 40em;
     left: 41.85em;
 }
 
@@ -285,7 +287,7 @@
     flex-shrink: 0;
     position: relative;
     left: -30.1em;
-    top: 124em;
+    top: 60.5em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
@@ -293,7 +295,7 @@
 
 .voltage-dropdown-section {
     right: 30rem;
-    top: 151em; 
+    top: 75em; 
     position: relative;
     z-index: 2;
     padding: 10px 20px;
@@ -305,5 +307,64 @@
     transition: background-color 0.3s ease;
 }
 
+.blackwireextended-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 63.4em;
+    right: 7.83em;
+}
 
+.blackwireextendedhorizontal-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 75em;
+    right: -3em;
+    rotate: -90deg;
+    height: 23em;
+}
 
+.redwireextendedhorizontal-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 98em;
+    right: -30.9em;
+    rotate: -90deg;
+    height: 23em;
+}
+
+.blackwireextendedmiddle-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 133.5em;
+    right: -15em;
+    height: 10em;
+}
+
+.redwireextendedmiddle-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    height: 20em;
+    width: 60px;
+    top: 119em;
+    left: 19.8em;
+}
+
+.voltage-label {
+    flex-shrink: 0;
+    font-size: 20px;
+    font-weight: bold;
+    left: 14em;
+    bottom: 126em;
+    position: relative;
+    z-index: 1;
+
+}

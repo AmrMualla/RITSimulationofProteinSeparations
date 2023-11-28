@@ -22,10 +22,15 @@ const OneDE = () => {
   return (
     
     <div className="electrophoresis-wrapper">
+      <img src="/blackwirelength.png" alt="Black Wire Extension in Center" className="blackwireextendedmiddle-image" />
+      <img src="/redwirelength.png" alt="Red Wire Extension in Center" className="redwireextendedmiddle-image" />
+      <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextendedhorizontal-image" />
+      <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextendedhorizontal-image" />
+      <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextended-image" />
       <div className='uploadContainer'>
         <div className='uploadTypeContainer'>
-          <button onClick={() => setFolderUpload(false)} className="typeFile" style={folderUpload ? {} : {border:"black 1px solid", backgroundColor:"#2253e7"}}>file</button>
-          <button onClick={() => setFolderUpload(true)} className="typeFolder" style={folderUpload ? {border:"black 1px solid", backgroundColor:"#2253e7"} : {}}>folder</button>
+          <button onClick={() => setFolderUpload(false)} className="typeFile" style={folderUpload ? {} : {border:"black 1px solid", backgroundColor:"#2253e7"}}>File</button>
+          <button onClick={() => setFolderUpload(true)} className="typeFolder" style={folderUpload ? {border:"black 1px solid", backgroundColor:"#2253e7"} : {}}>Folder</button>
         </div>
         <form className='upload'>
           { !folderUpload && (
@@ -81,7 +86,7 @@ const OneDE = () => {
       <div className="acrylamide-gel-bottom"></div>
 
       <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>  {/* Acrylamide label */}
-      
+      <label className="voltage-label">{voltageValue}</label>
       <div className="acrylamide-dropdown-section">
         <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
           <option value="7.5%">7.5%</option>

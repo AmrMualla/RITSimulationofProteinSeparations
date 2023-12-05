@@ -77,7 +77,11 @@ const OneDE = () => {
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>
               { idx !== 0 && <div className="divider"></div> }
-              <div className="well"></div>
+              <div className="well">
+                  <form action="/" className="wellForm">
+                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
+                  </form>
+              </div>
             </React.Fragment>
           ))}
         </div>

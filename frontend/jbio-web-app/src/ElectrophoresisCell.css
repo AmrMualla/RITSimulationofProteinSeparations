@@ -1,8 +1,10 @@
 .electrophoresis-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: auto;
 }
 
 .electrophoresis-cell::before {
@@ -13,31 +15,38 @@
     right: 5%;
     height: 150px;
     background-color: #FFF;
-    z-index: 1;
+    z-index: 2;
 }
 
 .electrophoresis-cell {
-    width: 850px;
-    height: 850px;
+    flex-shrink: 0;
+    width: 46em; /* Consider using max-width to contain this within the viewport */
+    height: 46em;
     background-color: #C0C0C0;
     position: relative;
-    border: 3px solid #000;
+    border-top: none;
+    border-left: 0.1875em solid #000;
+    border-right: 0.1875em solid #000;
+    border-bottom: none;
     border-radius: 5px;
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 0 0.9375em 0.1875em rgba(0, 0, 0, 0.1) inset;
+    z-index: 3;
+    left: 17em;
+    top: -70em;
 }
 
 .buttons-container-1de {
+    position: relative;
+    flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 20px;
+    gap: 1em;
+    bottom: 60.3em;
+    z-index: 2;
+    left: -35.2em;            
 }
 
-.wellCountLabel {
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 1.2em;
-}
+
+
 
 .wells-container {
     position: absolute;
@@ -55,19 +64,46 @@
 .divider {
     width: 30px;
     height: 120px;
-    background-color: #C0C0C0;
+    background: linear-gradient(to top, #B0B0B0, #D0D0D0);
     position: relative; 
     top: -20px;
+    box-shadow: 
+        -5px 0px 10px rgba(0, 0, 0, 0.1), 
+         5px 0px 10px rgba(0, 0, 0, 0.1),
+        0px -5px 10px rgba(0, 0, 0, 0.1), 
+        0px 5px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px 5px 0 0;
 }
+
 
 .well {
     flex: 1;
     height: 100px;
-    background-color: #ffffff;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1), 0px -5px 10px rgba(0, 0, 0, 0.1);
+    background: radial-gradient(circle at center, #FFF, #EEE 80%, #CCC 100%);
+    box-shadow: 
+        -10px 0px 15px rgba(0, 0, 0, 0.1), 
+         10px 0px 15px rgba(0, 0, 0, 0.1), 
+        0px -5px 10px rgba(0, 0, 0, 0.1), 
+        0px 10px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-radius: 5px 5px 0 0;
 }
 
-.button1de {
+.well::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 5%;
+    right: 5%;
+    height: 5px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+    border-radius: 50% 50% 0 0;
+}
+
+
+
+.button1deadd, .button1dedrop {
+    flex-shrink: 0;
     padding: 10px 20px;
     background-color: royalblue;
     border: none;
@@ -75,14 +111,260 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
 }
 
-.button1de:hover {
-    background-color: #3259f3;
+.typeFile, .typeFolder, .submitUpload {
+    position: relative;
+    padding: 10px 20px;
+    height: 3em;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: .8em; 
+    bottom: 90em;
 }
 
-.button1de:disabled {
+.typeFile {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.typeFolder {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.submitUpload {
+    border-radius: 5px;
+}
+
+.button1deadd:hover, .button1dedrop:hover, .uploadType:hover, .submitUpload:hover {
+    background-color: #5e7bef;
+}
+
+.button1deadd:disabled, .button1dedrop:disabled {
     background-color: #ddd;
     cursor: not-allowed;
+}
+
+.acrylamide-gel-top {
+    flex-shrink: 0;
+    position: relative;
+    left: 17em;
+    bottom: 118em;
+    width: 53em;
+    height: 9.375em;
+    border: 3px solid #000;
+    background-color: #00FFFF; 
+    border-radius: 0 0 5px 5px; 
+    z-index: 1; 
+}
+
+.acrylamide-gel-bottom {
+    flex-shrink: 0;
+    position: relative;
+    left: 17em;
+    bottom: 88em;
+    width: 53em;
+    height: 9.375em;
+    border: 3px solid #000;
+    background-color: #00FFFF; 
+    border-radius: 0 0 5px 5px; 
+    z-index: 1; 
+}
+
+
+.acrylamide-label {
+    flex-shrink: 0;
+    font-weight: bold;
+    left: -5em;
+    bottom: 89.6em;
+    position: relative;
+    z-index: 1;
+
+}
+
+.acrylamide-dropdown-section {
+    right: 30rem; 
+    bottom: 124rem;
+    position: relative;
+    z-index: 1;
+    padding: 10px 20px;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.options-box {
+    flex-shrink: 0;
+    position: relative;
+    left: -30em;
+    bottom: 20em;
+    width: 25em;
+    height: 49em;
+    border: 3px solid #4682A9;
+    background-color: #749BC2; 
+    border-radius: 0 0 5px 5px; 
+    z-index: 1; 
+}
+
+.uploadContainer {
+    top: 142em;
+    left: -31.7em;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.upload{
+    flex-shrink: 0;
+    display: flex;
+    position: relative;
+    z-index: 2;
+}
+
+.uploadTypeContainer{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.wellCountLabel{
+    flex-shrink: 0;
+    position: relative;
+    left: -31em;
+    bottom: 8em;
+    z-index: 2; 
+    font-weight: bold;
+    font-size: 1.2em;
+    
+}
+
+.acrylamide-percentage-label{
+    flex-shrink: 0;
+    position: relative;
+    left: -31.5em;
+    bottom: 1.5em;
+    z-index: 2;
+    font-weight: bold;
+    font-size: 1.2em; 
+}
+
+.redwire-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    width: 3.75em;
+    top: 38.5em;
+    left: 41.85em;
+}
+
+.blackwire-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    width: 3.75em;
+    top: -14.3em;
+    right: 7.8em;
+}
+
+.redwireextended-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    height: 50em;
+    width: 60px;
+    top: 40em;
+    left: 41.85em;
+}
+
+.voltage-value-label{
+    flex-shrink: 0;
+    position: relative;
+    left: -30.1em;
+    top: 60.5em;
+    z-index: 2;
+    font-weight: bold;
+    font-size: 1.2em; 
+}
+
+.voltage-dropdown-section {
+    right: 30rem;
+    top: 75em; 
+    position: relative;
+    z-index: 2;
+    padding: 10px 20px;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.blackwireextended-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 63.4em;
+    right: 7.83em;
+}
+
+.blackwireextendedhorizontal-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 75em;
+    right: -3em;
+    rotate: -90deg;
+    height: 23em;
+}
+
+.redwireextendedhorizontal-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 98em;
+    right: -30.9em;
+    rotate: -90deg;
+    height: 23em;
+}
+
+.blackwireextendedmiddle-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 3.99em;
+    top: 133.5em;
+    right: -15em;
+    height: 10em;
+}
+
+.redwireextendedmiddle-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    height: 20em;
+    width: 60px;
+    top: 119em;
+    left: 19.8em;
+}
+
+.voltage-label {
+    flex-shrink: 0;
+    font-size: 20px;
+    font-weight: bold;
+    left: 14em;
+    bottom: 126em;
+    position: relative;
+    z-index: 1;
+
 }

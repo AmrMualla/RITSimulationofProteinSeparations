@@ -1,6 +1,6 @@
 # Protein Class represents properties and behaviors related to a protein.
 # Note: GUI-related fragments have been removed from this class.
-# @author Amr Mualla & Bader Alharbi
+# @author Mack Leonard, Amr Mualla, & Bader Alharbi
 from Bio import SeqIO
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 class Protein:

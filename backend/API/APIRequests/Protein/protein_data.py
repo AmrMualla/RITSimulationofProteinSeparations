@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile
 from backend.API.BodyFormats.ResponseClasses import ProteinInfo
+from backend.Electro1D.Protein import *
 
 
 router = APIRouter(
@@ -37,6 +38,9 @@ async def fileGetProteinInfo(protein_file: UploadFile):
         the ProteinINfo class information.
     """
     proteins = []
+    protein = Protein()
+    protein_info = protein.parse_protein(protein_file)
+    protein_mw = protein.get_mw(protein_file)
 
     # split by protein
 
@@ -49,8 +53,8 @@ async def fileGetProteinInfo(protein_file: UploadFile):
         {
             'short_name': None,
             'long_name': None,
-            'molecular_weight': None,
-            'ncbi_id': None
+            'molecular_weight': protein_mw,
+            'ncbi_id': protein_info[0]
         },
         {
             'short_name': None,

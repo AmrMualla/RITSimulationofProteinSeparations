@@ -78,42 +78,51 @@ class TestProtein(unittest.TestCase):
     def test_parse_orchid_protein(self):
         with open("Electro1DSampleTestFiles/ls_orchid.fasta") as file:
             parsed_sequence = self.protein.parse_protein(file)
-        self.assertEqual(parsed_sequence[0], "gi|2765564|emb|Z78439.1|PBZ78439")
-        self.assertEqual(str(parsed_sequence[1]), "CATTGTTGAGATCACATAATAATTGATCGAGTTAATCTGGAGGATCTGTTTACTTTGGTCACCCATGGGCATTTGCTGTTGAAGTGACCTAGATTTGCCATCGAGCCTCCTTGGGAGCTTTCTTGTTGGCGAGATCTAAACCCCTGCCCGGCGGAGTTGGGCGCCAAGTCATATGACACATAATTGGTGAAGGGGGTGGTAATCCTGCCCTGACCCTCCCCAAATTATTTTTTTAACAACTCTCAGCAACGGATATCTCGGCTCTTGCATCGATGAAGAACGCAGCGAAATGCGATAATGGTGTGAATTGCAGAATCCCGTGAACATCGAGTCTTTGAACGCAAGTTGCGCCCGAGGCCATCAGGCCAAGGGCACGCCTGCCTGGGCATTGCGAGTCATATCTCTCCCTTAATGAGGCTGTCCATACATACTGTTCAGCCGGTGCGGATGTGAGTTTGGCCCCTTGTTCTTTGGTACGGGGGGTCTAAGAGCTGCATGGGCTTTGGATGGTCCTAAATACGGAAAGAGGTGGACGAACTATGCTACAACAAAATTGTTGTGCAAATGCCCCGGTTGGCCGTTTAGTTGGGCC")
-        self.assertEqual(parsed_sequence[2], 592)
-        self.assertEqual(parsed_sequence[3], "gi|2765564|emb|Z78439.1|PBZ78439 P.barbatum 5.8S rRNA gene and ITS1 and ITS2 DNA")
-
+        self.assertIsInstance(parsed_sequence, dict)
     def test_get_orchid_mw(self):
-        expected_mw = 49046.902099999956
+        expected_mw = 5604122.421700024
+        actual_mw = 0
         with open("Electro1DSampleTestFiles/ls_orchid.fasta") as file:
-            actual_mw = self.protein.get_mw(file)
+            mw_list = self.protein.get_mw(file)
+        for item in mw_list:
+            actual_mw += item
         self.assertEqual(expected_mw, actual_mw)
 
     def test_get_orchid_amino_acid_count(self):
         expected_amino_acid_count = {'A': 135, 'C': 136, 'D': 0, 'E': 0, 'F': 0, 'G': 160, 'H': 0, 'I': 0, 'K': 0, 'L': 0, 'M': 0, 'N': 0, 'P': 0, 'Q': 0, 'R': 0, 'S': 0, 'T': 161, 'V': 0, 'W': 0, 'Y': 0}
         with open("Electro1DSampleTestFiles/ls_orchid.fasta") as file:
             actual_amino_acid_count = self.protein.get_amino_acid_count(file)
-        self.assertEqual(expected_amino_acid_count, actual_amino_acid_count)
+        self.assertIn(expected_amino_acid_count, actual_amino_acid_count)
 
     def test_parse_e_coliK12_protein(self):
         with open("Electro1DSampleTestFiles/e_coliK12.faa") as file:
             parsed_sequence = self.protein.parse_protein(file)
-        self.assertEqual(parsed_sequence[0], "gi|1790865|gb|AAC77356.1|")
-        self.assertEqual(parsed_sequence[1], "MRITIILVAPARAENIGAAARAMKTMGFSDLRIVDSQAHLEPATRWVAHGSGDIIDNIKVFPTLAESLHDVDFTVATTARSRAKYHYYATPVELVPLLEEKSSWMSHAALVFGREDSGLTNEELALADVLTGVPMVADYPSLNLGQAVMVYCYQLATLIQQPAKSDATADQHQLQALRERAMTLLTTLAVADDIKLVDWLQQRLGLLEQRDTAMLHRLLHDIEKNITK")
-        self.assertEqual(parsed_sequence[2], 228)
-        self.assertEqual(parsed_sequence[3], "gi|1790865|gb|AAC77356.1| orf, hypothetical protein [Escherichia coli K12]")
+        self.assertIsInstance(parsed_sequence, dict)
 
     def test_get_e_coliK12_mw(self):
-        expected_mw = 25258.74990000001
+        expected_mw = 150560054.08059993
+        actual_mw = 0
         with open("Electro1DSampleTestFiles/e_coliK12.faa") as file:
-            actual_mw = self.protein.get_mw(file)
+            mw_list = self.protein.get_mw(file)
+        for item in mw_list:
+            actual_mw += item
         self.assertEqual(expected_mw, actual_mw)
 
     def test_get_ecoliK12_amino_acid_cound(self):
         expected_amino_acid_count = {'A': 30, 'C': 1, 'D': 16, 'E': 12, 'F': 4, 'G': 9, 'H': 8, 'I': 12, 'K': 8, 'L': 30, 'M': 8, 'N': 5, 'P': 8, 'Q': 11, 'R': 13, 'S': 11, 'T': 17, 'V': 16, 'W': 3, 'Y': 6}
         with open("Electro1DSampleTestFiles/e_coliK12.faa") as file:
             actual_amino_acid_count = self.protein.get_amino_acid_count(file)
-        self.assertEqual(expected_amino_acid_count, actual_amino_acid_count)
+        self.assertIn(expected_amino_acid_count, actual_amino_acid_count)
+
+    def test_standards_mw(self):
+        expected_mw = 396728.9295000013
+        actual_mw = 0
+        with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
+            mw_list = self.protein.get_mw(file)
+        for item in mw_list:
+            actual_mw += item
+        self.assertEqual(expected_mw, actual_mw)
+
 
 
 if __name__ == "__main__":

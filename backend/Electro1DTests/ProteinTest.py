@@ -2,6 +2,9 @@
 # Testing for Protein Class
 # To run: python3 -m unittest backend.Electro1DTests.ProteinTest
 import unittest
+
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
+
 from backend.Electro1D.Protein import Protein
 
 
@@ -86,6 +89,10 @@ class TestProtein(unittest.TestCase):
             mw_list = self.protein.get_mw(file)
         for item in mw_list:
             actual_mw += item
+        print()
+        print("Expected orchid molecular weight: ", expected_mw)
+        print("Actual orchid molecular weight: ", actual_mw)
+        print()
         self.assertEqual(expected_mw, actual_mw)
 
     def test_get_orchid_amino_acid_count(self):
@@ -106,6 +113,10 @@ class TestProtein(unittest.TestCase):
             mw_list = self.protein.get_mw(file)
         for item in mw_list:
             actual_mw += item
+        print()
+        print("Expected E. coli K12 molecular weight: ", expected_mw)
+        print("Actual E. coli K12 molecular weight: ", actual_mw)
+        print()
         self.assertEqual(expected_mw, actual_mw)
 
     def test_get_ecoliK12_amino_acid_cound(self):
@@ -119,10 +130,40 @@ class TestProtein(unittest.TestCase):
         actual_mw = 0
         with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
             mw_list = self.protein.get_mw(file)
+        print(mw_list)
         for item in mw_list:
             actual_mw += item
+        print()
+        print("Expected standards molecular weight: ", expected_mw)
+        print("Actual standards molecular weight: ", actual_mw)
+        print()
         self.assertEqual(expected_mw, actual_mw)
 
+    def test_random(self):
+        with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
+            parsed_protein = self.protein.parse_protein(file)
+        for record_id in parsed_protein:
+            protein = parsed_protein.get(record_id)[0].split(", ")
+            print(parsed_protein)
+            print(protein[0])
+
+    def test_individual_mw(self):
+        with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
+            expected_mw_list = self.protein.get_mw(file)
+        with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
+            parsed_protein = self.protein.parse_protein(file)
+        actual_mw_list = []
+        for record_id in parsed_protein:
+            protein = parsed_protein.get(record_id)
+            sequence = ProteinAnalysis(protein[1])
+            expected_individual_mw = sequence.molecular_weight()
+            actual_mw_list.append(expected_individual_mw)
+
+        print()
+        print("Expected individual standard molecular weights: ", expected_mw_list)
+        print("Actual individual standard molecular weights: ", actual_mw_list)
+        print()
+        self.assertEqual(expected_mw_list, actual_mw_list)
 
 
 if __name__ == "__main__":

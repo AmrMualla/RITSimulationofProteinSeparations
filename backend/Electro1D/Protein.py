@@ -139,6 +139,12 @@ class Protein:
             mw_list.append(sequence.molecular_weight())
         return mw_list
 
+    def get_individual_mw(self, file, record_id):
+        protein_seq = self.parse_protein(file)
+        protein = protein_seq.get(record_id)
+        individual_mw = ProteinAnalysis(protein[1]).molecular_weight()
+        return individual_mw
+
     # Utilizes the ProteinAnalysis object to get a sequence of amino acids and finds the number of amino acids
     # @return: the number of amino acids from fasta file given by user
     def get_amino_acid_count(self, file):
@@ -149,3 +155,5 @@ class Protein:
             sequence = ProteinAnalysis(protein[1])
             amino_acid_list.append(sequence.count_amino_acids())
         return amino_acid_list
+
+

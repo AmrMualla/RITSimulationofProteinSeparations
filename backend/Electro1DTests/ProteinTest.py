@@ -145,7 +145,8 @@ class TestProtein(unittest.TestCase):
         for record_id in parsed_protein:
             protein = parsed_protein.get(record_id)[0].split(", ")
             print(parsed_protein)
-            print(protein[0])
+            split_protein = protein[1].split(".")
+            print(split_protein[0])
 
     def test_individual_mw(self):
         with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
@@ -158,6 +159,7 @@ class TestProtein(unittest.TestCase):
             sequence = ProteinAnalysis(protein[1])
             expected_individual_mw = sequence.molecular_weight()
             actual_mw_list.append(expected_individual_mw)
+
 
         print()
         print("Expected individual standard molecular weights: ", expected_mw_list)

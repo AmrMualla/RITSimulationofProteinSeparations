@@ -139,14 +139,15 @@ class TestProtein(unittest.TestCase):
         print()
         self.assertEqual(expected_mw, actual_mw)
 
-    def test_random(self):
+    def test_standards_parse(self):
         with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
             parsed_protein = self.protein.parse_protein(file)
+        print(parsed_protein)
         for record_id in parsed_protein:
-            protein = parsed_protein.get(record_id)[0].split(", ")
-            print(parsed_protein)
-            split_protein = protein[1].split(".")
-            print(split_protein[0])
+            protein = parsed_protein.get(record_id)[0]
+            print(protein)
+
+
 
     def test_individual_mw(self):
         with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
@@ -157,14 +158,11 @@ class TestProtein(unittest.TestCase):
         for record_id in parsed_protein:
             protein = parsed_protein.get(record_id)
             sequence = ProteinAnalysis(protein[1])
-            expected_individual_mw = sequence.molecular_weight()
-            actual_mw_list.append(expected_individual_mw)
+            actual_individual_mw = sequence.molecular_weight()
+            print()
+            print(parsed_protein.get(record_id)[0], ": Derived molecular weight:", actual_individual_mw)
+            actual_mw_list.append(actual_individual_mw)
 
-
-        print()
-        print("Expected individual standard molecular weights: ", expected_mw_list)
-        print("Actual individual standard molecular weights: ", actual_mw_list)
-        print()
         self.assertEqual(expected_mw_list, actual_mw_list)
 
 

@@ -1,29 +1,37 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { getAllByText, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'; // For the "toBeInTheDocument" matcher
 import About from '../About';
 
-test('renders About component', () => {
+test('renders About component content', () => {
   const { getByText, getByTestId, getByAltText } = render(<About />);
 
-  // TODO
   // Check if the component renders the correct headers and content
   expect(getByText('About')).toBeInTheDocument();
-  expect(getByText('Project Purpose')).toBeInTheDocument();
-  expect(getByText('JBioFramework (JBF) is a set of chemical simulations frequently used in chemistry,')).toBeInTheDocument();
-  expect(getByText('Commercial Use')).toBeInTheDocument();
-  expect(getByText('Project Owner')).toBeInTheDocument();
-  expect(getByText('Current Developers')).toBeInTheDocument();
-  expect(getByText('Historic Developers')).toBeInTheDocument();
+  expect(getByTestId('projPurpose-header')).toBeInTheDocument();
+  expect(getByTestId('commUse-header')).toBeInTheDocument();
+  expect(getByTestId('projOwner-header')).toBeInTheDocument();
+  expect(getByTestId('currDevs-header')).toBeInTheDocument();
+  expect(getByTestId('historicDevs-header')).toBeInTheDocument();
   
   // Check if images are rendered with alt text
-  expect(getByAltText('profile-icon')).toBeInTheDocument();
-  expect(getByAltText('Paul Craig')).toBeInTheDocument();
-  expect(getByAltText('Chase Amador')).toBeInTheDocument();
-  expect(getByAltText('Beck Anderson')).toBeInTheDocument();
-  expect(getByAltText('Landon Heatly')).toBeInTheDocument();
-  expect(getByAltText('Mack Leonard')).toBeInTheDocument();
-  expect(getByAltText('Amr Mualla')).toBeInTheDocument();
-  expect(getByAltText('Place Holder')).toBeInTheDocument();
+  expect(getByAltText('Paul Craig-pic')).toBeInTheDocument();
+  expect(getByAltText('Chase Amador-pic')).toBeInTheDocument();
+  expect(getByAltText('Beck Anderson-pic')).toBeInTheDocument();
+  expect(getByAltText('Landon Heatly-pic')).toBeInTheDocument();
+  expect(getByAltText('Mack Leonard-pic')).toBeInTheDocument();
+  expect(getByAltText('Amr Mualla-pic')).toBeInTheDocument();
+
+});
+
+test('renders About component Navbar', () => {
+  const { getByText, getByTestId, getByAltText } = render(<About />);
+
+  // Check if the component renders the correct navbar elements
+  expect(getByTestId('projPurpose-nav')).toBeInTheDocument();
+  expect(getByTestId('commUse-nav')).toBeInTheDocument();
+  expect(getByTestId('projOwner-nav')).toBeInTheDocument();
+  expect(getByTestId('currDevs-nav')).toBeInTheDocument();
+  expect(getByTestId('historicDevs-nav')).toBeInTheDocument();
 
 });

@@ -2,12 +2,12 @@ function Instructions() {
     return (
         <div>
             <div className="navbar">
-                <a href="#1de"><h2 className="section-header">1DE</h2></a>
-                <a href="#2de"><h2 className="section-header">2DE</h2></a>
-                <a href="#3de"><h2 className="section-header">3DE</h2></a>
+                <a href="#1de"><h2 className="navbar-header" data-testId = '1de-nav'>1DE</h2></a>
+                <a href="#2de"><h2 className="navbar-header" data-testId = '2de-nav'>2DE</h2></a>
+                <a href="#3de"><h2 className="navbar-header" data-testId = '3de-nav'>3DE</h2></a>
             </div>
             <h1 className="page-header">Instructions</h1>
-            <h2 className="section-header" id="1de">One-Dimensional Gel Electrophoresis</h2>
+            <h2 className="section-header" data-testId = '1de-header'>One-Dimensional Gel Electrophoresis</h2>
             <p>
                 The following are step by step instructions on how to use the 1-D electrophoresis program
             </p>
@@ -24,7 +24,7 @@ function Instructions() {
                 For cases with multiple samples, make sure to add all samples to each well.
                 You may also click on each of the strands in order to learn more about that protein.
             </p>
-            <h2 className="section-header" id="2de">Two-Dimensional Gel Electrophoresis</h2>
+            <h2 className="section-header" data-testId="2de-header">Two-Dimensional Gel Electrophoresis</h2>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse consectetur massa sed ex volutpat, et pretium
                 erat laoreet. Nam quis nulla at nisi semper cursus. Quisque interdum lacus fermentum ultricies
@@ -34,7 +34,8 @@ function Instructions() {
                 eleifend, augue at cursus scelerisque, est diam lacinia neque, nec laoreet neque mi a neque. Praesent
                 non bibendum risus. Nunc tristique massa eget mi venenatis, a sagittis mi imperdiet.
             </p>
-            <h2 className="section-header" id="3de">Three-Dimensional Gel Electrophoresis</h2>
+
+            <h2 className="section-header" data-testId = '3de-header'>Three-Dimensional Gel Electrophoresis</h2>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse consectetur massa sed ex volutpat, et pretium
                 erat laoreet. Nam quis nulla at nisi semper cursus. Quisque interdum lacus fermentum ultricies

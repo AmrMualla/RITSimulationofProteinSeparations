@@ -3,14 +3,14 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'; // For the "toBeInTheDocument" matcher
 import Instructions from '../Instructions';
 
-test('renders Instructions component', () => {
-  const { getByText, getByRole, getByAltText } = render(<Instructions />);
+test('renders Instructions component content', () => {
+  const { getByText, getByTestId, getByAltText } = render(<Instructions />);
 
   // Check if the component renders the correct headers
   expect(getByText('Instructions')).toBeInTheDocument();
-  expect(getByText('One-Dimensional Gel Electrophoresis')).toBeInTheDocument();
-  expect(getByText('Two-Dimensional Gel Electrophoresis')).toBeInTheDocument();
-  expect(getByText('Three-Dimensional Gel Electrophoresis')).toBeInTheDocument();
+  expect(getByTestId('1de-header')).toBeInTheDocument();
+  expect(getByTestId('2de-header')).toBeInTheDocument();
+  expect(getByTestId('3de-header')).toBeInTheDocument();
 
   // Check if the component renders the correct content
   expect(getByText('Select the number of wells')).toBeInTheDocument();
@@ -23,4 +23,13 @@ test('renders Instructions component', () => {
 
   // Check if the component renders the image with alt text
   expect(getByAltText('3de')).toBeInTheDocument();
+});
+
+test('renders Instructions component navbar', () => {
+  const { getByTestId } = render(<Instructions />);
+
+  // Check if the component renders the correct navbar elements
+  expect(getByTestId('1de-nav')).toBeInTheDocument();
+  expect(getByTestId('2de-nav')).toBeInTheDocument();
+  expect(getByTestId('3de-nav')).toBeInTheDocument();
 });

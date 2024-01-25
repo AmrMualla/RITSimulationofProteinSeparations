@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../ElectrophoresisCell.css';
 
 const OneDE = () => {
-  const [wellsCount, setWellsCount] = useState(5);
+  const [wellsCount, setWellsCount] = useState(10);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
   const [voltageValue, setvoltageValue] = useState('50V');
   const [folderUpload, setFolderUpload] = useState(false);
@@ -26,17 +26,17 @@ const OneDE = () => {
   };
 
   const proteinStandards = [
-    { name: "B-Galactosidase", molecularWeight: 116250, velocity: 100, color: '#08c8ae' },
+    { name: "B-Galactosidase", molecularWeight: 116250, velocity: 300, color: '#08c8ae' },
     { name: "Phosphorylase B", molecularWeight: 97400, velocity: 25, color: '#cacf50' },
     { name: "Serum Albumin", molecularWeight: 66200, velocity: 7.6, color: '#41add5' },
     { name: "Ovalbumin", molecularWeight: 45000, velocity: 4, color: '#a6106a' },
     { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity: 19, color: '#87cba7' },
-    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity: 14, color: '#180ea4' },
+    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity: 5, color: '#180ea4' },
     { name: "Lysozyme", molecularWeight: 14400, velocity: 10, color: '#2e8c7b' },
     { name: "Aprotinin", molecularWeight: 6500, velocity: 2, color: '#be2908' }
   ];
   
-  
+  const initialMoveDuration = 1;
   const startAnimation = () => {
     if (animationInProgress) {
       proteinStandards.forEach(protein => {
@@ -47,13 +47,23 @@ const OneDE = () => {
       });
     } else {
       setAnimationInProgress(true);
+
       proteinStandards.forEach(protein => {
-        const duration = `${protein.velocity}s`;
-        document.querySelectorAll(`.well .protein-${protein.name}`)
+        document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
           .forEach(element => {
-            element.style.animation = `moveProtein ${duration} linear forwards`;
+            element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
           });
       });
+
+      setTimeout(() => {
+        proteinStandards.forEach(protein => {
+          document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
+            .forEach(element => {
+              const duration = `${protein.velocity}s`;
+              element.style.animation = `moveProtein ${duration} linear forwards`;
+            });
+        });
+      }, initialMoveDuration * 1000);
     }
   };
   
@@ -61,7 +71,7 @@ const OneDE = () => {
   
   const handleStop = () => {
     proteinStandards.forEach(protein => {
-      document.querySelectorAll(`.well .protein-${protein.name}`)
+      document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
         .forEach(element => {
           element.style.animationPlayState = 'paused';
         });
@@ -72,7 +82,7 @@ const OneDE = () => {
   
   const handleRefillWells = () => {
     proteinStandards.forEach(protein => {
-      document.querySelectorAll(`.well .protein-${protein.name}`)
+      document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
         .forEach(element => {
           element.style.animation = 'none'; 
         });
@@ -161,10 +171,10 @@ const OneDE = () => {
               <div className="well">
                 {idx === 0 && proteinStandards.map((protein, index) => (
                   <div key={index} 
-                      className={`proteinBand protein-${protein.name}`}
-                      onClick={() => handleProteinClick(protein)}
-                      style={{ cursor: 'pointer', backgroundColor: protein.color }}>
-                    {/* Protein band content */}
+                  className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
+                  onClick={() => handleProteinClick(protein)}
+                  style={{ cursor: 'pointer', backgroundColor: protein.color }}>
+                  {/* Protein band content */}
                   </div>
                 ))}
               </div>

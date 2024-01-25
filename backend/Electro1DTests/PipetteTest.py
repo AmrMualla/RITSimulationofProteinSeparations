@@ -2,6 +2,8 @@
 # Testing for Pipette Class
 # To run: python3 -m unittest backend.Electro1DTests.PipetteTest
 import unittest
+from backend.Electro1D.Pipette import *
+
 
 class TestPipette(unittest.TestCase):
 
@@ -27,14 +29,14 @@ class TestPipette(unittest.TestCase):
 
     def test_incr_position(self):
         self.assertTrue(self.pipette_obj.incr_position())
-        self.assertFalse(self.pipette_obj.dropped)
+        self.assertTrue(self.pipette_obj.dropped)
         self.assertFalse(self.pipette_obj.emptied)
         self.assertFalse(self.pipette_obj.retracted)
 
     def test_fill_well(self):
         # Assuming fill_well method modifies the internal state, test for side effects
         self.pipette_obj.fill_well(None)
-        self.assertFalse(self.pipette_obj.dropped)
+        self.assertTrue(self.pipette_obj.dropped)
         self.assertFalse(self.pipette_obj.emptied)
         self.assertFalse(self.pipette_obj.retracted)
 

@@ -2,6 +2,8 @@
 # Testing for Sample Class
 # To run: python3 -m unittest backend.Electro1DTests.SampleTest
 import unittest
+from backend.Electro1D.Sample import *
+
 
 # TODO MISSING 1 GUI METHOD TEST
 class TestSample(unittest.TestCase):
@@ -37,18 +39,26 @@ class TestSample(unittest.TestCase):
     def test_set_x_position(self):
         self.sample_obj.set_x_position(5)
         self.assertEqual(self.sample_obj.samp_x, 5)
+        self.sample_obj.set_x_position(5.5)
+        self.assertEqual(self.sample_obj.samp_x, 5.5)
 
     def test_set_y_position(self):
         self.sample_obj.set_y_position(10)
         self.assertEqual(self.sample_obj.samp_y, 10)
+        self.sample_obj.set_y_position(10.5)
+        self.assertEqual(self.sample_obj.samp_y, 10.5)
 
     def test_set_max_y(self):
         self.sample_obj.set_max_y(15)
         self.assertEqual(self.sample_obj.max_y, 15)
+        self.sample_obj.set_max_y(15.5)
+        self.assertEqual(self.sample_obj.max_y, 15.5)
 
     def test_set_width(self):
         self.sample_obj.set_width(3)
         self.assertEqual(self.sample_obj.samp_width, 3)
+        self.sample_obj.set_width(3.5)
+        self.assertEqual(self.sample_obj.samp_width, 3.5)
 
     def test_draw_switch(self):
         self.sample_obj.draw_switch(True)
@@ -61,8 +71,6 @@ class TestSample(unittest.TestCase):
         self.sample_obj.empty()
         self.assertFalse(self.sample_obj.fill_switch)
         self.assertTrue(self.sample_obj.empty_switch)
-
-    # Note/TODO: draw_sample method is GUI related.
 
 if __name__ == '__main__':
     unittest.main()

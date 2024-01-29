@@ -32,5 +32,14 @@ class TestAcrylamide(unittest.TestCase):
         acrylamide_obj.set_suppressor(5.0)
         self.assertEqual(acrylamide_obj.suppressor, 1)
 
+        acrylamide_obj.set_suppressor(12.5)
+        self.assertEqual(acrylamide_obj.suppressor, 6)
+
+        acrylamide_obj.set_suppressor(10.5)
+        self.assertEqual(acrylamide_obj.suppressor, 3)
+
+        acrylamide_obj.set_suppressor(7.5)
+        self.assertEqual(acrylamide_obj.suppressor, 1)
+
 if __name__ == '__main__':
     unittest.main()

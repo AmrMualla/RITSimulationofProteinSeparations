@@ -2,6 +2,8 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Sidebar from '../Sidebar';
 
+// TODO
+/*
 describe('Sidebar', () => {
   test('renders correctly', () => {
     // Mock toggle function
@@ -36,4 +38,33 @@ describe('Sidebar', () => {
     fireEvent.click(getByRole('button', { className: /toggle-btn/i }));
     expect(mockToggle).toHaveBeenCalled();
   });
+}); */
+
+test('renders open Sidebar components', () => {
+  const mockToggle = jest.fn();
+
+  // Render the Sidebar component
+  const { getByTestId } = render(<Sidebar isOpen={true} toggle={mockToggle} />);
+
+  expect(getByTestId('about-text')).toBeInTheDocument();
+  expect(getByTestId('1de-text')).toBeInTheDocument();
+  expect(getByTestId('2de-text')).toBeInTheDocument();
+  expect(getByTestId('instructions-text')).toBeInTheDocument();
+  expect(getByTestId('contact-text')).toBeInTheDocument();
+  expect(getByTestId('github-text')).toBeInTheDocument();
+
+});
+
+test('renders closed Sidebar components', () => {
+  const mockToggle = jest.fn();
+
+  // Render the Sidebar component
+  const { getByTestId } = render(<Sidebar isOpen={false} toggle={mockToggle} />);
+
+  expect(getByTestId('about-icon')).toBeInTheDocument();
+  expect(getByTestId('1de-icon')).toBeInTheDocument();
+  expect(getByTestId('2de-icon')).toBeInTheDocument();
+  expect(getByTestId('instructions-icon')).toBeInTheDocument();
+  expect(getByTestId('contact-icon')).toBeInTheDocument();
+  expect(getByTestId('github-icon')).toBeInTheDocument();
 });

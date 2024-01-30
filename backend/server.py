@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-import APIRequests.startup as startup
-import APIRequests.Electro1D.simulation as electro_1d_simulation
+import API.APIRequests.startup as startup
+import API.APIRequests.Electro1D.simulation as electro_1d_simulation
 
 """
 HOW TO START UP API SERVER:

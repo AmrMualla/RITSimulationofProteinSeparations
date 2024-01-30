@@ -27,7 +27,7 @@ function About() {
                 Science under the watch of Paul Craig. It is continuously being worked on with collaboration
                 between the RIT College of Science and the RIT Software Engineering Department.
             </p>
-            <h2 className="section-header" data-testId = 'commUse-header'>Commercial Use</h2>
+            <h2 className="section-header" id="commercial-use" data-testId = 'commUse-header'>Commercial Use</h2>
                 <ul>
                     <li>Students and teachers: Free</li>
                     <li>Under 50 audience members: Free</li>
@@ -36,7 +36,7 @@ function About() {
                     <li>Publish online: $100000000</li>
                 </ul>
                 <p>Piracy is not a victimless crime</p>
-            <h2 className="section-header" data-testId = 'projOwner-header'>Project Owner</h2>
+            <h2 className="section-header" id="project-owner" data-testId = 'projOwner-header'>Project Owner</h2>
             <div className="grid-container">
                 <div className="grid-item">
                     <div style={{
@@ -56,7 +56,7 @@ function About() {
                     </p>
                 </div>
             </div>
-            <h2 className="section-header" data-testId = 'currDevs-header'>Current Developers</h2>
+            <h2 className="section-header" id="current-developers" data-testId = 'currDevs-header'>Current Developers</h2>
             <div className="grid-container">
                 <div className="grid-item">
                     <img className="profile-icon" src={chase} alt="Chase Amador-pic"/>
@@ -94,7 +94,7 @@ function About() {
                     </p>
                 </div>
             </div>
-            <h2 className="section-header" data-testId = 'historicDevs-header'>Historic Developers</h2>
+            <h2 className="section-header" id="historic-developers" data-testId = 'historicDevs-header'>Historic Developers</h2>
             <div className="historic-grid">
                 <div className="historic-grid-item">
                     <img className="historic-icon" src={placeholder} alt="profile-icon"/>

@@ -194,17 +194,18 @@ const OneDE = () => {
             <React.Fragment key={idx}>
               { idx !== 0 && <div className="divider"></div> }
               <div className="well">
-                {idx === 0 && selectedProteins.map((proteinName, index) => {
-                  const protein = proteinStandards.find(p => p.name === proteinName);
-                  return (
-                    <div key={index} 
-                    className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
-                    onClick={() => handleProteinClick(protein)}
-                    style={{ cursor: 'pointer', backgroundColor: protein.color }}>
-                    {/* Protein band content */}
-                </div>
-              );
-            })}
+                  <form action="/" className="wellForm">
+                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
+                  </form>
+              
+                {idx === 0 && proteinStandards.map((protein, index) => (
+                  <div key={index} 
+                  className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
+                  onClick={() => handleProteinClick(protein)}
+                  style={{ cursor: 'pointer', backgroundColor: protein.color }}>
+                  {/* Protein band content */}
+                  </div>
+                ))}
               </div>
             </React.Fragment>
           ))}

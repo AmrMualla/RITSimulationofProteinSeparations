@@ -395,17 +395,23 @@
     background-color: #5e7bef;
   }
 
+  @keyframes initialMove {
+    from { top: 100px; } /* Starting from the bottom of the well */
+    to { top: calc(52.5% + 100px); } /* Move to 10% into the gel */
+  }
+  
   @keyframes moveProtein {
-    from { top: 0; }
-    to { top: 670%; } /* Adjust based on the well size */
+    from { top: calc(52.5% + 100px); }
+    to { top: 670%; } /* Adjust as needed */
   }
   
   .proteinBand {
     position: absolute;
     width: 100%; /* or an appropriate width */
     height: 7px; /* or an appropriate height */
-    background-color: blue; /* Example color */
+    background-color: blue; 
     z-index: 10;
+    bottom: 0;
   }
 
   .protein-info {
@@ -428,3 +434,12 @@
     padding: 5px;
   }
   
+  .protein-selection {
+    position: relative;
+    background-color: white;
+    border: 1px solid black;
+    padding: 1px;
+    z-index: 10;
+    bottom: -200em;
+    right: 32em;
+  }

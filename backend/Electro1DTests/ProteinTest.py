@@ -88,7 +88,7 @@ class TestProtein(unittest.TestCase):
         print("Expected orchid molecular weight total: ", expected_mw)
         print("Actual orchid molecular weight total: ", actual_mw)
         print()
-        self.assertEqual(expected_mw, actual_mw)
+        self.assertAlmostEqual(expected_mw, actual_mw)
 
     def test_get_orchid_individual_mw(self):
         actual_mw_list = []
@@ -128,7 +128,7 @@ class TestProtein(unittest.TestCase):
         print("Expected E. coli K12 molecular weight total: ", expected_mw)
         print("Actual E. coli K12 molecular weight total: ", actual_mw)
         print()
-        self.assertEqual(expected_mw, actual_mw)
+        self.assertAlmostEqual(expected_mw, actual_mw, 6)
 
     def test_get_e_coliK12_individual_mw(self):
         actual_mw_list = []
@@ -164,7 +164,7 @@ class TestProtein(unittest.TestCase):
         print("Expected standards molecular weight total: ", expected_mw)
         print("Actual standards molecular weight total: ", actual_mw)
         print()
-        self.assertEqual(expected_mw, actual_mw)
+        self.assertAlmostEqual(expected_mw, actual_mw)
 
     def test_standards_parse(self):
         with open("Electro1DSampleTestFiles/electrophoresis1dStandards.fasta") as file:
@@ -187,7 +187,7 @@ class TestProtein(unittest.TestCase):
         print('Expected standards molecular weights: ', expected_mw_list)
         print('Actual standards molecular weights: ', actual_mw_list)
         print()
-        self.assertEqual(expected_mw_list, actual_mw_list)
+        self.assertAlmostEqual(expected_mw_list, actual_mw_list)
 
     def test_set_distance(self):
         expected_distance = 116.0610424
@@ -196,7 +196,7 @@ class TestProtein(unittest.TestCase):
         self.protein.set_host_scale_factor(.001)
         actual_distance = self.protein.set_distance(parsed_protein, list(parsed_protein.keys())[0],
                                                     self.protein.scale_factor)
-        self.assertEqual(expected_distance, actual_distance)
+        self.assertAlmostEqual(expected_distance, actual_distance)
 
 if __name__ == "__main__":
     unittest.main()

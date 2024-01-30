@@ -111,8 +111,8 @@ class Protein:
     # Calculates the distance traveled by the protein based on the scale factor.
     # The distance is determined as the scaled difference between the current and starting y-coordinates.
     # @return: Calculated distance traveled by the protein.
-    def get_distance(self):
-        self.distance = self.scale_factor * (self.y1 - self.start_y)
+    def set_distance(self, parsed_protein, record_id, scale_factor):
+        self.distance = self.get_individual_mw(parsed_protein, record_id) * scale_factor
         return self.distance
 
     # Utilizes Biopython SeqIO library to parse through a fasta file given by the user and collect
@@ -139,9 +139,11 @@ class Protein:
             mw_list.append(sequence.molecular_weight())
         return mw_list
 
-    def get_individual_mw(self, file, record_id):
-        protein_seq = self.parse_protein(file)
-        protein = protein_seq.get(record_id)
+    # Utilizes the ProteinAnalysis object to get an individual molecular weight from a fasta file given a record id
+    # to find the individual protein's amino acid sequence.
+    # @return: individual molecular weight contained within a fasta file
+    def get_individual_mw(self, parsed_protein, record_id):
+        protein = parsed_protein.get(record_id)
         individual_mw = ProteinAnalysis(protein[1]).molecular_weight()
         return individual_mw
 
@@ -155,5 +157,6 @@ class Protein:
             sequence = ProteinAnalysis(protein[1])
             amino_acid_list.append(sequence.count_amino_acids())
         return amino_acid_list
+
 
 

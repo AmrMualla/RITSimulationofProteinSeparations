@@ -9,6 +9,7 @@ const OneDE = () => {
   const [selectedProtein, setSelectedProtein] = useState(null);
   const [animationInProgress, setAnimationInProgress] = useState(false);
 
+
   const handleAddWell = () => {
     if (wellsCount < 15) {
       setWellsCount(wellsCount + 1);
@@ -89,16 +90,40 @@ const OneDE = () => {
     });
     setAnimationInProgress(false);
   };
+
+  const handleProteinSelection = (event, proteinName) => {
+    if (event.target.checked) {
+      setSelectedProteins([...selectedProteins, proteinName]);
+    } else {
+      setSelectedProteins(selectedProteins.filter(name => name !== proteinName));
+    }
+  };
   
+
   
   const handleClearWells = () => {
     // Logic to clear wells
   };
   
+  const [selectedProteins, setSelectedProteins] = useState(proteinStandards.map(protein => protein.name));
 
   return (
     
     <div className="electrophoresis-wrapper">
+          <div className="protein-selection">
+            {proteinStandards.map((protein, index) => (
+              <div key={index} className="protein-checkbox">
+                <input
+                  type="checkbox"
+                  id={`protein-${index}`}
+                  checked={selectedProteins.includes(protein.name)}
+                  onChange={(e) => handleProteinSelection(e, protein.name)}
+                />
+                <label htmlFor={`protein-${index}`}>{protein.name}</label>
+              </div>
+            ))}
+        </div>
+
         {selectedProtein && (
           <div className="protein-info">
             <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
@@ -169,14 +194,17 @@ const OneDE = () => {
             <React.Fragment key={idx}>
               { idx !== 0 && <div className="divider"></div> }
               <div className="well">
-                {idx === 0 && proteinStandards.map((protein, index) => (
-                  <div key={index} 
-                  className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
-                  onClick={() => handleProteinClick(protein)}
-                  style={{ cursor: 'pointer', backgroundColor: protein.color }}>
-                  {/* Protein band content */}
-                  </div>
-                ))}
+                {idx === 0 && selectedProteins.map((proteinName, index) => {
+                  const protein = proteinStandards.find(p => p.name === proteinName);
+                  return (
+                    <div key={index} 
+                    className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
+                    onClick={() => handleProteinClick(protein)}
+                    style={{ cursor: 'pointer', backgroundColor: protein.color }}>
+                    {/* Protein band content */}
+                </div>
+              );
+            })}
               </div>
             </React.Fragment>
           ))}

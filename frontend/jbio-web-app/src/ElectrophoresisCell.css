@@ -368,3 +368,78 @@
     z-index: 1;
 
 }
+
+.control-buttons-container {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    gap: 10px;
+    top: 183em;
+    right: 31em;
+    z-index: 2;
+  }
+  
+  .control-button {
+    position: relative;
+    padding: 10px 15px;
+    background-color: #2253e7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .control-button:hover {
+    position: relative;
+    background-color: #5e7bef;
+  }
+
+  @keyframes initialMove {
+    from { top: 100px; } /* Starting from the bottom of the well */
+    to { top: calc(52.5% + 100px); } /* Move to 10% into the gel */
+  }
+  
+  @keyframes moveProtein {
+    from { top: calc(52.5% + 100px); }
+    to { top: 670%; } /* Adjust as needed */
+  }
+  
+  .proteinBand {
+    position: absolute;
+    width: 100%; /* or an appropriate width */
+    height: 7px; /* or an appropriate height */
+    background-color: blue; 
+    z-index: 10;
+    bottom: 0;
+  }
+
+  .protein-info {
+    position: absolute; /* or 'fixed' depending on your layout */
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 10;
+    /* Other styling as needed */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+  }
+  
+  .protein-selection {
+    position: relative;
+    background-color: white;
+    border: 1px solid black;
+    padding: 1px;
+    z-index: 10;
+    bottom: -200em;
+    right: 32em;
+  }

@@ -59,6 +59,7 @@ button {
   align-items: start;
   position: fixed;
   width: 100%;
+  z-index: 5;
 }
 
 .sidebar-header {
@@ -73,7 +74,7 @@ button {
 }
 
 #basil-logo {
-  width: 200px;
+  height: 80px;
 }
 
 .sidebar + .sidebar-header {
@@ -172,6 +173,7 @@ button {
   outline: none;
 }
 
+.about-icon,
 .instructions-icon,
 .github-icon,
 .contact-icon {
@@ -232,21 +234,21 @@ button {
 
 /* Content rules */
 .content {
-  padding: 60px 0 0 230px;
+  padding: 86px 0 0 230px;
   transition: padding-left 0.3s ease;
 }
 
 .content-collapsed {
-  padding: 60px 0 0 70px;
+  padding: 86px 0 0 70px;
   transition: padding-left 0.3s ease;
 }
 
 .navbar {
   display: flex;
   position: fixed;
-  margin-top: -60px;
+  margin-top: -90px;
   margin-left: 260px;
-  z-index: 2;
+  z-index: 6;
 }
 
 .navbar a {

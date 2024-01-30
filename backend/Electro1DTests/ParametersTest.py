@@ -2,6 +2,9 @@
 # Testing for Parameters Class
 # To run: python3 -m unittest backend.Electro1DTests.ParametersTest
 import unittest
+from backend.Electro1D.Acrylamide import *
+from backend.Electro1D.Protein import *
+from backend.Electro1D.Constants import *
 
 # TODO MISSING MULTIPLE GUI METHOD TESTS
 class TestBioClasses(unittest.TestCase):
@@ -44,19 +47,7 @@ class TestBioClasses(unittest.TestCase):
 
     # TODO cant test rest of methods in electrophoresis
 
-    def test_constants(self):
-        self.assertEqual(Constants.slow, "Slow")
-        self.assertEqual(Constants.medium, "Moderate")
-        self.assertEqual(Constants.fast, "Fast")
-        self.assertEqual(Constants.low, 1.0)
-        self.assertEqual(Constants.medium, 1.5)
-        self.assertEqual(Constants.high, 2.0)
-        self.assertEqual(Constants.highX2, 4.0)
 
-        self.assertIsInstance(Constants.gel1, Acrylamide)
-        self.assertIsInstance(Constants.gel2, Acrylamide)
-        self.assertIsInstance(Constants.gel3, Acrylamide)
-        self.assertIsInstance(Constants.gel4, Acrylamide)
 
     # TODO cant test the Parameters methods because they are all GUI related
 

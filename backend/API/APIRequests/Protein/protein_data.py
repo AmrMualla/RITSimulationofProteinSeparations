@@ -39,8 +39,8 @@ async def fileGetProteinInfo(protein_file: UploadFile):
     """
     proteins = []
     protein = Protein()
-    protein_info = protein.parse_protein(protein_file)
-    protein_mw = protein.get_mw(protein_file)
+    protein_info = parse_protein(protein_file)
+    protein_mw = get_mw(protein_file)
 
     # split by protein
 

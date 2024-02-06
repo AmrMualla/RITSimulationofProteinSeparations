@@ -1,24 +1,25 @@
+import uvicorn
 from fastapi import FastAPI
 
-import API.APIRequests.startup as startup
-import API.APIRequests.Electro1D.simulation as electro_1d_simulation
+import backend.API.APIRequests.startup as startup
+import backend.API.APIRequests.Electro1D.simulation as electro_1d_simulation
 
 """
 HOW TO START UP API SERVER:
-
-1. In the terminal, redirect to the API server by doing:
-      "cd {project_directory}/backend/API"
    
-2. Run the command: uvicorn server:app --reload
+1. Run the command: uvicorn server:app --reload
    This activates the FastAPI system. The terminal window will
    have to stay open for as long as you have the server running
    
-3. Open up http://127.0.0.1:8000/ in your browser.
+   (or if this is for debugging, you can start it up using the stat up call at the bottom.
+   it is recomended you co the command line start however.)
+   
+2. Open up http://127.0.0.1:8000/ in your browser.
    You should see the message:
    { "message": "Ready to go" }
    This means the API server is up and running!
    
-4. To close the API server, either close the terminal window
+3. To close the API server, either close the terminal window
    that you started or do the command CTRL^C (Windows or Linux)
    or Command-C (MacOS)
    
@@ -37,3 +38,6 @@ app = FastAPI()
 
 app.include_router(startup.router)
 app.include_router(electro_1d_simulation.router)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

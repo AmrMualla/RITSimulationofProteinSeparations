@@ -1,7 +1,12 @@
 # author: Beck Anderson
+import os
+import shutil
 
-from fastapi import APIRouter
+from fastapi import APIRouter, File, UploadFile
+from typing import List
+
 from backend.API.BodyFormats.ResponseClasses import ProteinInfo
+from backend.Electro1D import Protein
 
 router = APIRouter(
     prefix='/1DElectrophoresis',
@@ -9,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/standards", response_model=[ProteinInfo])
+@router.get("/standards", response_model=List[ProteinInfo])
 async def standards():
     """
     This function will get the information for the
@@ -59,15 +64,42 @@ async def standards():
             }
 
 
-@router.get("/runInfo")
-async def runSimulation():
+@router.post("/ProteinInfo/File")
+async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float):
     """
-    TODO: Check if get is the right way to do this
-    This will send simulation data to the server and
-    return accurate information for how the simulation
-    should be displayed visually
-    :return: the names, weights in JSON(?) format
+    This call will take a file contianing
+    :return:
     """
-    # return function that gets list of data for needed
-    # proteins
-    return {'outcome': "Simulation Data"}
+    protein = Protein
+    return_list = []
+    temp_data_file = open("temp_data_file.faa", "w+")
+    try:
+        content = file.file.read().decode("utf-8")
+        temp_data_file.write(content)
+
+        protein_dict = protein.parse_protein("temp_data_file.faa")
+        weight_list = protein.get_mw("temp_data_file.faa")
+        i = 0
+        for seq_id in protein_dict.keys():
+            return_list.append({'name': " ".join(protein_dict[seq_id][0].split(' ')[1:]),
+                                'molecular_weight': weight_list[i],
+                                'decent_speed': acrylamide * voltage * weight_list[i],
+                                'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/'+protein_dict[seq_id][0].split('|')[1]
+                                })
+            i += 1
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
+        temp_data_file.close()
+        os.remove("temp_data_file.faa")
+    return {"results": return_list}
+
+
+@router.post("/BatchFileProtein/Batch", response_model=List[List[ProteinInfo]])
+async def batchFileGetProteinInfo():
+    """
+    Temp
+    :return:
+    """
+    return {'outcome': "Batch File Protein info"}

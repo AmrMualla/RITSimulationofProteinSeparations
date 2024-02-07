@@ -1,9 +1,8 @@
 # author: Beck Anderson
 import os
-import shutil
 
-from fastapi import APIRouter, File, UploadFile
-from typing import List
+from fastapi import APIRouter, UploadFile
+from typing import Any
 
 from backend.API.BodyFormats.ResponseClasses import ProteinInfo
 from backend.Electro1D import Protein
@@ -14,8 +13,8 @@ router = APIRouter(
 )
 
 
-@router.get("/standards", response_model=List[ProteinInfo])
-async def standards():
+@router.get("/standards", response_model=list[ProteinInfo])
+async def standards(acrylamide: float, voltage: float) -> Any:
     """
     This function will get the information for the
     standards in the simulation. This currently includes the
@@ -23,52 +22,52 @@ async def standards():
     Will never remove any. :)
     :return: The data. Comes in a json format, but accessed easily.
     """
-    return {'standards':
-                [{'short_name': 'Myosin',
-                  'long_name': '',
-                  'molecular_weight': 200,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'β-galactosidase',
-                  'long_name': '',
-                  'molecular_weight': 116.3,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Phosphorylase b',
-                  'long_name': '',
-                  'molecular_weight': 97.4,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Bovine Serum Albumin',
-                  'long_name': '',
-                  'molecular_weight': 66.2,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Ovalbumin',
-                  'long_name': '',
-                  'molecular_weight': 45,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Carbonic Anhydrase',
-                  'long_name': '',
-                  'molecular_weight': 31,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Soybean Trypsin Inhibitor',
-                  'long_name': '',
-                  'molecular_weight': 21.5,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Lysozyme',
-                  'long_name': '',
-                  'molecular_weight': 14.4,
-                  'ncbi_index_num': 0},
-                 {'short_name': 'Aprotinin',
-                  'long_name': '',
-                  'molecular_weight': 6.5,
-                  'ncbi_index_num': 0}
-                 ]
-            }
+    return [{'name': 'D Chain D, Beta-galactosidase',
+             'molecular_weight': 116062,
+             'descent_speed': 116062 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/6X1Q'},
+            {'name': 'A Chain A, GLYCOGEN PHOSPHORYLASE B',
+             'molecular_weight': 97158,
+             'descent_speed': 97158 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/2PRI'},
+            {'name': 'B Chain B, Serum albumin',
+             'molecular_weight': 66463,
+             'descent_speed': 66463 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/4F5S'},
+            {'name': 'Ovalbumin [Gallus gallus]',
+             'molecular_weight': 43772,
+             'descent_speed': 43772 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1'},
+            {'name': 'Carbonic anhydrase 2 [Mus musculus]',
+             'molecular_weight': 29003,
+             'descent_speed': 29003 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1'},
+            {'name': 'Pancreatic trypsin inhibitor [Musca domestica]',
+             'molecular_weight': 22709,
+             'descent_speed': 22709 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
+            {'name': 'LYS_OSTED',
+             'molecular_weight': 14918,
+             'descent_speed': 14918 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
+            {'name': 'aprotinin [synthetic construct]',
+             'molecular_weight': 6618,
+             'descent_speed': 6618 * acrylamide * voltage,
+             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'}
+            ]
 
 
-@router.post("/ProteinInfo/File")
-async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float):
+@router.post("/ProteinInfo/File", response_model=list[ProteinInfo])
+async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float) \
+        -> Any:
     """
-    This call will take a file contianing
-    :return:
+    This call will take a file (in the fasta format) and parse
+    the information, returning a list of proteins ready for
+    the electrophoresis bands
+
+    :return: the data in a list. Each element will be in the
+        ProteinInfo format, including name, molecular weight,
+        descent speed, and the link to their NCBI page.
     """
     protein = Protein
     return_list = []
@@ -81,11 +80,20 @@ async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float
         weight_list = protein.get_mw("temp_data_file.faa")
         i = 0
         for seq_id in protein_dict.keys():
-            return_list.append({'name': " ".join(protein_dict[seq_id][0].split(' ')[1:]),
-                                'molecular_weight': weight_list[i],
-                                'decent_speed': acrylamide * voltage * weight_list[i],
-                                'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/'+protein_dict[seq_id][0].split('|')[1]
-                                })
+            if len(protein_dict[seq_id][0].split('|')) > 0:
+                return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
+                                    "molecular_weight": weight_list[i],
+                                    "descent_speed": acrylamide * voltage * weight_list[i],
+                                    "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/" +
+                                                 protein_dict[seq_id][0].split('|')[1]
+                                    })
+            else:
+                return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
+                                    "molecular_weight": weight_list[i],
+                                    "descent_speed": acrylamide * voltage * weight_list[i],
+                                    "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/" +
+                                                 protein_dict[seq_id][0].split('|')[0]
+                                    })
             i += 1
     except Exception:
         return {"message": "There was an error uploading the file"}
@@ -93,13 +101,21 @@ async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float
         file.file.close()
         temp_data_file.close()
         os.remove("temp_data_file.faa")
-    return {"results": return_list}
+    return return_list
 
 
-@router.post("/BatchFileProtein/Batch", response_model=List[List[ProteinInfo]])
-async def batchFileGetProteinInfo():
+@router.post("/BatchFileProtein/Batch", response_model=list[list[ProteinInfo]])
+async def batchFileGetProteinInfo(files: list[UploadFile], acrylamide: float, voltage: float) \
+        -> Any:
     """
-    Temp
-    :return:
+    This function will take a batch of files (in the fasta format),
+    and parse the information, returning a dictionary of wells,
+    each of which hold the list of protein bands for that well
+    :return: a dictionary containing lists of proteins
     """
-    return {'outcome': "Batch File Protein info"}
+    well_data = []
+    i = 0
+    for file in files:
+        well_data[i] = await fileGetProteinInfo(file, acrylamide, voltage)
+        i += 1
+    return well_data

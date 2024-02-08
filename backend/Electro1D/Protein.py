@@ -158,6 +158,6 @@ class Protein:
     # Calculates the distance traveled by the protein based on the scale factor.
     # The distance is determined as the scaled difference between the current and starting y-coordinates.
     # @return: Calculated distance traveled by the protein.
-    def get_distance(self):
-        self.distance = self.scale_factor * (self.y1 - self.start_y)
+    def set_distance(self, parsed_protein, record_id, scale_factor):
+        self.distance = self.get_individual_mw(parsed_protein, record_id) * scale_factor
         return self.distance

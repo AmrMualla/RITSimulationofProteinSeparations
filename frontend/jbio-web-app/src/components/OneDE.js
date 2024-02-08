@@ -164,11 +164,12 @@ const OneDE = () => {
         </form>
       </div>
       <div className="voltage-dropdown-section">
-        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
-          <option value="50V">50V</option>
-          <option value="100V">100V</option>
-          <option value="150V">150V</option>
-          <option value="200V">200V</option>
+        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}
+        data-testid = "voltage-dropdown">
+          <option value="50V" data-testid = "50V-option">50V</option>
+          <option value="100V" data-testid = "100V-option">100V</option>
+          <option value="150V" data-testid = "150V-option">150V</option>
+          <option value="200V" data-testid = "200V-option">200V</option>
         </select>
       </div>
       <label className="voltage-value-label">Voltage: </label>
@@ -192,7 +193,7 @@ const OneDE = () => {
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>
               { idx !== 0 && <div className="divider"></div> }
-              <div className="well">
+              <div className="well" data-testid = "wells#">
                   <form action="/" className="wellForm">
                     <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
                   </form>
@@ -219,10 +220,11 @@ const OneDE = () => {
       <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>  {/* Acrylamide label */}
       <label className="voltage-label">{voltageValue}</label>
       <div className="acrylamide-dropdown-section">
-        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
-          <option value="7.5%">7.5%</option>
-          <option value="10%">10%</option>
-          <option value="15%">15%</option>
+        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}
+        data-testid = "acrylamide-dropdown">
+          <option value="7.5%" data-testid = "7.5%-option">7.5%</option>
+          <option value="10%" data-testid = "10%-option">10%</option>
+          <option value="15%" data-testid = "15%-option">15%</option>
         </select>
       </div>
     </div>

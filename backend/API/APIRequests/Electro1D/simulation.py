@@ -1,7 +1,9 @@
 # author: Beck Anderson
 
 from fastapi import APIRouter
+
 from backend.API.BodyFormats.ResponseClasses import ProteinInfo
+from backend.Electro1D import Protein
 
 router = APIRouter(
     prefix='/1DElectrophoresis',
@@ -59,15 +61,20 @@ async def standards():
             }
 
 
-@router.get("/runInfo")
-async def runSimulation():
+@router.get("/ProteinInfo/File", response_model=[ProteinInfo])
+async def fileGetProteinInfo():
     """
-    TODO: Check if get is the right way to do this
-    This will send simulation data to the server and
-    return accurate information for how the simulation
-    should be displayed visually
-    :return: the names, weights in JSON(?) format
+    Temp
+    :return:
     """
-    # return function that gets list of data for needed
-    # proteins
-    return {'outcome': "Simulation Data"}
+    results = Protein
+    return {'outcome': "File Protein info"}
+
+
+@router.get("/BatchFileProtein/Batch", response_model=[[ProteinInfo]])
+async def batchFileGetProteinInfo():
+    """
+    Temp
+    :return:
+    """
+    return {'outcome': "Batch File Protein info"}

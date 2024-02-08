@@ -3,6 +3,7 @@ import os
 
 from fastapi import APIRouter, UploadFile
 from typing import Any
+import math
 
 from backend.API.BodyFormats.ResponseClasses import ProteinInfo
 from backend.Electro1D import Protein
@@ -20,39 +21,41 @@ async def standards(acrylamide: float, voltage: float) -> Any:
     standards in the simulation. This currently includes the
     names, ncbi index number, and molecular weight, but may add additional values.
     Will never remove any. :)
+
+    NOTE: we still need to analyze the data to
     :return: The data. Comes in a json format, but accessed easily.
     """
     return [{'name': 'D Chain D, Beta-galactosidase',
              'molecular_weight': 116062,
-             'descent_speed': 116062 * acrylamide * voltage,
+             'descent_speed': math.log(116062, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/6X1Q'},
             {'name': 'A Chain A, GLYCOGEN PHOSPHORYLASE B',
              'molecular_weight': 97158,
-             'descent_speed': 97158 * acrylamide * voltage,
+             'descent_speed': math.log(97158, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/2PRI'},
             {'name': 'B Chain B, Serum albumin',
              'molecular_weight': 66463,
-             'descent_speed': 66463 * acrylamide * voltage,
+             'descent_speed': math.log(66463, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/4F5S'},
             {'name': 'Ovalbumin [Gallus gallus]',
              'molecular_weight': 43772,
-             'descent_speed': 43772 * acrylamide * voltage,
+             'descent_speed': math.log(43772, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1'},
             {'name': 'Carbonic anhydrase 2 [Mus musculus]',
              'molecular_weight': 29003,
-             'descent_speed': 29003 * acrylamide * voltage,
+             'descent_speed': math.log(29003, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1'},
             {'name': 'Pancreatic trypsin inhibitor [Musca domestica]',
              'molecular_weight': 22709,
-             'descent_speed': 22709 * acrylamide * voltage,
+             'descent_speed': math.log(22709, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
             {'name': 'LYS_OSTED',
              'molecular_weight': 14918,
-             'descent_speed': 14918 * acrylamide * voltage,
+             'descent_speed': math.log(14918, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
             {'name': 'aprotinin [synthetic construct]',
              'molecular_weight': 6618,
-             'descent_speed': 6618 * acrylamide * voltage,
+             'descent_speed': math.log(6618, 10) * acrylamide * voltage,
              'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'}
             ]
 
@@ -83,7 +86,7 @@ async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float
             if len(protein_dict[seq_id][0].split('|')) > 0:
                 return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
                                     "molecular_weight": weight_list[i],
-                                    "descent_speed": acrylamide * voltage * weight_list[i],
+                                    "descent_speed": acrylamide * voltage * math.log(weight_list[i], 10),
                                     "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/" +
                                                  protein_dict[seq_id][0].split('|')[1]
                                     })
@@ -116,6 +119,6 @@ async def batchFileGetProteinInfo(files: list[UploadFile], acrylamide: float, vo
     well_data = []
     i = 0
     for file in files:
-        well_data[i] = await fileGetProteinInfo(file, acrylamide, voltage)
+        well_data.append(await fileGetProteinInfo(file, acrylamide, voltage))
         i += 1
     return well_data

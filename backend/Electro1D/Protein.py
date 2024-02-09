@@ -4,6 +4,53 @@
 from Bio import SeqIO
 from Bio.SeqUtils import molecular_weight
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
+
+
+# Utilizes Biopython SeqIO library to parse through a fasta file given by the user and collect
+# information stored within the file
+# @return: Sequence identifier, amino acid sequence, length of amino acid sequence
+def parse_protein(file):
+    protein_dict = {}
+    for seq_record in SeqIO.parse(file, "fasta"):
+        seq_id = seq_record.id
+        seq_description = seq_record.description
+        seq = seq_record.seq
+        seq_length = len(seq_record.seq)
+        protein_dict[seq_id] = seq_description, seq, seq_length
+    return protein_dict
+
+
+# Utilizes the ProteinAnalysis object to get a sequence of amino acids and calculate the molecular weight
+# @return: molecular weight of the protein from fasta file given by user
+def get_mw(file):
+    mw_list = []
+    protein_seq = parse_protein(file)
+    for record_id in protein_seq:
+        protein = protein_seq.get(record_id)
+        sequence = ProteinAnalysis(protein[1])
+        mw_list.append(sequence.molecular_weight())
+    return mw_list
+
+
+# Utilizes the ProteinAnalysis object to get a sequence of amino acids and finds the number of amino acids
+# @return: the number of amino acids from fasta file given by user
+def get_individual_mw(file, record_id):
+    protein_seq = parse_protein(file)
+    protein = protein_seq.get(record_id)
+    individual_mw = ProteinAnalysis(protein[1]).molecular_weight()
+    return individual_mw
+
+
+def get_amino_acid_count(file):
+    amino_acid_list = []
+    protein_seq = parse_protein(file)
+    for record_id in protein_seq:
+        protein = protein_seq.get(record_id)
+        sequence = ProteinAnalysis(protein[1])
+        amino_acid_list.append(sequence.count_amino_acids())
+    return amino_acid_list
+
+
 class Protein:
 
     # Initializes a new instance of the Protein class.
@@ -114,49 +161,3 @@ class Protein:
     def set_distance(self, parsed_protein, record_id, scale_factor):
         self.distance = self.get_individual_mw(parsed_protein, record_id) * scale_factor
         return self.distance
-
-    # Utilizes Biopython SeqIO library to parse through a fasta file given by the user and collect
-    # information stored within the file
-    # @return: Sequence identifier, amino acid sequence, length of amino acid sequence
-    def parse_protein(self, file):
-        protein_dict = {}
-        for seq_record in SeqIO.parse(file, "fasta"):
-            seq_id = seq_record.id
-            seq_description = seq_record.description
-            seq = seq_record.seq
-            seq_length = len(seq_record.seq)
-            protein_dict[seq_id] = seq_description, seq, seq_length
-        return protein_dict
-
-    # Utilizes the ProteinAnalysis object to get a sequence of amino acids and calculate the molecular weight
-    # @return: molecular weight of the protein from fasta file given by user
-    def get_mw(self, file):
-        mw_list = []
-        protein_seq = self.parse_protein(file)
-        for record_id in protein_seq:
-            protein = protein_seq.get(record_id)
-            sequence = ProteinAnalysis(protein[1])
-            mw_list.append(sequence.molecular_weight())
-        return mw_list
-
-    # Utilizes the ProteinAnalysis object to get an individual molecular weight from a fasta file given a record id
-    # to find the individual protein's amino acid sequence.
-    # @return: individual molecular weight contained within a fasta file
-    def get_individual_mw(self, parsed_protein, record_id):
-        protein = parsed_protein.get(record_id)
-        individual_mw = ProteinAnalysis(protein[1]).molecular_weight()
-        return individual_mw
-
-    # Utilizes the ProteinAnalysis object to get a sequence of amino acids and finds the number of amino acids
-    # @return: the number of amino acids from fasta file given by user
-    def get_amino_acid_count(self, file):
-        amino_acid_list = []
-        protein_seq = self.parse_protein(file)
-        for record_id in protein_seq:
-            protein = protein_seq.get(record_id)
-            sequence = ProteinAnalysis(protein[1])
-            amino_acid_list.append(sequence.count_amino_acids())
-        return amino_acid_list
-
-
-

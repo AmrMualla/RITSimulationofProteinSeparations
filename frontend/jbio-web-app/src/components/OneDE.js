@@ -44,29 +44,29 @@ const OneDE = () => {
 
   const startAnimation = () => {
     if (!animationInProgress && isAtStartingPoint) {
-      setAnimationInProgress(true);
-      setIsAtStartingPoint(false);
-      setBlueDyeReachedBottom(false); // Reset the state when animation starts
-      const acrylamide = parseFloat(acrylamidePercentage) / 100; 
-      const voltage = parseFloat(voltageValue.replace('V', '')); 
-      let blueDyeAnimationDuration = 0; 
-      proteinStandards.forEach(protein => {
-        const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
-        const velocity = Math.log10(protein.molecularWeight) * acrylamide * voltage;
-        document.querySelectorAll(elementSelector).forEach(element => {
-          element.style.animation = `initialMove ${initialMoveDuration}s linear forwards, moveProtein ${velocity}s linear forwards ${initialMoveDuration}s`;
+        setAnimationInProgress(true);
+        setIsAtStartingPoint(false); // Set isAtStartingPoint to false only when animation starts
+        setBlueDyeReachedBottom(false); // Reset the state when animation starts
+        const acrylamide = parseFloat(acrylamidePercentage) / 100;
+        const voltage = parseFloat(voltageValue.replace('V', ''));
+        let blueDyeAnimationDuration = 0;
+        proteinStandards.forEach(protein => {
+            const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
+            const velocity = Math.log10(protein.molecularWeight) * acrylamide * voltage;
+            document.querySelectorAll(elementSelector).forEach(element => {
+                element.style.animation = `initialMove ${initialMoveDuration}s linear forwards, moveProtein ${velocity}s linear forwards ${initialMoveDuration}s`;
+            });
+            if (protein.name === 'BlueDye') {
+                blueDyeAnimationDuration = initialMoveDuration + velocity;
+            }
         });
-        if (protein.name === 'BlueDye') {
-          blueDyeAnimationDuration = initialMoveDuration + velocity;
-        }
-      });
-      setTimeout(() => {
-        stopAllProteins();
-        setBlueDyeReachedBottom(true); // Set the state when blue dye reaches the bottom
-      }, blueDyeAnimationDuration * 1000);
+        setTimeout(() => {
+            stopAllProteins();
+            setBlueDyeReachedBottom(true); // Set the state when blue dye reaches the bottom
+        }, blueDyeAnimationDuration * 1000);
     }
-  };
-  
+};
+
 
   const stopAllProteins = () => {
     proteinStandards.forEach(protein => {
@@ -76,7 +76,7 @@ const OneDE = () => {
       });
     });
     setAnimationInProgress(false);
-    setIsAtStartingPoint(true); 
+    setIsAtStartingPoint(false); 
     setBlueDyeReachedBottom(true); // Ensure this is set when stopping all proteins
   };
   
@@ -127,21 +127,21 @@ const OneDE = () => {
     <div className="electrophoresis-wrapper">
         <div className="protein-selection">
           {proteinStandards.map((protein, index) => {
-            // Exclude BlueDye from the selectable options
-            if (protein.name === 'BlueDye') return null;
+              // Exclude BlueDye from the selectable options
+              if (protein.name === 'BlueDye') return null;
 
-            return (
-              <div key={index} className="protein-checkbox">
-                <input
-                  type="checkbox"
-                  id={`protein-${index}`}
-                  checked={selectedProteins.includes(protein.name)}
-                  onChange={(e) => handleProteinSelection(e, protein.name)}
-                  disabled={!isAtStartingPoint}
-                />
-                <label htmlFor={`protein-${index}`}>{protein.name}</label>
-              </div>
-            );
+              return (
+                  <div key={index} className="protein-checkbox">
+                      <input
+                          type="checkbox"
+                          id={`protein-${index}`}
+                          checked={selectedProteins.includes(protein.name)}
+                          onChange={(e) => handleProteinSelection(e, protein.name)}
+                          disabled={!isAtStartingPoint} // Disable checkbox if not at starting point
+                      />
+                      <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                  </div>
+              );
           })}
         </div>
         {selectedProtein && (

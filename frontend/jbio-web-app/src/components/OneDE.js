@@ -8,6 +8,7 @@ const OneDE = () => {
   const [folderUpload, setFolderUpload] = useState(false);
   const [selectedProtein, setSelectedProtein] = useState(null);
   const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -38,23 +39,17 @@ const OneDE = () => {
   
   const initialMoveDuration = 1;
   const startAnimation = () => {
-    if (animationInProgress) {
-      proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name}`)
-          .forEach(element => {
-            element.style.animationPlayState = 'running';
-          });
-      });
-    } else {
+    if (!animationInProgress) {
       setAnimationInProgress(true);
-
+      setIsAtStartingPoint(false); 
+  
       proteinStandards.forEach(protein => {
         document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
           .forEach(element => {
             element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
           });
       });
-
+  
       setTimeout(() => {
         proteinStandards.forEach(protein => {
           document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
@@ -66,6 +61,7 @@ const OneDE = () => {
       }, initialMoveDuration * 1000);
     }
   };
+  
   
   
   
@@ -84,11 +80,14 @@ const OneDE = () => {
     proteinStandards.forEach(protein => {
       document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
         .forEach(element => {
-          element.style.animation = 'none'; 
+          element.style.animation = 'none';
         });
     });
+  
     setAnimationInProgress(false);
+    setIsAtStartingPoint(true); 
   };
+  
   
   const [selectedProteins, setSelectedProteins] = useState(proteinStandards.map(protein => protein.name));
 
@@ -118,6 +117,7 @@ const OneDE = () => {
                   id={`protein-${index}`}
                   checked={selectedProteins.includes(protein.name)}
                   onChange={(e) => handleProteinSelection(e, protein.name)}
+                  disabled={!isAtStartingPoint} // Disable checkbox unless at the starting point
                 />
                 <label htmlFor={`protein-${index}`}>{protein.name}</label>
               </div>
@@ -164,12 +164,11 @@ const OneDE = () => {
         </form>
       </div>
       <div className="voltage-dropdown-section">
-        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}
-        data-testid = "voltage-dropdown">
-          <option value="50V" data-testid = "50V-option">50V</option>
-          <option value="100V" data-testid = "100V-option">100V</option>
-          <option value="150V" data-testid = "150V-option">150V</option>
-          <option value="200V" data-testid = "200V-option">200V</option>
+        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
+          <option value="50V">50V</option>
+          <option value="100V">100V</option>
+          <option value="150V">150V</option>
+          <option value="200V">200V</option>
         </select>
       </div>
       <label className="voltage-value-label">Voltage: </label>
@@ -193,7 +192,7 @@ const OneDE = () => {
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>
               { idx !== 0 && <div className="divider"></div> }
-              <div className="well" data-testid = "wells#">
+              <div className="well">
                   <form action="/" className="wellForm">
                     <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
                   </form>
@@ -220,11 +219,11 @@ const OneDE = () => {
       <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>  {/* Acrylamide label */}
       <label className="voltage-label">{voltageValue}</label>
       <div className="acrylamide-dropdown-section">
-        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}
-        data-testid = "acrylamide-dropdown">
-          <option value="7.5%" data-testid = "7.5%-option">7.5%</option>
-          <option value="10%" data-testid = "10%-option">10%</option>
-          <option value="15%" data-testid = "15%-option">15%</option>
+        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
+          <option value="7.5%">7.5%</option>
+          <option value="10%">10%</option>
+          <option value="12%">12%</option>
+          <option value="15%">15%</option>
         </select>
       </div>
     </div>

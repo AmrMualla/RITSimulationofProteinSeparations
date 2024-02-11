@@ -34,35 +34,53 @@ const OneDE = () => {
     { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity: 19, color: '#87cba7' },
     { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity: 5, color: '#180ea4' },
     { name: "Lysozyme", molecularWeight: 14400, velocity: 10, color: '#2e8c7b' },
-    { name: "Aprotinin", molecularWeight: 6500, velocity: 2, color: '#be2908' }
+    { name: "Aprotinin", molecularWeight: 6500, velocity: 2.6, color: '#be2908' },
+    { name: "BlueDye", molecularWeight: 500, velocity: 2, color: '#0000FF' }
   ];
   
   const initialMoveDuration = 1;
   const startAnimation = () => {
-    if (!animationInProgress) {
+    if (!animationInProgress && isAtStartingPoint) {
       setAnimationInProgress(true);
-      setIsAtStartingPoint(false); 
+      setIsAtStartingPoint(false);
+  
+      let blueDyeDuration = 0;
   
       proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-          .forEach(element => {
-            element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
-          });
-      });
+        const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
+        const initialDurationSeconds = 1; 
+        const moveDuration = protein.velocity;
   
-      setTimeout(() => {
-        proteinStandards.forEach(protein => {
-          document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-            .forEach(element => {
-              const duration = `${protein.velocity}s`;
-              element.style.animation = `moveProtein ${duration} linear forwards`;
-            });
+        if (protein.name === 'BlueDye') {
+          // For BlueDye, calculate the total duration including the initial movement and the main movement
+          blueDyeDuration = (initialDurationSeconds + moveDuration) * 1000; 
+        }
+        document.querySelectorAll(elementSelector).forEach(element => {
+          element.style.animation = `initialMove ${initialDurationSeconds}s linear forwards`;
         });
-      }, initialMoveDuration * 1000);
+        setTimeout(() => {
+          document.querySelectorAll(elementSelector).forEach(element => {
+            element.style.animation = `moveProtein ${moveDuration}s linear forwards`;
+          });
+        }, initialDurationSeconds * 1000); 
+      });
+      // Use blueDyeDuration to stop all animations when BlueDye is @ bottom
+      setTimeout(() => {
+        stopAllProteins();
+      }, blueDyeDuration);
     }
   };
+
   
-  
+  const stopAllProteins = () => {
+    proteinStandards.forEach(protein => {
+      document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
+        .forEach(element => {
+          element.style.animationPlayState = 'paused';
+        });
+    });
+    setAnimationInProgress(false);
+  };
   
   
   const handleStop = () => {

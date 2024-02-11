@@ -402,7 +402,7 @@
   
   @keyframes moveProtein {
     from { top: calc(52.5% + 100px); }
-    to { top: 670%; } /* Adjust as needed */
+    to { top: 680%; } /* Adjust as needed */
   }
   
   .proteinBand {

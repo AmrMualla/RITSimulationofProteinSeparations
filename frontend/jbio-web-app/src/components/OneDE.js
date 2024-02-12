@@ -8,6 +8,8 @@ const OneDE = () => {
   const [folderUpload, setFolderUpload] = useState(false);
   const [selectedProtein, setSelectedProtein] = useState(null);
   const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
+  const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -25,48 +27,58 @@ const OneDE = () => {
     setSelectedProtein(protein);
   };
 
+
   const proteinStandards = [
-    { name: "B-Galactosidase", molecularWeight: 116250, velocity: 300, color: '#08c8ae' },
-    { name: "Phosphorylase B", molecularWeight: 97400, velocity: 25, color: '#cacf50' },
-    { name: "Serum Albumin", molecularWeight: 66200, velocity: 7.6, color: '#41add5' },
-    { name: "Ovalbumin", molecularWeight: 45000, velocity: 4, color: '#a6106a' },
-    { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity: 19, color: '#87cba7' },
-    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity: 5, color: '#180ea4' },
-    { name: "Lysozyme", molecularWeight: 14400, velocity: 10, color: '#2e8c7b' },
-    { name: "Aprotinin", molecularWeight: 6500, velocity: 2, color: '#be2908' }
+    { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae' },
+    { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50' },
+    { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5' },
+    { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a' },
+    { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7' },
+    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4' },
+    { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b' },
+    { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908' },
+    { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
   ];
   
   const initialMoveDuration = 1;
+
   const startAnimation = () => {
-    if (animationInProgress) {
-      proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name}`)
-          .forEach(element => {
-            element.style.animationPlayState = 'running';
-          });
-      });
-    } else {
-      setAnimationInProgress(true);
-
-      proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-          .forEach(element => {
-            element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
-          });
-      });
-
-      setTimeout(() => {
+    if (!animationInProgress && isAtStartingPoint) {
+        setAnimationInProgress(true);
+        setIsAtStartingPoint(false); // Set isAtStartingPoint to false only when animation starts
+        setBlueDyeReachedBottom(false); // Reset the state when animation starts
+        const acrylamide = parseFloat(acrylamidePercentage) / 100;
+        const voltage = parseFloat(voltageValue.replace('V', ''));
+        let blueDyeAnimationDuration = 0;
         proteinStandards.forEach(protein => {
-          document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-            .forEach(element => {
-              const duration = `${protein.velocity}s`;
-              element.style.animation = `moveProtein ${duration} linear forwards`;
+            const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
+            const velocity = Math.log10(protein.molecularWeight) * acrylamide * voltage;
+            document.querySelectorAll(elementSelector).forEach(element => {
+                element.style.animation = `initialMove ${initialMoveDuration}s linear forwards, moveProtein ${velocity}s linear forwards ${initialMoveDuration}s`;
             });
+            if (protein.name === 'BlueDye') {
+                blueDyeAnimationDuration = initialMoveDuration + velocity;
+            }
         });
-      }, initialMoveDuration * 1000);
+        setTimeout(() => {
+            stopAllProteins();
+            setBlueDyeReachedBottom(true); // Set the state when blue dye reaches the bottom
+        }, blueDyeAnimationDuration * 1000);
     }
+};
+
+
+  const stopAllProteins = () => {
+    proteinStandards.forEach(protein => {
+      const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
+      document.querySelectorAll(elementSelector).forEach(element => {
+        element.style.animationPlayState = 'paused';
+      });
+    });
+    setAnimationInProgress(false);
+    setIsAtStartingPoint(false); 
+    setBlueDyeReachedBottom(true); // Ensure this is set when stopping all proteins
   };
-  
   
   
   const handleStop = () => {
@@ -84,11 +96,15 @@ const OneDE = () => {
     proteinStandards.forEach(protein => {
       document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
         .forEach(element => {
-          element.style.animation = 'none'; 
+          element.style.animation = 'none';
         });
     });
+  
     setAnimationInProgress(false);
+    setIsAtStartingPoint(true);
+    setBlueDyeReachedBottom(false); 
   };
+  
   
   const [selectedProteins, setSelectedProteins] = useState(proteinStandards.map(protein => protein.name));
 
@@ -108,32 +124,37 @@ const OneDE = () => {
   
 
   return (
-    
     <div className="electrophoresis-wrapper">
         <div className="protein-selection">
-            {proteinStandards.map((protein, index) => (
-              <div key={index} className="protein-checkbox">
-                <input
-                  type="checkbox"
-                  id={`protein-${index}`}
-                  checked={selectedProteins.includes(protein.name)}
-                  onChange={(e) => handleProteinSelection(e, protein.name)}
-                />
-                <label htmlFor={`protein-${index}`}>{protein.name}</label>
-              </div>
-            ))}
+          {proteinStandards.map((protein, index) => {
+              // Exclude BlueDye from the selectable options
+              if (protein.name === 'BlueDye') return null;
+
+              return (
+                  <div key={index} className="protein-checkbox">
+                      <input
+                          type="checkbox"
+                          id={`protein-${index}`}
+                          checked={selectedProteins.includes(protein.name)}
+                          onChange={(e) => handleProteinSelection(e, protein.name)}
+                          disabled={!isAtStartingPoint} // Disable checkbox if not at starting point
+                      />
+                      <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                  </div>
+              );
+          })}
         </div>
         {selectedProtein && (
-          <div className="protein-info">
-            <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
-            <h3>Protein Information</h3>
-            <p>Name: {selectedProtein.name}</p>
-            <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
-          </div>
+        <div className="protein-info">
+          <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
+          <h3>Protein Information</h3>
+          <p>Name: {selectedProtein.name}</p>
+          <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
+        </div>
         )}
         <div className="control-buttons-container">
-          <button onClick={startAnimation} className="control-button">Start</button>
-          <button onClick={handleStop} className="control-button">Stop</button>
+          <button onClick={startAnimation} className="control-button" disabled={animationInProgress || blueDyeReachedBottom}>Start</button>
+          <button onClick={handleStop} className="control-button" disabled={!animationInProgress || blueDyeReachedBottom}>Stop</button>
           <button onClick={handleRefillWells} className="control-button">Refill Wells</button>
           <button onClick={handleClearWells} className="control-button">Clear Wells</button>
         </div>
@@ -222,6 +243,7 @@ const OneDE = () => {
         <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
           <option value="7.5%">7.5%</option>
           <option value="10%">10%</option>
+          <option value="12%">12%</option>
           <option value="15%">15%</option>
         </select>
       </div>

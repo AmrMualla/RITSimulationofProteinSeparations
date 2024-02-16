@@ -120,6 +120,33 @@ const OneDE = () => {
       setSelectedProteins(selectedProteins.filter(name => name !== proteinName));
     }
   };
+
+
+  const getProteinsFile = (file) => {
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ protein_file: file })
+      };
+      // TODO: Define the address for the server, currently localhost (127.0.0.1)
+      fetch('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File', requestOptions)
+          .then(response => response.json())
+          .then(data => this.setState({ postId: data.id }))
+          .catch(error => console.error(error));
+  }
+
+  const getProteinsBatchFile = (files) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ files: files })
+    };
+    // TODO: Define the address for the server, currently localhost (127.0.0.1)
+    fetch('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/Batch', requestOptions)
+        .then(response => response.json())
+        .then(data => this.setState({ postId: data.id }))
+        .catch(error => console.error(error));
+}
   
   
 

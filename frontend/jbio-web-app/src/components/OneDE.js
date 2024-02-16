@@ -10,6 +10,8 @@ const OneDE = () => {
   const [animationInProgress, setAnimationInProgress] = useState(false);
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
+  const [file, setFile] = useState()
+  const [files, setFiles] = useState([]);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -122,32 +124,72 @@ const OneDE = () => {
   };
 
 
-  const getProteinsFile = (file) => {
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ protein_file: file })
-      };
-      // TODO: Define the address for the server, currently localhost (127.0.0.1)
-      fetch('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File', requestOptions)
-          .then(response => response.json())
-          .then(data => this.setState({ postId: data.id }))
-          .catch(error => console.error(error));
+    const selectFile = (event) => {
+        if (event.target.files) {
+            setFile(event.target.files[0]);
+        }
+    };
+
+  const getProteinsFile = async () => {
+      if (file) {
+          console.log("Uploading file...");
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          try {
+              // You can write the URL of your server or any other endpoint used for file upload
+              const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File", {
+                  method: "POST",
+                  body: formData,
+              });
+
+              const data = await result.json();
+
+              console.log(data);
+          } catch (error) {
+              console.error(error);
+          }
+      }
   }
 
-  const getProteinsBatchFile = (files) => {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ files: files })
-    };
-    // TODO: Define the address for the server, currently localhost (127.0.0.1)
-    fetch('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/Batch', requestOptions)
-        .then(response => response.json())
-        .then(data => this.setState({ postId: data.id }))
-        .catch(error => console.error(error));
-}
-  
+  const selectFiles = (event) => {
+      setFiles([...event.target.files]);
+  }
+
+  const getProteinsBatchFile = async () => {
+      if (files) {
+          console.log("Uploading file...");
+
+          const formData = new FormData();
+          formData.append("files", files);
+
+          try {
+              // You can write the URL of your server or any other endpoint used for file upload
+              const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/Batch", {
+                  method: "POST",
+                  body: formData,
+              });
+
+              const data = await result.json();
+
+              console.log(data);
+          } catch (error) {
+              console.error(error);
+          }
+      }
+  }
+
+    const getProteins = () => {
+      const result = null
+      if (!folderUpload){
+          getProteinsFile().then(r => result)
+      }
+      else{
+          getProteinsBatchFile().then(r => result)
+      }
+      return result
+    }
   
 
   return (
@@ -195,17 +237,17 @@ const OneDE = () => {
           <button onClick={() => setFolderUpload(false)} className="typeFile" style={folderUpload ? {} : {border:"black 1px solid", backgroundColor:"#2253e7"}}>File</button>
           <button onClick={() => setFolderUpload(true)} className="typeFolder" style={folderUpload ? {border:"black 1px solid", backgroundColor:"#2253e7"} : {}}>Folder</button>
         </div>
-        <form className='upload'>
+        <form className='upload' onSubmit={getProteins}>
           { !folderUpload && (
             <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
               <label htmlFor="uploaded" className="submitUpload" style={{marginBottom:-50 + 'px'}}>Select File</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} />
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} onChange={selectFile}/>
             </div>
           )}
           { folderUpload && (
             <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
               <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" />
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" onChange={selectFiles}/>
             </div>
           )}
           <input className="submitUpload" type="submit" />

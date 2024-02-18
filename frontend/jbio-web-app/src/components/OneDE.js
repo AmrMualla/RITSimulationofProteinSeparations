@@ -1,5 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../ElectrophoresisCell.css';
+
+
+const initialProteinStandards = [
+  { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae' },
+  { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50' },
+  { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5' },
+  { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4' },
+  { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b' },
+  { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908' },
+  { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
+];
+
 
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
@@ -10,6 +24,8 @@ const OneDE = () => {
   const [animationInProgress, setAnimationInProgress] = useState(false);
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
+  const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
+
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -17,57 +33,161 @@ const OneDE = () => {
     }
   };
 
+
   const handleDropWell = () => {
     if (wellsCount > 1) {
       setWellsCount(wellsCount - 1);
     }
   };
 
+
   const handleProteinClick = (protein) => {
-    setSelectedProtein(protein);
+    // Find the protein's current data including its Rf value
+    const proteinData = proteinStandards.find(p => p.name === protein.name);
+    setSelectedProtein({
+      ...proteinData,
+      rfValue: proteinData.migrationDistance // Assuming migrationDistance is the Rf value
+    });
+  };
+ 
+  useEffect(() => {
+    calculateMigrationDistances();
+  }, [acrylamidePercentage]);
+ 
+  const updateAnimationStyles = (protein) => {
+    const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
+  
+    // Remove any existing style element for this animation
+    const existingStyleElement = document.getElementById(animationName);
+    if (existingStyleElement) {
+      existingStyleElement.parentNode.removeChild(existingStyleElement);
+    }
+  
+    // Create new keyframes with updated values
+    const newKeyframes = `@keyframes ${animationName} {
+      from { transform: translateY(0px); }
+      to { transform: translateY(${protein.migrationDistance * 587}px); }
+    }`;
+  
+   
+    const newStyleElement = document.createElement("style");
+    newStyleElement.id = animationName;
+    newStyleElement.innerText = newKeyframes;
+    document.head.appendChild(newStyleElement);
+  
+    
+    document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
+      element.style.animation = 'none';
+      
+      void element.offsetWidth;
+      // Apply new animation
+      element.style.animation = `${animationName} ${protein.remainingDuration}s linear forwards`;
+    });
+  };
+ 
+  const calculateMigrationDistances = () => {
+    console.log("calculateMigrationDistances function called with acrylamide percentage:", acrylamidePercentage);
+  
+    const formula = getFormula(acrylamidePercentage);
+    const updatedProteins = proteinStandards.map(protein => { 
+      const logMW = Math.log10(protein.molecularWeight);
+      let migrationDistance = formula(logMW);
+      migrationDistance = Math.min(migrationDistance, 1);
+  
+      return { ...protein, migrationDistance };
+    });
+    console.log("Updated proteins:", updatedProteins); 
+    setProteinStandards(updatedProteins);
+    updatedProteins.forEach(updateAnimationStyles);
+  };
+  
+ 
+
+
+  const getFormula = (percentage) => {
+    switch (percentage) {
+      case '7.5%':
+        return (logMW) => -0.5258 * logMW + 2.8048;
+      case '10%':
+        return (logMW) => -0.6295 * logMW + 3.3733;
+      case '12%':
+        return (logMW) => -0.654 * logMW + 3.4475;
+      case '15%':
+        return (logMW) => -0.5972 * logMW + 3.1623;
+      default:
+        return (logMW) => 0;
+    }
   };
 
 
-  const proteinStandards = [
-    { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae' },
-    { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50' },
-    { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5' },
-    { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a' },
-    { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7' },
-    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4' },
-    { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b' },
-    { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908' },
-    { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
-  ];
-  
+
+
   const initialMoveDuration = 1;
-
+  const initialMoveDistance = 58.7;
+ 
   const startAnimation = () => {
+    console.log("acrylamidePercentage before startAnimation:", acrylamidePercentage); // Add this line
     if (!animationInProgress && isAtStartingPoint) {
-        setAnimationInProgress(true);
-        setIsAtStartingPoint(false); // Set isAtStartingPoint to false only when animation starts
-        setBlueDyeReachedBottom(false); // Reset the state when animation starts
-        const acrylamide = parseFloat(acrylamidePercentage) / 100;
-        const voltage = parseFloat(voltageValue.replace('V', ''));
-        let blueDyeAnimationDuration = 0;
-        proteinStandards.forEach(protein => {
-            const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
-            const velocity = Math.log10(protein.molecularWeight) * acrylamide * voltage;
-            document.querySelectorAll(elementSelector).forEach(element => {
-                element.style.animation = `initialMove ${initialMoveDuration}s linear forwards, moveProtein ${velocity}s linear forwards ${initialMoveDuration}s`;
-            });
-            if (protein.name === 'BlueDye') {
-                blueDyeAnimationDuration = initialMoveDuration + velocity;
-            }
+      setAnimationInProgress(true);
+      setIsAtStartingPoint(false);
+      calculateMigrationDistances();
+ 
+      // Initial movement for all proteins together
+      proteinStandards.forEach(protein => {
+        document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
+          element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
         });
-        setTimeout(() => {
-            stopAllProteins();
-            setBlueDyeReachedBottom(true); // Set the state when blue dye reaches the bottom
-        }, blueDyeAnimationDuration * 1000);
+      });
+ 
+      
+      setTimeout(() => {
+        proteinStandards.forEach(protein => {
+          const velocityFactor = 180000;
+          const velocity = velocityFactor / protein.molecularWeight;
+ 
+          const remainingDistance = protein.migrationDistance * 587;
+          const remainingDuration = remainingDistance / velocity;
+
+          console.log(`Protein: ${protein.name}, Migration Distance ${protein.migrationDistance}, Remaining Distance: ${remainingDistance}, Remaining Duration: ${remainingDuration}`);
+ 
+          document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
+            const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
+            console.log(`Protein: ${protein.name}, Migration Distance ${protein.migrationDistance}, Remaining Distance: ${remainingDistance}, Remaining Duration: ${remainingDuration}`);
+            console.log(`InitialMoveDistance: ${initialMoveDistance}, Migration Distance ${protein.migrationDistance}`);
+            const keyframes = `@keyframes ${animationName} {
+              from { transform: translateY(${initialMoveDistance}px); }
+              to { transform: translateY(${protein.migrationDistance * 587}px); }
+            }`;
+            
+            // Append the keyframes if not already present
+            if (!document.getElementById(animationName)) {
+              const styleSheet = document.createElement("style");
+              styleSheet.id = animationName;
+              styleSheet.innerText = keyframes;
+              document.head.appendChild(styleSheet);
+            }
+ 
+            // Apply the individual animation
+            element.style.animation = `${animationName} ${remainingDuration}s linear forwards`;
+          });
+ 
+          // Handle when the blue dye reaches the bottom
+          if (protein.name === 'BlueDye') {
+            setTimeout(() => {
+              setBlueDyeReachedBottom(true);
+            }, remainingDuration * 1000);
+          }
+        });
+ 
+        setIsAtStartingPoint(false);
+      }, initialMoveDuration * 1000);
     }
-};
+  };
+ 
 
 
+ 
+ 
   const stopAllProteins = () => {
     proteinStandards.forEach(protein => {
       const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
@@ -76,11 +196,11 @@ const OneDE = () => {
       });
     });
     setAnimationInProgress(false);
-    setIsAtStartingPoint(false); 
-    setBlueDyeReachedBottom(true); // Ensure this is set when stopping all proteins
+    setIsAtStartingPoint(false);
+    setBlueDyeReachedBottom(true);
   };
-  
-  
+ 
+ 
   const handleStop = () => {
     proteinStandards.forEach(protein => {
       document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
@@ -88,10 +208,10 @@ const OneDE = () => {
           element.style.animationPlayState = 'paused';
         });
     });
-    setAnimationInProgress(false); 
+    setAnimationInProgress(false);
   };
-  
-  
+ 
+ 
   const handleRefillWells = () => {
     proteinStandards.forEach(protein => {
       document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
@@ -102,16 +222,22 @@ const OneDE = () => {
   
     setAnimationInProgress(false);
     setIsAtStartingPoint(true);
-    setBlueDyeReachedBottom(false); 
+    setBlueDyeReachedBottom(false);
+  
+    
+    calculateMigrationDistances(); 
   };
   
-  
+ 
+ 
   const [selectedProteins, setSelectedProteins] = useState(proteinStandards.map(protein => protein.name));
 
-  
+
+ 
   const handleClearWells = () => {
     // Logic to clear wells
   };
+
 
   const handleProteinSelection = (event, proteinName) => {
     if (event.target.checked) {
@@ -120,15 +246,16 @@ const OneDE = () => {
       setSelectedProteins(selectedProteins.filter(name => name !== proteinName));
     }
   };
-  
-  
+ 
+ 
+
 
   return (
     <div className="electrophoresis-wrapper">
         <div className="protein-selection">
           {proteinStandards.map((protein, index) => {
-              // Exclude BlueDye from the selectable options
               if (protein.name === 'BlueDye') return null;
+
 
               return (
                   <div key={index} className="protein-checkbox">
@@ -137,7 +264,7 @@ const OneDE = () => {
                           id={`protein-${index}`}
                           checked={selectedProteins.includes(protein.name)}
                           onChange={(e) => handleProteinSelection(e, protein.name)}
-                          disabled={!isAtStartingPoint} // Disable checkbox if not at starting point
+                          disabled={!isAtStartingPoint} 
                       />
                       <label htmlFor={`protein-${index}`}>{protein.name}</label>
                   </div>
@@ -150,10 +277,11 @@ const OneDE = () => {
           <h3>Protein Information</h3>
           <p>Name: {selectedProtein.name}</p>
           <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
+          <p>Rf Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
         </div>
         )}
         <div className="control-buttons-container">
-          <button onClick={startAnimation} className="control-button" disabled={animationInProgress || blueDyeReachedBottom}>Start</button>
+          <button onClick={startAnimation} className="control-button" disabled={animationInProgress}>Start</button>
           <button onClick={handleStop} className="control-button" disabled={!animationInProgress || blueDyeReachedBottom}>Stop</button>
           <button onClick={handleRefillWells} className="control-button">Refill Wells</button>
           <button onClick={handleClearWells} className="control-button">Clear Wells</button>
@@ -185,7 +313,10 @@ const OneDE = () => {
         </form>
       </div>
       <div className="voltage-dropdown-section">
-        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
+        <select 
+          value={voltageValue} 
+          onChange={e => setvoltageValue(e.target.value)}
+          disabled={!isAtStartingPoint}>
           <option value="50V">50V</option>
           <option value="100V">100V</option>
           <option value="150V">150V</option>
@@ -207,7 +338,7 @@ const OneDE = () => {
           Drop Well
         </button>
       </div>
-      
+     
       <div className="electrophoresis-cell">
         <div className="wells-container">
           {Array.from({ length: wellsCount }).map((_, idx) => (
@@ -217,11 +348,11 @@ const OneDE = () => {
                   <form action="/" className="wellForm">
                     <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
                   </form>
-              
+             
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
                     return (
-                      <div key={index} 
+                      <div key={index}
                         className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
                         onClick={() => handleProteinClick(protein)}
                         style={{ cursor: 'pointer', backgroundColor: protein.color }}>
@@ -237,10 +368,14 @@ const OneDE = () => {
       <div className="acrylamide-gel-top"></div>
       <div className="acrylamide-gel-bottom"></div>
 
-      <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>  {/* Acrylamide label */}
+
+      <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>
       <label className="voltage-label">{voltageValue}</label>
       <div className="acrylamide-dropdown-section">
-        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
+        <select 
+          value={acrylamidePercentage} 
+          onChange={e => setAcrylamidePercentage(e.target.value)}
+          disabled={!isAtStartingPoint}>
           <option value="7.5%">7.5%</option>
           <option value="10%">10%</option>
           <option value="12%">12%</option>
@@ -251,4 +386,8 @@ const OneDE = () => {
   );
 }
 
+
 export default OneDE;
+
+
+

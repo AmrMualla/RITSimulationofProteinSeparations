@@ -252,6 +252,23 @@ const OneDE = () => {
 
   return (
     <div className="electrophoresis-wrapper">
+      <div className="options-box">
+        <div className="control-buttons-container">
+          <button onClick={startAnimation} className="control-button" disabled={animationInProgress || blueDyeReachedBottom}>Start</button>
+          <button onClick={handleStop} className="control-button" disabled={!animationInProgress || blueDyeReachedBottom}>Stop</button>
+          <button onClick={handleRefillWells} className="control-button">Refill Wells</button>
+          <button onClick={handleClearWells} className="control-button">Clear Wells</button>
+        </div>
+        <div className='uploadContainer'>
+          <label>Folder upload:</label>
+          <form className='upload'>
+            <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
+              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" />
+            </div>
+            <input className="submitUpload" type="submit" />
+          </form>
+        </div>
         <div className="protein-selection">
           {proteinStandards.map((protein, index) => {
               if (protein.name === 'BlueDye') return null;
@@ -271,80 +288,63 @@ const OneDE = () => {
               );
           })}
         </div>
+        <label className="voltage-value-label">Voltage: </label>
+        <div className="voltage-dropdown-section">
+          <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
+            <option value="50V">50V</option>
+            <option value="100V">100V</option>
+            <option value="150V">150V</option>
+            <option value="200V">200V</option>
+          </select>
+        </div>
+        <label className="acrylamide-percentage-label">Acrylamide %: </label>
+        <div className="acrylamide-dropdown-section">
+          <select 
+            value={acrylamidePercentage} 
+            onChange={e => setAcrylamidePercentage(e.target.value)}
+            disabled={!isAtStartingPoint}>
+            <option value="7.5%">7.5%</option>
+            <option value="10%">10%</option>
+            <option value="12%">12%</option>
+            <option value="15%">15%</option>
+          </select>
+        </div>
+        <label className="wellCountLabel">Current Wells: {wellsCount}</label>
+        <div className="buttons-container-1de">
+          <button className="button1deadd" onClick={handleAddWell} disabled={wellsCount === 15}>
+            Add Well
+          </button>
+          <button className="button1dedrop" onClick={handleDropWell} disabled={wellsCount === 1}>
+            Drop Well
+          </button>
+        </div>
+      </div>
+      <div className="onede-box">
         {selectedProtein && (
-        <div className="protein-info">
-          <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
-          <h3>Protein Information</h3>
-          <p>Name: {selectedProtein.name}</p>
-          <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
-          <p>Rf Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
-        </div>
+          <div className="protein-info">
+            <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
+            <h3>Protein Information</h3>
+            <p>Name: {selectedProtein.name}</p>
+            <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
+          </div>
         )}
-        <div className="control-buttons-container">
-          <button onClick={startAnimation} className="control-button" disabled={animationInProgress}>Start</button>
-          <button onClick={handleStop} className="control-button" disabled={!animationInProgress || blueDyeReachedBottom}>Stop</button>
-          <button onClick={handleRefillWells} className="control-button">Refill Wells</button>
-          <button onClick={handleClearWells} className="control-button">Clear Wells</button>
+        <div className="wires">
+          <img src="/blackwirelength.png" alt="Black Wire Extension in Center" className="blackwireextendedmiddle-image" />
+          <img src="/redwirelength.png" alt="Red Wire Extension in Center" className="redwireextendedmiddle-image" />
+          <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextendedhorizontal-image" />
+          <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextendedhorizontal-image" />
+          <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextended-image" />
+          <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextended-image" />
+          <img src="/redwire.png" alt="Red Wire" className="redwire-image" />
+          <img src="/blackwire.png" alt="Black Wire" className="blackwire-image" />
         </div>
-      <img src="/blackwirelength.png" alt="Black Wire Extension in Center" className="blackwireextendedmiddle-image" />
-      <img src="/redwirelength.png" alt="Red Wire Extension in Center" className="redwireextendedmiddle-image" />
-      <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextendedhorizontal-image" />
-      <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextendedhorizontal-image" />
-      <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextended-image" />
-      <div className='uploadContainer'>
-        <div className='uploadTypeContainer'>
-          <button onClick={() => setFolderUpload(false)} className="typeFile" style={folderUpload ? {} : {border:"black 1px solid", backgroundColor:"#2253e7"}}>File</button>
-          <button onClick={() => setFolderUpload(true)} className="typeFolder" style={folderUpload ? {border:"black 1px solid", backgroundColor:"#2253e7"} : {}}>Folder</button>
-        </div>
-        <form className='upload'>
-          { !folderUpload && (
-            <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
-              <label htmlFor="uploaded" className="submitUpload" style={{marginBottom:-50 + 'px'}}>Select File</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} />
-            </div>
-          )}
-          { folderUpload && (
-            <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
-              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" />
-            </div>
-          )}
-          <input className="submitUpload" type="submit" />
-        </form>
-      </div>
-      <div className="voltage-dropdown-section">
-        <select 
-          value={voltageValue} 
-          onChange={e => setvoltageValue(e.target.value)}
-          disabled={!isAtStartingPoint}>
-          <option value="50V">50V</option>
-          <option value="100V">100V</option>
-          <option value="150V">150V</option>
-          <option value="200V">200V</option>
-        </select>
-      </div>
-      <label className="voltage-value-label">Voltage: </label>
-      <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextended-image" />
-      <img src="/redwire.png" alt="Red Wire" className="redwire-image" />
-      <img src="/blackwire.png" alt="Black Wire" className="blackwire-image" />
-      <label className="wellCountLabel">Current Wells: {wellsCount}</label>
-      <label className="acrylamide-percentage-label">Acrylamide %: </label>
-      <div className="options-box"></div>
-      <div className="buttons-container-1de">
-        <button className="button1deadd" onClick={handleAddWell} disabled={wellsCount === 15}>
-          Add Well
-        </button>
-        <button className="button1dedrop" onClick={handleDropWell} disabled={wellsCount === 1}>
-          Drop Well
-        </button>
-      </div>
-     
-      <div className="electrophoresis-cell">
-        <div className="wells-container">
-          {Array.from({ length: wellsCount }).map((_, idx) => (
-            <React.Fragment key={idx}>
-              { idx !== 0 && <div className="divider"></div> }
-              <div className="well">
+        
+        <div className="electrophoresis-cell">
+          <div className="wells-container">
+            {Array.from({ length: wellsCount }).map((_, idx) => (
+              <React.Fragment key={idx}>
+                { idx !== 0 && <div className="divider"></div> }
+                <div className="well">
                   <form action="/" className="wellForm">
                     <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
                   </form>
@@ -360,27 +360,37 @@ const OneDE = () => {
                       </div>
                     );
                   })}
-              </div>
-            </React.Fragment>
-          ))}
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
         </div>
+        <div className="acrylamide-gel-top"></div>
+        <div className="acrylamide-gel-bottom"></div>
+
+
+        <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>
+        <label className="voltage-label">{voltageValue}</label>
       </div>
-      <div className="acrylamide-gel-top"></div>
-      <div className="acrylamide-gel-bottom"></div>
-
-
-      <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>
-      <label className="voltage-label">{voltageValue}</label>
-      <div className="acrylamide-dropdown-section">
-        <select 
-          value={acrylamidePercentage} 
-          onChange={e => setAcrylamidePercentage(e.target.value)}
-          disabled={!isAtStartingPoint}>
-          <option value="7.5%">7.5%</option>
-          <option value="10%">10%</option>
-          <option value="12%">12%</option>
-          <option value="15%">15%</option>
-        </select>
+      <div className="onede-page-instructions-box">
+        <h1 className="section-header" id="1de-page-instructions">1DE Simulation Instructions</h1>
+        <h2 className="section-header" id="1de-page-instructions">Steps</h2>
+        <ol>
+          <li>Add or drop wells as desired.</li>
+          <li>Click the "Select Folder" button to upload a folder or click a well to upload a file for that well.</li>
+          <li>Select/deselect the standards that you would like to run.</li>
+          <li>Set the voltage at the desired amount (50/100/150/200V).</li>
+          <li>Set the acrylamide percentage at the desired amount (7.5/10/12/15%).</li>
+          <li>Click the "Start" button to run the wells.</li>
+          <li>Click the "Stop" button to manually stop the wells</li>
+          <li>Click the "Refill Wells" button to stop the run and reset the filled wells with the protein bands at their inital position.</li>
+        </ol>
+        <h2 className="section-header" id="1de-page-instructions">Notes</h2>
+        <ul>
+          <li>Exact number of wells are not required (if you would like to run 5 wells, you may have 6 or more wells created).</li>
+          <li>The dye will always run in every well that is filled.</li>
+          <li>The protein bands will automatically stop at their relative migration distance down the well based on the dye.</li>
+        </ul>
       </div>
     </div>
   );

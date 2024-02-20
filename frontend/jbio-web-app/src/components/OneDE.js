@@ -327,15 +327,17 @@ const OneDE = () => {
             <p>Name: {selectedProtein.name}</p>
             <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
           </div>
-        )}      
-        <img src="/blackwirelength.png" alt="Black Wire Extension in Center" className="blackwireextendedmiddle-image" />
-        <img src="/redwirelength.png" alt="Red Wire Extension in Center" className="redwireextendedmiddle-image" />
-        <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextendedhorizontal-image" />
-        <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextendedhorizontal-image" />
-        <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextended-image" />
-        <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextended-image" />
-        <img src="/r      edwire.png" alt="Red Wire" className="redwire-image" />
-        <img src="/blackwire.png" alt="Black Wire" className="blackwire-image" />
+        )}
+        <div className="wires">
+          <img src="/blackwirelength.png" alt="Black Wire Extension in Center" className="blackwireextendedmiddle-image" />
+          <img src="/redwirelength.png" alt="Red Wire Extension in Center" className="redwireextendedmiddle-image" />
+          <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextendedhorizontal-image" />
+          <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextendedhorizontal-image" />
+          <img src="/blackwirelength.png" alt="Black Wire Extension" className="blackwireextended-image" />
+          <img src="/redwirelength.png" alt="Red Wire Extension" className="redwireextended-image" />
+          <img src="/redwire.png" alt="Red Wire" className="redwire-image" />
+          <img src="/blackwire.png" alt="Black Wire" className="blackwire-image" />
+        </div>
         
         <div className="electrophoresis-cell">
           <div className="wells-container">
@@ -370,7 +372,8 @@ const OneDE = () => {
         <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>
         <label className="voltage-label">{voltageValue}</label>
       </div>
-      <div id="1de-page-instructions">
+      <div className="onede-page-instructions">
+        <h2 className="section-header" id="1de-page-instructions">1DE Simulation Instructions</h2>
         <p>alsdjfalksjfdlaksjdflakjsdlfkjaslkfdj</p>
       </div>
     </div>

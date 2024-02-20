@@ -3,14 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 88vh;
     overflow: auto;
 }
 
 .electrophoresis-cell::before {
     content: "";
     position: absolute;
-    top: 0;
     left: 5%;
     right: 5%;
     height: 150px;
@@ -40,9 +39,7 @@
     flex-shrink: 0;
     display: flex;
     gap: 1em;
-    bottom: 60.3em;
-    z-index: 2;
-    left: -35.2em;            
+    z-index: 2;         
 }
 
 
@@ -113,7 +110,7 @@
     transition: background-color 0.3s ease;
 }
 
-.typeFile, .typeFolder, .submitUpload {
+.typeFile, .upload, .submitUpload {
     position: relative;
     padding: 10px 20px;
     height: 3em;
@@ -122,8 +119,7 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: .8em; 
-    bottom: 90em;
+    font-size: .8em;
 }
 
 .typeFile {
@@ -187,8 +183,6 @@
 }
 
 .acrylamide-dropdown-section {
-    right: 30rem; 
-    bottom: 124rem;
     position: relative;
     z-index: 1;
     padding: 10px 20px;
@@ -203,19 +197,22 @@
 .options-box {
     flex-shrink: 0;
     position: relative;
+    top: 75em;
     left: -30em;
-    bottom: 20em;
     width: 25em;
     height: 49em;
     border: 3px solid #4682A9;
     background-color: #749BC2; 
-    border-radius: 0 0 5px 5px; 
-    z-index: 1; 
+    border-radius: 0 0 5px 5px;
+}
+
+.onede-box {
+    position: relative;
+    top: 70em;
+    left: 0;
 }
 
 .uploadContainer {
-    top: 142em;
-    left: -31.7em;
     flex-shrink: 0;
     position: relative;
     z-index: 2;
@@ -237,8 +234,6 @@
 .wellCountLabel{
     flex-shrink: 0;
     position: relative;
-    left: -31em;
-    bottom: 8em;
     z-index: 2; 
     font-weight: bold;
     font-size: 1.2em;
@@ -248,8 +243,6 @@
 .acrylamide-percentage-label{
     flex-shrink: 0;
     position: relative;
-    left: -31.5em;
-    bottom: 1.5em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
@@ -286,16 +279,12 @@
 .voltage-value-label{
     flex-shrink: 0;
     position: relative;
-    left: -30.1em;
-    top: 60.5em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
 }
 
 .voltage-dropdown-section {
-    right: 30rem;
-    top: 75em; 
     position: relative;
     z-index: 2;
     padding: 10px 20px;
@@ -374,8 +363,6 @@
     flex-shrink: 0;
     display: flex;
     gap: 10px;
-    top: 183em;
-    right: 31em;
     z-index: 2;
   }
   
@@ -445,7 +432,5 @@
     background-color: white;
     border: 1px solid black;
     padding: 1px;
-    z-index: 3;
-    bottom: -200em;
-    right: 32em;
+    z-index: 2;
   }

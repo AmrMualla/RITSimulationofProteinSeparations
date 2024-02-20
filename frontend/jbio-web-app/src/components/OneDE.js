@@ -8,6 +8,10 @@ const OneDE = () => {
   const [folderUpload, setFolderUpload] = useState(false);
   const [selectedProtein, setSelectedProtein] = useState(null);
   const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
+  const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
+  const [file, setFile] = useState()
+  const [files, setFiles] = useState([]);
 
   const handleAddWell = () => {
     if (wellsCount < 15) {
@@ -25,48 +29,58 @@ const OneDE = () => {
     setSelectedProtein(protein);
   };
 
+
   const proteinStandards = [
-    { name: "B-Galactosidase", molecularWeight: 116250, velocity: 300, color: '#08c8ae' },
-    { name: "Phosphorylase B", molecularWeight: 97400, velocity: 25, color: '#cacf50' },
-    { name: "Serum Albumin", molecularWeight: 66200, velocity: 7.6, color: '#41add5' },
-    { name: "Ovalbumin", molecularWeight: 45000, velocity: 4, color: '#a6106a' },
-    { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity: 19, color: '#87cba7' },
-    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity: 5, color: '#180ea4' },
-    { name: "Lysozyme", molecularWeight: 14400, velocity: 10, color: '#2e8c7b' },
-    { name: "Aprotinin", molecularWeight: 6500, velocity: 2, color: '#be2908' }
+    { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae' },
+    { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50' },
+    { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5' },
+    { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a' },
+    { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7' },
+    { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4' },
+    { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b' },
+    { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908' },
+    { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
   ];
   
   const initialMoveDuration = 1;
+
   const startAnimation = () => {
-    if (animationInProgress) {
-      proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name}`)
-          .forEach(element => {
-            element.style.animationPlayState = 'running';
-          });
-      });
-    } else {
-      setAnimationInProgress(true);
-
-      proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-          .forEach(element => {
-            element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
-          });
-      });
-
-      setTimeout(() => {
+    if (!animationInProgress && isAtStartingPoint) {
+        setAnimationInProgress(true);
+        setIsAtStartingPoint(false); // Set isAtStartingPoint to false only when animation starts
+        setBlueDyeReachedBottom(false); // Reset the state when animation starts
+        const acrylamide = parseFloat(acrylamidePercentage) / 100;
+        const voltage = parseFloat(voltageValue.replace('V', ''));
+        let blueDyeAnimationDuration = 0;
         proteinStandards.forEach(protein => {
-          document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-            .forEach(element => {
-              const duration = `${protein.velocity}s`;
-              element.style.animation = `moveProtein ${duration} linear forwards`;
+            const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
+            const velocity = Math.log10(protein.molecularWeight) * acrylamide * voltage;
+            document.querySelectorAll(elementSelector).forEach(element => {
+                element.style.animation = `initialMove ${initialMoveDuration}s linear forwards, moveProtein ${velocity}s linear forwards ${initialMoveDuration}s`;
             });
+            if (protein.name === 'BlueDye') {
+                blueDyeAnimationDuration = initialMoveDuration + velocity;
+            }
         });
-      }, initialMoveDuration * 1000);
+        setTimeout(() => {
+            stopAllProteins();
+            setBlueDyeReachedBottom(true); // Set the state when blue dye reaches the bottom
+        }, blueDyeAnimationDuration * 1000);
     }
+};
+
+
+  const stopAllProteins = () => {
+    proteinStandards.forEach(protein => {
+      const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
+      document.querySelectorAll(elementSelector).forEach(element => {
+        element.style.animationPlayState = 'paused';
+      });
+    });
+    setAnimationInProgress(false);
+    setIsAtStartingPoint(false); 
+    setBlueDyeReachedBottom(true); // Ensure this is set when stopping all proteins
   };
-  
   
   
   const handleStop = () => {
@@ -84,11 +98,15 @@ const OneDE = () => {
     proteinStandards.forEach(protein => {
       document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
         .forEach(element => {
-          element.style.animation = 'none'; 
+          element.style.animation = 'none';
         });
     });
+  
     setAnimationInProgress(false);
+    setIsAtStartingPoint(true);
+    setBlueDyeReachedBottom(false); 
   };
+  
   
   const [selectedProteins, setSelectedProteins] = useState(proteinStandards.map(protein => protein.name));
 
@@ -104,36 +122,108 @@ const OneDE = () => {
       setSelectedProteins(selectedProteins.filter(name => name !== proteinName));
     }
   };
-  
+
+
+    const selectFile = (event) => {
+        if (event.target.files) {
+            setFile(event.target.files[0]);
+        }
+    };
+
+  const getProteinsFile = async () => {
+      if (file) {
+          console.log("Uploading file...");
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          try {
+              // You can write the URL of your server or any other endpoint used for file upload
+              const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File", {
+                  method: "POST",
+                  body: formData,
+              });
+
+              const data = await result.json();
+
+              console.log(data);
+          } catch (error) {
+              console.error(error);
+          }
+      }
+  }
+
+  const selectFiles = (event) => {
+      setFiles([...event.target.files]);
+  }
+
+  const getProteinsBatchFile = async () => {
+      if (files) {
+          console.log("Uploading file...");
+
+          const formData = new FormData();
+          formData.append("files", files);
+
+          try {
+              // You can write the URL of your server or any other endpoint used for file upload
+              const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/Batch", {
+                  method: "POST",
+                  body: formData,
+              });
+
+              const data = await result.json();
+
+              console.log(data);
+          } catch (error) {
+              console.error(error);
+          }
+      }
+  }
+
+    const getProteins = () => {
+      const result = null
+      if (!folderUpload){
+          getProteinsFile().then(r => result)
+      }
+      else{
+          getProteinsBatchFile().then(r => result)
+      }
+      return result
+    }
   
 
   return (
-    
     <div className="electrophoresis-wrapper">
         <div className="protein-selection">
-            {proteinStandards.map((protein, index) => (
-              <div key={index} className="protein-checkbox">
-                <input
-                  type="checkbox"
-                  id={`protein-${index}`}
-                  checked={selectedProteins.includes(protein.name)}
-                  onChange={(e) => handleProteinSelection(e, protein.name)}
-                />
-                <label htmlFor={`protein-${index}`}>{protein.name}</label>
-              </div>
-            ))}
+          {proteinStandards.map((protein, index) => {
+              // Exclude BlueDye from the selectable options
+              if (protein.name === 'BlueDye') return null;
+
+              return (
+                  <div key={index} className="protein-checkbox">
+                      <input
+                          type="checkbox"
+                          id={`protein-${index}`}
+                          checked={selectedProteins.includes(protein.name)}
+                          onChange={(e) => handleProteinSelection(e, protein.name)}
+                          disabled={!isAtStartingPoint} // Disable checkbox if not at starting point
+                      />
+                      <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                  </div>
+              );
+          })}
         </div>
         {selectedProtein && (
-          <div className="protein-info">
-            <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
-            <h3>Protein Information</h3>
-            <p>Name: {selectedProtein.name}</p>
-            <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
-          </div>
+        <div className="protein-info">
+          <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
+          <h3>Protein Information</h3>
+          <p>Name: {selectedProtein.name}</p>
+          <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
+        </div>
         )}
         <div className="control-buttons-container">
-          <button onClick={startAnimation} className="control-button">Start</button>
-          <button onClick={handleStop} className="control-button">Stop</button>
+          <button onClick={startAnimation} className="control-button" disabled={animationInProgress || blueDyeReachedBottom}>Start</button>
+          <button onClick={handleStop} className="control-button" disabled={!animationInProgress || blueDyeReachedBottom}>Stop</button>
           <button onClick={handleRefillWells} className="control-button">Refill Wells</button>
           <button onClick={handleClearWells} className="control-button">Clear Wells</button>
         </div>
@@ -147,29 +237,28 @@ const OneDE = () => {
           <button onClick={() => setFolderUpload(false)} className="typeFile" style={folderUpload ? {} : {border:"black 1px solid", backgroundColor:"#2253e7"}}>File</button>
           <button onClick={() => setFolderUpload(true)} className="typeFolder" style={folderUpload ? {border:"black 1px solid", backgroundColor:"#2253e7"} : {}}>Folder</button>
         </div>
-        <form className='upload'>
+        <form className='upload' onSubmit={getProteins}>
           { !folderUpload && (
             <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
               <label htmlFor="uploaded" className="submitUpload" style={{marginBottom:-50 + 'px'}}>Select File</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} />
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} onChange={selectFile}/>
             </div>
           )}
           { folderUpload && (
             <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
               <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" />
+              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" onChange={selectFiles}/>
             </div>
           )}
           <input className="submitUpload" type="submit" />
         </form>
       </div>
       <div className="voltage-dropdown-section">
-        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}
-        data-testid = "voltage-dropdown">
-          <option value="50V" data-testid = "50V-option">50V</option>
-          <option value="100V" data-testid = "100V-option">100V</option>
-          <option value="150V" data-testid = "150V-option">150V</option>
-          <option value="200V" data-testid = "200V-option">200V</option>
+        <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
+          <option value="50V">50V</option>
+          <option value="100V">100V</option>
+          <option value="150V">150V</option>
+          <option value="200V">200V</option>
         </select>
       </div>
       <label className="voltage-value-label">Voltage: </label>
@@ -193,7 +282,7 @@ const OneDE = () => {
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>
               { idx !== 0 && <div className="divider"></div> }
-              <div className="well" data-testid = "wells#">
+              <div className="well">
                   <form action="/" className="wellForm">
                     <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
                   </form>
@@ -220,11 +309,11 @@ const OneDE = () => {
       <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>  {/* Acrylamide label */}
       <label className="voltage-label">{voltageValue}</label>
       <div className="acrylamide-dropdown-section">
-        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}
-        data-testid = "acrylamide-dropdown">
-          <option value="7.5%" data-testid = "7.5%-option">7.5%</option>
-          <option value="10%" data-testid = "10%-option">10%</option>
-          <option value="15%" data-testid = "15%-option">15%</option>
+        <select value={acrylamidePercentage} onChange={e => setAcrylamidePercentage(e.target.value)}>
+          <option value="7.5%">7.5%</option>
+          <option value="10%">10%</option>
+          <option value="12%">12%</option>
+          <option value="15%">15%</option>
         </select>
       </div>
     </div>

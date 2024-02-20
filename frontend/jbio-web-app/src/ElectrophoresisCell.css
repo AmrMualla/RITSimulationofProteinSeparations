@@ -395,6 +395,12 @@
     background-color: #5e7bef;
   }
 
+  .control-button:disabled {
+    background-color: #cccccc; /* Gray color for disabled state */
+    color: #666666; /* Darker gray text to ensure readability */
+    cursor: not-allowed; /* Change cursor to indicate the button is not clickable */
+  }
+
   @keyframes initialMove {
     from { top: 100px; } /* Starting from the bottom of the well */
     to { top: calc(52.5% + 100px); } /* Move to 10% into the gel */
@@ -402,7 +408,7 @@
   
   @keyframes moveProtein {
     from { top: calc(52.5% + 100px); }
-    to { top: 670%; } /* Adjust as needed */
+    to { top: 680%; } /* Adjust as needed */
   }
   
   .proteinBand {

@@ -8,5 +8,4 @@ class ProteinInfo(BaseModel):
     """
     name: str
     molecular_weight: int
-    descent_speed: float
     ncbi_link: str

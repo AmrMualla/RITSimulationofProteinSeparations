@@ -201,7 +201,7 @@
 .options-box {
     flex-shrink: 0;
     position: relative;
-    top: 90em;
+    top: 102em;
     left: -30em;
     width: 25em;
     height: 49em;
@@ -212,7 +212,7 @@
 
 .onede-box {
     position: relative;
-    top: 62em;
+    top: 74em;
     left: 0;
 }
 
@@ -367,10 +367,10 @@
     z-index: 1;
 }
 
-.onede-page-instructions {
+.onede-page-instructions-box {
     position: relative;
-    top: -20em;
-    left: -35em;
+    top: -13em;
+    left: -18em;
 }
 
 .control-buttons-container {

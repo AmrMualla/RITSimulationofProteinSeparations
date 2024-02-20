@@ -1,8 +1,19 @@
 import unittest
 import requests
+from fastapi.testclient import TestClient
+import server
+
 
 
 class ProteinDataTest(unittest.TestCase):
+    def setUp(self):
+        self.client = TestClient(server.app)
+
+    def test_main(self):
+        response = self.client.get("/")
+        assert response.status_code == 200
+        print(response.json())
+
     def test_get_standards_api(self):
         response = requests.get('http://127.0.0.1:8000/1DElectrophoresis/standards?acrylamide=7.5&voltage=50')
         if response.status_code == 200:

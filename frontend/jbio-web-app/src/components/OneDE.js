@@ -247,7 +247,10 @@ const OneDE = () => {
     }
   };
  
- 
+
+  const processProteinsAPICall = (event) => {
+
+  }
 
 
   return (

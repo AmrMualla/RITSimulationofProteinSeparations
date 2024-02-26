@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import React, {useEffect, useState} from 'react';
 import '../ElectrophoresisCell.css';
 
 
@@ -271,9 +270,7 @@ const OneDE = () => {
           body: formData,
         });
 
-        const data = await result.json();
-
-        console.log(data);
+        return await result.json()
       } catch (error) {
         console.error(error);
       }
@@ -298,9 +295,7 @@ const OneDE = () => {
           body: formData,
         });
 
-        const data = await result.json();
-
-        console.log(data);
+        return await result.json()
       } catch (error) {
         console.error(error);
       }

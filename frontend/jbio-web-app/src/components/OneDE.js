@@ -25,8 +25,8 @@ const OneDE = () => {
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
-  const [folderUpload, setFolderUpload] = useState("");
-  const [fileUpload, setFileUpload] = useState("");
+  const [file, setFile] = useState()
+  const [files, setFiles] = useState([]);
 
 
   const handleAddWell = () => {
@@ -248,44 +248,63 @@ const OneDE = () => {
       setSelectedProteins(selectedProteins.filter(name => name !== proteinName));
     }
   };
- 
 
-  const processProteinsFileAPICall = async (event) => {
-    event.preventDefault();
-    const form = new FormData();
-    form.append('file', fileUpload);
-                 //NOTE: Update the url here (replace http://127.0.0.1:8000 with url) once address is set up)
-    const response = await fetch('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'Content-Type': 'multipart/form-data'
-      },
-      body: form
-    });
 
-    return response.json()
+
+  const selectFile = (event) => {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
+    }
+  };
+
+  const getProteinsFile = async () => {
+    if (file) {
+      console.log("Uploading file...");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // You can write the URL of your server or any other endpoint used for file upload
+        const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await result.json();
+
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
+  const selectFiles = (event) => {
+    setFiles([...event.target.files]);
+  }
 
-  const processProteinsBatchAPICall = async (event) => {
-    event.preventDefault();
-    const form = new FormData();
-    for (const f of folderUpload){
-      form.append('file', f);
+  const getProteinsBatchFile = async () => {
+    if (files) {
+      console.log("Uploading file...");
+
+      const formData = new FormData();
+      formData.append("files", files);
+
+      try {
+        // You can write the URL of your server or any other endpoint used for file upload
+        const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/Batch", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await result.json();
+
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
-    form.append('file', fileUpload);
-    //NOTE: Update the url here (replace http://127.0.0.1:8000 with url) once address is set up)
-    const response = await fetch('http://127.0.0.1:8000/1DElectrophoresis/BatchFileProtein/Batch', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'Content-Type': 'multipart/form-data'
-      },
-      body: form
-    });
-
-    return response.json()
   }
 
 
@@ -385,7 +404,9 @@ const OneDE = () => {
                 { idx !== 0 && <div className="divider"></div> }
                 <div className="well">
                   <form action="/" className="wellForm">
-                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
+                    <input type="file" className="wellInput"
+                           style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}}
+                    />
                   </form>
              
                   {idx === 0 && selectedProteins.map((proteinName, index) => {

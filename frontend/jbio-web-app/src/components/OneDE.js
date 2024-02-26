@@ -262,9 +262,9 @@ const OneDE = () => {
         <div className='uploadContainer'>
           <label>Folder upload:</label>
           <form className='upload'>
-            <div style={{width:15 + 'em', paddingTop:10 + 'px'}}>
+            <div style={{width:20 + 'em', paddingTop:10 + 'px'}}>
               <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
-              <input type="file" id="uploaded" style={{visibility:'hidden'}} webkitdirectory="" />
+              <input type="file" id="uploaded" webkitdirectory="" />
             </div>
             <input className="submitUpload" type="submit" />
           </form>
@@ -289,8 +289,8 @@ const OneDE = () => {
           })}
         </div>
         <label className="voltage-value-label">Voltage: </label>
-        <div className="voltage-dropdown-section">
-          <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}>
+        <div>
+          <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)} className="voltage-dropdown-section">
             <option value="50V">50V</option>
             <option value="100V">100V</option>
             <option value="150V">150V</option>
@@ -298,11 +298,12 @@ const OneDE = () => {
           </select>
         </div>
         <label className="acrylamide-percentage-label">Acrylamide %: </label>
-        <div className="acrylamide-dropdown-section">
+        <div>
           <select 
             value={acrylamidePercentage} 
             onChange={e => setAcrylamidePercentage(e.target.value)}
-            disabled={!isAtStartingPoint}>
+            disabled={!isAtStartingPoint}
+            className="acrylamide-dropdown-section">
             <option value="7.5%">7.5%</option>
             <option value="10%">10%</option>
             <option value="12%">12%</option>

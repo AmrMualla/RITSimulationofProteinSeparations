@@ -114,7 +114,7 @@
     transition: background-color 0.3s ease;
 }
 
-.typeFile, .upload, .submitUpload {
+.typeFile, .submitUpload {
     position: relative;
     padding: 10px 20px;
     height: 3em;
@@ -124,6 +124,10 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: .8em;
+}
+
+#uploaded {
+    width: 15em;
 }
 
 .typeFile {
@@ -208,6 +212,7 @@
     border: 3px solid #4682A9;
     background-color: #749BC2; 
     border-radius: 0 0 5px 5px;
+    padding: 5px;
 }
 
 .onede-box {
@@ -219,6 +224,7 @@
 .uploadContainer {
     flex-shrink: 0;
     position: relative;
+    padding-top: 10px;
     z-index: 2;
 }
 
@@ -241,7 +247,7 @@
     z-index: 2; 
     font-weight: bold;
     font-size: 1.2em;
-    
+    padding-top: 10px;
 }
 
 .acrylamide-percentage-label{
@@ -250,6 +256,7 @@
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
+    padding-top: 10px;
 }
 
 .voltage-value-label{
@@ -258,6 +265,7 @@
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
+    padding-top: 10px;
 }
 
 .voltage-dropdown-section {
@@ -377,7 +385,8 @@
     position: relative;
     flex-shrink: 0;
     display: flex;
-    gap: 10px;
+    gap: 30px;
+    justify-content: center;
     z-index: 2;
   }
   
@@ -444,8 +453,11 @@
   
   .protein-selection {
     position: relative;
-    background-color: white;
-    border: 1px solid black;
-    padding: 1px;
+    padding: 10px 0;
     z-index: 2;
+  }
+
+  ::-webkit-file-upload-button,
+  ::file-selector-button {
+    display: none;
   }

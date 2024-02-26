@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import '../ElectrophoresisCell.css';
 
 
@@ -19,12 +20,13 @@ const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
   const [voltageValue, setvoltageValue] = useState('50V');
-  const [folderUpload, setFolderUpload] = useState(false);
   const [selectedProtein, setSelectedProtein] = useState(null);
   const [animationInProgress, setAnimationInProgress] = useState(false);
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
+  const [folderUpload, setFolderUpload] = useState("");
+  const [fileUpload, setFileUpload] = useState("");
 
 
   const handleAddWell = () => {
@@ -248,8 +250,42 @@ const OneDE = () => {
   };
  
 
-  const processProteinsAPICall = (event) => {
+  const processProteinsFileAPICall = async (event) => {
+    event.preventDefault();
+    const form = new FormData();
+    form.append('file', fileUpload);
+                 //NOTE: Update the url here (replace http://127.0.0.1:8000 with url) once address is set up)
+    const response = await fetch('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'multipart/form-data'
+      },
+      body: form
+    });
 
+    return response.json()
+  }
+
+
+  const processProteinsBatchAPICall = async (event) => {
+    event.preventDefault();
+    const form = new FormData();
+    for (const f of folderUpload){
+      form.append('file', f);
+    }
+    form.append('file', fileUpload);
+    //NOTE: Update the url here (replace http://127.0.0.1:8000 with url) once address is set up)
+    const response = await fetch('http://127.0.0.1:8000/1DElectrophoresis/BatchFileProtein/Batch', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'multipart/form-data'
+      },
+      body: form
+    });
+
+    return response.json()
   }
 
 

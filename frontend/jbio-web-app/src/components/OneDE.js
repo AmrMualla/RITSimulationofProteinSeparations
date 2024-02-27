@@ -3,14 +3,14 @@ import '../ElectrophoresisCell.css';
 
 
 const initialProteinStandards = [
-  { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae' },
-  { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50' },
-  { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5' },
-  { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a' },
-  { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7' },
-  { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4' },
-  { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b' },
-  { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908' },
+  { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae', link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
+  { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50', link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
+  { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5', link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
+  { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a', link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7', link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4', link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
+  { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b', link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
+  { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908', link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
   { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
 ];
 
@@ -109,13 +109,13 @@ const OneDE = () => {
   const getFormula = (percentage) => {
     switch (percentage) {
       case '7.5%':
-        return (logMW) => -0.5258 * logMW + 2.8048;
+        return (logMW) => -0.5931 * logMW + 3.2255;
       case '10%':
-        return (logMW) => -0.6295 * logMW + 3.3733;
+        return (logMW) => -0.6232 * logMW + 3.3396;
       case '12%':
-        return (logMW) => -0.654 * logMW + 3.4475;
+        return (logMW) => -0.6581 * logMW + 3.4690;
       case '15%':
-        return (logMW) => -0.5972 * logMW + 3.1623;
+        return (logMW) => -0.6793 * logMW + 3.5972;
       default:
         return (logMW) => 0;
     }
@@ -132,26 +132,36 @@ const OneDE = () => {
       setAnimationInProgress(true);
       setIsAtStartingPoint(false);
       calculateMigrationDistances();
- 
-      // Initial movement for all proteins together
+      
+      // Parse the numeric part of the voltageValue state
+      const voltage = parseInt(voltageValue.replace('V', ''));
+      const baseVoltage = 50; // Base voltage for calculation
+      const baseDuration = 10; // Base duration for 50V
+  
+      // Calculate the factor by which to divide the base duration
+      // This factor doubles for each doubling of the voltage
+      const durationFactor = baseVoltage / voltage;
+  
+      // Adjusted duration based on the current voltage
+      const adjustedDuration = baseDuration * durationFactor;
+      console.log(adjustedDuration)
       proteinStandards.forEach(protein => {
         document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
           element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
         });
       });
- 
+  
       setTimeout(() => {
         proteinStandards.forEach(protein => {
           const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
-          const fixedDuration = 10; // Adjust as necessary
- 
+  
           document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
             const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
             const keyframes = `@keyframes ${animationName} {
-              from { transform: translateY(${initialMoveDistance * 587}px); } // Adjust this to match the end of initialMove
+              from { transform: translateY(${initialMoveDistance * 587}px); }
               to { transform: translateY(${remainingDistance}px); }
             }`;
- 
+  
             // Append the keyframes if not already present
             if (!document.getElementById(animationName)) {
               const styleSheet = document.createElement("style");
@@ -159,22 +169,23 @@ const OneDE = () => {
               styleSheet.innerText = keyframes;
               document.head.appendChild(styleSheet);
             }
- 
-            element.style.animation = `${animationName} ${fixedDuration}s linear forwards`;
+  
+            // Apply the adjusted duration to the animation
+            element.style.animation = `${animationName} ${adjustedDuration}s linear forwards`;
           });
- 
+  
           if (protein.name === 'BlueDye') {
             setTimeout(() => {
               setBlueDyeReachedBottom(true);
-            }, fixedDuration * 1000);
+            }, adjustedDuration * 1000); // Convert the duration from seconds to milliseconds
           }
         });
- 
+  
         setIsAtStartingPoint(false);
-      }, initialMoveDuration * 1000);
+      }, initialMoveDuration * 1000); // Convert the duration from seconds to milliseconds
     }
   };
-
+  
  
 
 
@@ -350,6 +361,12 @@ const OneDE = () => {
             <h3>Protein Information</h3>
             <p>Name: {selectedProtein.name}</p>
             <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
+            <p>Rf Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
+            <p>
+            NCBI Link: <a href={selectedProtein.link} target="_blank" rel="noopener noreferrer">
+            {selectedProtein.link}
+            </a>
+          </p>
           </div>
         )}
         <div className="wires">

@@ -1,0 +1,30 @@
+Index: backend/API/APIRequestsTests/protein_data_test.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import unittest\nimport requests\n\n\nclass ProteinDataTest(unittest.TestCase):\n    def test_get_standards_api(self):\n        response = requests.get('http://127.0.0.1:8000/1DElectrophoresis/standards?acrylamide=7.5&voltage=50')\n        if response.status_code == 200:\n            self.assertEqual(response.json(),[\n                                              {\n                                                \"name\": \"D Chain D, Beta-galactosidase\",\n                                                \"molecular_weight\": 116062,\n                                                \"descent_speed\": 1899.2587687983403,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/6X1Q\"\n                                              },\n                                              {\n                                                \"name\": \"A Chain A, GLYCOGEN PHOSPHORYLASE B\",\n                                                \"molecular_weight\": 97158,\n                                                \"descent_speed\": 1870.3044623481403,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/2PRI\"\n                                              },\n                                              {\n                                                \"name\": \"B Chain B, Serum albumin\",\n                                                \"molecular_weight\": 66463,\n                                                \"descent_speed\": 1808.4674776966513,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/4F5S\"\n                                              },\n                                              {\n                                                \"name\": \"Ovalbumin [Gallus gallus]\",\n                                                \"molecular_weight\": 43772,\n                                                \"descent_speed\": 1740.4486464562715,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/AAA68882.1\"\n                                              },\n                                              {\n                                                \"name\": \"Carbonic anhydrase 2 [Mus musculus]\",\n                                                \"molecular_weight\": 29003,\n                                                \"descent_speed\": 1673.416095971503,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1\"\n                                              },\n                                              {\n                                                \"name\": \"Pancreatic trypsin inhibitor [Musca domestica]\",\n                                                \"molecular_weight\": 22709,\n                                                \"descent_speed\": 1633.5742538653608,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/AFP63821.1\"\n                                              },\n                                              {\n                                                \"name\": \"LYS_OSTED\",\n                                                \"molecular_weight\": 14918,\n                                                \"descent_speed\": 1565.1414760559667,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1\"\n                                              },\n                                              {\n                                                \"name\": \"aprotinin [synthetic construct]\",\n                                                \"molecular_weight\": 6618,\n                                                \"descent_speed\": 1432.772536058938,\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/CAA01755.1\"\n                                              }\n                                            ])\n        else:\n            return False\n\n    def test_file_get_protein_info(self):\n        response = requests.post('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File?acrylamide=7.5&voltage=50')\n        print(response.json())\n\n    def test_batch_file_get_protein_info(self):\n        response = requests.post('http://127.0.0.1:8000/1DElectrophoresis/BatchFileProtein/Batch?acrylamide=7.5&voltage=50')\n        print(response.json())\n\n\n\nif __name__ == '__main__':\n    unittest.main()\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/API/APIRequestsTests/protein_data_test.py b/backend/API/APIRequestsTests/protein_data_test.py
+--- a/backend/API/APIRequestsTests/protein_data_test.py	(revision 0a7904e3dda73520eebb136a844ca67753f8c3f3)
++++ b/backend/API/APIRequestsTests/protein_data_test.py	(date 1708461383929)
+@@ -1,8 +1,19 @@
+ import unittest
+ import requests
++from fastapi.testclient import TestClient
++import server
++
+ 
+ 
+ class ProteinDataTest(unittest.TestCase):
++    def setUp(self):
++        self.client = TestClient(server.app)
++
++    def test_main(self):
++        response = self.client.get("/")
++        assert response.status_code == 200
++        print(response.json())
++
+     def test_get_standards_api(self):
+         response = requests.get('http://127.0.0.1:8000/1DElectrophoresis/standards?acrylamide=7.5&voltage=50')
+         if response.status_code == 200:

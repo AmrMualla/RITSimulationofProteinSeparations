@@ -63,40 +63,56 @@ This guide will be going over the basics of the Jest tests created in this proje
 
 #### Installation
 
-Installation for Jest is simple with the help of a package manager. Since we are using Node.js with ```npm``` as the package manager, installation is as easy as pasting 
+Installation for Jest is simple with the help of a package manager. Since we are using Node.js with ```npm``` as the package manager, installation is as easy as pasting: 
 
-```npm install --save-dev jest```
+```bash
+npm install --save-dev jest
+```
 
-once you navigate to 
+once you navigate to:
 
-```..\RITSimulationofProteinSimulations\frontend\jbio-web-app```.
+```bash
+..\RITSimulationofProteinSimulations\frontend\jbio-web-app
+```
 
-To do so, open the terminal, which is usually found under the View tab in most IDEs, and select the Terminal button. It will open up the terminal in the default directory. Then navigate to the desired directory by typing 
 
-```cd frontend\jbio-web-app```.
+To do so, open the terminal, which is usually found under the View tab in most IDEs, and select the Terminal button. It will open up the terminal in the default directory. Then navigate to the desired directory by typing:
+
+```bash
+cd frontend\jbio-web-app
+```
 
 This should put you in the correct directory, so typing 
 
-```npm install --save-dev jest```
+```bash
+npm install --save-dev jest
+```
 
 in the terminal will install Jest for you and have everything ready to go.
 
 #### Running the Tests
 Once the installation is complete, typing 
 
-```npm test```
+```bash
+npm test
+```
 
 will bring up the watch usage buttons which you can use to run the tests. If there is every an error saying that 
 
-```npm test``` is not recognized, type 
+```bash
+npm test
+``` 
+is not recognized, type 
 
-```npm install```
+```bash
+npm install
+```
 
 again to update the package. Then you should see this:
 
 ![FrontendTestingImage1.png](READMEImages%2FFrontendTestingImage1.png)
 
-```a``` will run all the test suites.
+```a```will run all the test suites.
 
 ```f``` will run all the failed tests.
 
@@ -113,7 +129,9 @@ After running a test, it will tell you how many test suites and tests have passe
 #### Jest Test Basics
 The Jest tests are stored in
 
-```.\\RITSimulationofProteinSimulations\frontend\jbio-web-app\src\components\__tests__```.
+```bash
+.\\RITSimulationofProteinSimulations\frontend\jbio-web-app\src\components\__tests__
+```
 
 Currently, there is a test class for each frontend component in the project. They all vary depending on the component but all have a similar format that should be used when creating more tests. For starters, these imports are needed for jest tests:
 
@@ -129,7 +147,7 @@ Now for creating tests, the default test will look like this:
 
 ![FrontEndTestingImage5.png](READMEImages%2FFrontEndTestingImage5.png)
 
-You can replace the ```Test name``` with whatever you want to name the test. Ensure that it is detailed for ease of viewing which test is being run.
+You can replace the ```'Test name'``` with whatever you want to name the test. Ensure that it is detailed for ease of viewing which test is being run.
 
 ### Backend Guide:
 #### Author: Mack Leonard

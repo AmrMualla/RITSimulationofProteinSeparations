@@ -7,6 +7,8 @@
 - [Dr. Paul Craig](mailto:pac8612@rit.edu)
 
 ![PaulPhoto.jpg](frontend%2Fjbio-web-app%2Fsrc%2Fcomponents%2Fabout_images%2FPaulPhoto.jpg)
+
+Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979, and his Ph.D. in Biological Chemistry from The University of Michigan in 1985. Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood clotting; 1985-1988), he spent five years as an analytical biochemistry at BioQuant, Inc., in Ann Arbor, Michigan before joining RIT in 1993.
 ## Download and Installation:
 ### Git
 
@@ -75,6 +77,7 @@ Analyze results from the tests being run and modify the test or method being tes
 
 ### API Guide:
 
+- TODO
 
 ## Project Team
 
@@ -82,9 +85,14 @@ Analyze results from the tests being run and modify the test or method being tes
   - Coach:
     - [Mark Wilson](mailto:mwvse@rit.edu)
   - Developers:
-    - [Chase Amador](mailto:cma6320@rit.edu)
-    - [Beck Anderson](mailto:bea1935@rit.edu)
-    - [Landon Heatly](mailto:lbh1442@rit.edu)
-    - [Mack Leonard](mailto:mml2034@rit.edu)
-    - [Amr Mualla](mailto:am3576@rit.edu)
+    - [Chase Amador](https://www.linkedin.com/in/chase-amador-54765b209/)
+
+    - [Beck Anderson](https://www.linkedin.com/in/beck-anderson-se/)
+
+    - [Landon Heatly](https://www.linkedin.com/in/landon-heatly-77a093175/)
+
+    - [Mack Leonard](https://www.linkedin.com/in/mack-leonard/)
+
+    - [Amr Mualla](https://www.linkedin.com/in/amrmualla/)
+
   

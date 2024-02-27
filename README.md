@@ -15,7 +15,23 @@ Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 19
 
 ```bash
 git clone https://github.com/AmrMualla/RITSimulationofProteinSimulations.git
+```
+
+Windows:
+```bash
+cd RITSimulationofProteinSimulations\
+```
+
+```bash
+py -m pip install -r requirements.txt
+```
+
+macOS or Linux:
+```bash
 cd RITSimulationofProteinSimulations/
+```
+
+```bash
 pip install -r requirements.txt
 ```
 

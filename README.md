@@ -25,7 +25,12 @@ pip install -r requirements.txt
 - React v18.2.0
 
 ## Usage for Development
-Navigate to the top level directory by typing in the command line:
+Navigate to the top level directory by typing in the command line if on Windows:
+```bash
+cd RITSimulationofProteinSimulations\
+```
+
+If on macOS or Linux:
 ```bash
 cd RITSimulationofProteinSimulations/
 ```
@@ -35,7 +40,12 @@ Launch the API server by typing in the command line:
 uvicorn server:app --reload
 ```
 
-Navigate to the jbio-web-app subdirectory by typing in the command line:
+Navigate to the jbio-web-app subdirectory by typing in the command line if on Windows:
+```bash
+cd frontend\jbio-web-app\
+```
+
+If on macOS or Linux:
 ```bash
 cd frontend/jbio-web-app/
 ```
@@ -72,17 +82,29 @@ Installation for Jest is simple with the help of a package manager. Since we are
 npm install --save-dev jest
 ```
 
-once you navigate to:
+once you navigate to 
 
+Windows:
 ```bash
 ..\RITSimulationofProteinSimulations\frontend\jbio-web-app
 ```
 
-
-To do so, open the terminal, which is usually found under the View tab in most IDEs, and select the Terminal button. It will open up the terminal in the default directory. Then navigate to the desired directory by typing:
+macOS or Linux:
 
 ```bash
+~/RITSimulationofProteinSimulations/frontend/jbio-web-app
+```
+
+To do so, open the terminal, which is usually found under the View tab in most IDEs, and select the Terminal button. It will open up the terminal in the default directory. Then navigate to the desired directory by typing
+
+Windows:
+```bash
 cd frontend\jbio-web-app
+```
+
+macOS or Linux:
+```bash
+cd frontend/jbio-web-app
 ```
 
 This should put you in the correct directory, so typing 
@@ -131,10 +153,16 @@ After running a test, it will tell you how many test suites and tests have passe
 ![FrontendTestingImage2.png](READMEImages%2FFrontendTestingImage2.png)
 
 #### Jest Test Basics
-The Jest tests are stored in
+If on Windows, the Jest tests are stored in
 
 ```bash
 .\\RITSimulationofProteinSimulations\frontend\jbio-web-app\src\components\__tests__
+```
+
+If on macOS or Linux, the Jest tests are stored in
+
+```bash
+~/RITSimulationofProteinSimulations/frontend/jbio-web-app/src/components/__tests__
 ```
 
 Currently, there is a test class for each frontend component in the project. They all vary depending on the component but all have a similar format that should be used when creating more tests. For starters, these imports are needed for jest tests:
@@ -156,15 +184,20 @@ You can replace the ```'Test name'``` with whatever you want to name the test. E
 ### Backend Guide:
 #### Author: Mack Leonard
 
-Navigate to the Electro1DTests subdirectory by typing in the command line:
+Navigate to the top level directory by typing in the command line
+
+Windows:
 ```bash
-cd ~/RITSimulationofProteinSimulations/backend/Electro1DTests
+cd .\RITSimulationofProteinSimulations\
+py -m unittest backend.Electro1DTests.ProteinTest
 ```
 
-Type in the command line to run the tests:
+macOS or Linux:
 ```bash
+cd ~/RITSimulationofProteinSimulations/
 python3 -m unittest backend.Electro1DTests.ProteinTest
 ```
+
 
 OR
 

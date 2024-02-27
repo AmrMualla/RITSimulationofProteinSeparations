@@ -19,12 +19,13 @@ const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
   const [voltageValue, setvoltageValue] = useState('50V');
-  const [folderUpload, setFolderUpload] = useState(false);
   const [selectedProtein, setSelectedProtein] = useState(null);
   const [animationInProgress, setAnimationInProgress] = useState(false);
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
+  const [wellResponses, setWellResponses] = useState({});
+  const [files, setFiles] = useState({});
 
 
   const handleAddWell = () => {
@@ -56,34 +57,35 @@ const OneDE = () => {
  
   const updateAnimationStyles = (protein) => {
     const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
-  
+ 
     // Remove any existing style element for this animation
     const existingStyleElement = document.getElementById(animationName);
     if (existingStyleElement) {
       existingStyleElement.parentNode.removeChild(existingStyleElement);
     }
-  
+ 
     // Create new keyframes with updated values
     const newKeyframes = `@keyframes ${animationName} {
-      from { transform: translateY(0px); }
+      from { transform: translateY(58.7px); }
       to { transform: translateY(${protein.migrationDistance * 587}px); }
     }`;
-  
+ 
    
     const newStyleElement = document.createElement("style");
     newStyleElement.id = animationName;
     newStyleElement.innerText = newKeyframes;
     document.head.appendChild(newStyleElement);
-  
-    
+ 
+   
     document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
       element.style.animation = 'none';
-      
+     
       void element.offsetWidth;
       // Apply new animation
       element.style.animation = `${animationName} ${protein.remainingDuration}s linear forwards`;
     });
   };
+
  
   const calculateMigrationDistances = () => {
     console.log("calculateMigrationDistances function called with acrylamide percentage:", acrylamidePercentage);
@@ -126,7 +128,6 @@ const OneDE = () => {
   const initialMoveDistance = 58.7;
  
   const startAnimation = () => {
-    console.log("acrylamidePercentage before startAnimation:", acrylamidePercentage); // Add this line
     if (!animationInProgress && isAtStartingPoint) {
       setAnimationInProgress(true);
       setIsAtStartingPoint(false);
@@ -139,26 +140,18 @@ const OneDE = () => {
         });
       });
  
-      
       setTimeout(() => {
         proteinStandards.forEach(protein => {
-          const velocityFactor = 180000;
-          const velocity = velocityFactor / protein.molecularWeight;
- 
-          const remainingDistance = protein.migrationDistance * 587;
-          const remainingDuration = remainingDistance / velocity;
-
-          console.log(`Protein: ${protein.name}, Migration Distance ${protein.migrationDistance}, Remaining Distance: ${remainingDistance}, Remaining Duration: ${remainingDuration}`);
+          const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
+          const fixedDuration = 10; // Adjust as necessary
  
           document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
             const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
-            console.log(`Protein: ${protein.name}, Migration Distance ${protein.migrationDistance}, Remaining Distance: ${remainingDistance}, Remaining Duration: ${remainingDuration}`);
-            console.log(`InitialMoveDistance: ${initialMoveDistance}, Migration Distance ${protein.migrationDistance}`);
             const keyframes = `@keyframes ${animationName} {
-              from { transform: translateY(${initialMoveDistance}px); }
-              to { transform: translateY(${protein.migrationDistance * 587}px); }
+              from { transform: translateY(${initialMoveDistance * 587}px); } // Adjust this to match the end of initialMove
+              to { transform: translateY(${remainingDistance}px); }
             }`;
-            
+ 
             // Append the keyframes if not already present
             if (!document.getElementById(animationName)) {
               const styleSheet = document.createElement("style");
@@ -167,15 +160,13 @@ const OneDE = () => {
               document.head.appendChild(styleSheet);
             }
  
-            // Apply the individual animation
-            element.style.animation = `${animationName} ${remainingDuration}s linear forwards`;
+            element.style.animation = `${animationName} ${fixedDuration}s linear forwards`;
           });
  
-          // Handle when the blue dye reaches the bottom
           if (protein.name === 'BlueDye') {
             setTimeout(() => {
               setBlueDyeReachedBottom(true);
-            }, remainingDuration * 1000);
+            }, fixedDuration * 1000);
           }
         });
  
@@ -183,6 +174,7 @@ const OneDE = () => {
       }, initialMoveDuration * 1000);
     }
   };
+
  
 
 
@@ -248,7 +240,38 @@ const OneDE = () => {
   };
  
  
+  const handleFileUpload = async (event, wellIndex) => {
+    if (event.target.files && event.target.files[0]) {
+      const fileToUpload = event.target.files[0];
+      console.log("Uploading file...");
 
+      const formData = new FormData();
+      formData.append("file", fileToUpload);
+
+      try {
+        // Assuming "http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File" is your endpoint
+        const response = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+
+          // Store the server response in the wellResponses state, keyed by well index
+          setWellResponses(prevResponses => ({
+            ...prevResponses,
+            [wellIndex]: responseData,
+          }));
+          console.log("File uploaded successfully for well index ${wellIndex}. Server responded with:, responseData");
+        } else {
+          console.error("File upload failed", response.statusText);
+        }
+      } catch (error) {
+        console.error("File upload error:", error);
+      }
+    }
+  };
 
   return (
     <div className="electrophoresis-wrapper">
@@ -347,7 +370,9 @@ const OneDE = () => {
                 { idx !== 0 && <div className="divider"></div> }
                 <div className="well">
                   <form action="/" className="wellForm">
-                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} />
+                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} 
+                    onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
+                    />
                   </form>
              
                   {idx === 0 && selectedProteins.map((proteinName, index) => {

@@ -1,0 +1,128 @@
+Index: backend/API/APIRequestsTests/protein_data_test.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import unittest\r\nimport requests\r\n\r\n\r\nclass ProteinDataTest(unittest.TestCase):\r\n    def test_get_standards_api(self):\r\n        response = requests.get('http://127.0.0.1:8000/1DElectrophoresis/standards?acrylamide=7.5&voltage=50')\r\n        if response.status_code == 200:\r\n            self.assertEqual(response.json(),[\r\n                                              {\r\n                                                \"name\": \"D Chain D, Beta-galactosidase\",\r\n                                                \"molecular_weight\": 116062,\r\n                                                \"descent_speed\": 1899.2587687983403,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/6X1Q\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"A Chain A, GLYCOGEN PHOSPHORYLASE B\",\r\n                                                \"molecular_weight\": 97158,\r\n                                                \"descent_speed\": 1870.3044623481403,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/2PRI\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"B Chain B, Serum albumin\",\r\n                                                \"molecular_weight\": 66463,\r\n                                                \"descent_speed\": 1808.4674776966513,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/4F5S\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"Ovalbumin [Gallus gallus]\",\r\n                                                \"molecular_weight\": 43772,\r\n                                                \"descent_speed\": 1740.4486464562715,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/AAA68882.1\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"Carbonic anhydrase 2 [Mus musculus]\",\r\n                                                \"molecular_weight\": 29003,\r\n                                                \"descent_speed\": 1673.416095971503,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"Pancreatic trypsin inhibitor [Musca domestica]\",\r\n                                                \"molecular_weight\": 22709,\r\n                                                \"descent_speed\": 1633.5742538653608,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/AFP63821.1\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"LYS_OSTED\",\r\n                                                \"molecular_weight\": 14918,\r\n                                                \"descent_speed\": 1565.1414760559667,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1\"\r\n                                              },\r\n                                              {\r\n                                                \"name\": \"aprotinin [synthetic construct]\",\r\n                                                \"molecular_weight\": 6618,\r\n                                                \"descent_speed\": 1432.772536058938,\r\n                                                \"ncbi_link\": \"https://www.ncbi.nlm.nih.gov/protein/CAA01755.1\"\r\n                                              }\r\n                                            ])\r\n        else:\r\n            return False\r\n\r\n    def test_file_get_protein_info(self):\r\n        response = requests.post('http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File?acrylamide=7.5&voltage=50')\r\n        print(response.json())\r\n\r\n    def test_batch_file_get_protein_info(self):\r\n        response = requests.post('http://127.0.0.1:8000/1DElectrophoresis/BatchFileProtein/Batch?acrylamide=7.5&voltage=50')\r\n        print(response.json())\r\n\r\n\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/API/APIRequestsTests/protein_data_test.py b/backend/API/APIRequestsTests/protein_data_test.py
+--- a/backend/API/APIRequestsTests/protein_data_test.py	(revision bf149d0651f94e6e150c5d24fee65eea0c18cc45)
++++ b/backend/API/APIRequestsTests/protein_data_test.py	(date 1709013046200)
+@@ -6,56 +6,30 @@
+     def test_get_standards_api(self):
+         response = requests.get('http://127.0.0.1:8000/1DElectrophoresis/standards?acrylamide=7.5&voltage=50')
+         if response.status_code == 200:
+-            self.assertEqual(response.json(),[
+-                                              {
+-                                                "name": "D Chain D, Beta-galactosidase",
+-                                                "molecular_weight": 116062,
+-                                                "descent_speed": 1899.2587687983403,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/6X1Q"
+-                                              },
+-                                              {
+-                                                "name": "A Chain A, GLYCOGEN PHOSPHORYLASE B",
+-                                                "molecular_weight": 97158,
+-                                                "descent_speed": 1870.3044623481403,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/2PRI"
+-                                              },
+-                                              {
+-                                                "name": "B Chain B, Serum albumin",
+-                                                "molecular_weight": 66463,
+-                                                "descent_speed": 1808.4674776966513,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/4F5S"
+-                                              },
+-                                              {
+-                                                "name": "Ovalbumin [Gallus gallus]",
+-                                                "molecular_weight": 43772,
+-                                                "descent_speed": 1740.4486464562715,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/AAA68882.1"
+-                                              },
+-                                              {
+-                                                "name": "Carbonic anhydrase 2 [Mus musculus]",
+-                                                "molecular_weight": 29003,
+-                                                "descent_speed": 1673.416095971503,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1"
+-                                              },
+-                                              {
+-                                                "name": "Pancreatic trypsin inhibitor [Musca domestica]",
+-                                                "molecular_weight": 22709,
+-                                                "descent_speed": 1633.5742538653608,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/AFP63821.1"
+-                                              },
+-                                              {
+-                                                "name": "LYS_OSTED",
+-                                                "molecular_weight": 14918,
+-                                                "descent_speed": 1565.1414760559667,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1"
+-                                              },
+-                                              {
+-                                                "name": "aprotinin [synthetic construct]",
+-                                                "molecular_weight": 6618,
+-                                                "descent_speed": 1432.772536058938,
+-                                                "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/CAA01755.1"
+-                                              }
+-                                            ])
++            self.assertEqual(response.json(), [{'molecular_weight': 116062,
++                                                      'name': 'D Chain D, Beta-galactosidase',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/6X1Q'},
++                                                     {'molecular_weight': 97158,
++                                                      'name': 'A Chain A, GLYCOGEN PHOSPHORYLASE B',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/2PRI'},
++                                                     {'molecular_weight': 66463,
++                                                      'name': 'B Chain B, Serum albumin',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/4F5S'},
++                                                     {'molecular_weight': 43772,
++                                                      'name': 'Ovalbumin [Gallus gallus]',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1'},
++                                                     {'molecular_weight': 29003,
++                                                      'name': 'Carbonic anhydrase 2 [Mus musculus]',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1'},
++                                                     {'molecular_weight': 22709,
++                                                      'name': 'Pancreatic trypsin inhibitor [Musca domestica]',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
++                                                     {'molecular_weight': 14918,
++                                                      'name': 'LYS_OSTED',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
++                                                     {'molecular_weight': 6618,
++                                                      'name': 'aprotinin [synthetic construct]',
++                                                      'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'}])
+         else:
+             return False
+ 
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Black\">\r\n    <option name=\"sdkName\" value=\"Python 3.7\" />\r\n  </component>\r\n  <component name=\"JavaScriptSettings\">\r\n    <option name=\"languageLevel\" value=\"JSX\" />\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.7\" project-jdk-type=\"Python SDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision bf149d0651f94e6e150c5d24fee65eea0c18cc45)
++++ b/.idea/misc.xml	(date 1709013046184)
+@@ -6,5 +6,5 @@
+   <component name="JavaScriptSettings">
+     <option name="languageLevel" value="JSX" />
+   </component>
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
+Index: .idea/RITSimulationofProteinSimulations.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"PYTHON_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\">\r\n    <content url=\"file://$MODULE_DIR$\" />\r\n    <orderEntry type=\"jdk\" jdkName=\"Python 3.9 (chauffeur)\" jdkType=\"Python SDK\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n  <component name=\"TemplatesService\">\r\n    <option name=\"TEMPLATE_FOLDERS\">\r\n      <list>\r\n        <option value=\"$MODULE_DIR$/frontend/jbio-web-app/node_modules/workbox-build/src/templates\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"TestRunnerService\">\r\n    <option name=\"PROJECT_TEST_RUNNER\" value=\"pytest\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/RITSimulationofProteinSimulations.iml b/.idea/RITSimulationofProteinSimulations.iml
+--- a/.idea/RITSimulationofProteinSimulations.iml	(revision bf149d0651f94e6e150c5d24fee65eea0c18cc45)
++++ b/.idea/RITSimulationofProteinSimulations.iml	(date 1709013046180)
+@@ -2,7 +2,7 @@
+ <module type="PYTHON_MODULE" version="4">
+   <component name="NewModuleRootManager">
+     <content url="file://$MODULE_DIR$" />
+-    <orderEntry type="jdk" jdkName="Python 3.9 (chauffeur)" jdkType="Python SDK" />
++    <orderEntry type="jdk" jdkName="Python 3.12" jdkType="Python SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+   <component name="TemplatesService">

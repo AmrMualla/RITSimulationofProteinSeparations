@@ -45,7 +45,8 @@ npm start
 ```
 
 A browser will open with the URL: http://localhost:3000/
-![Screenshot 2024-02-26 at 7.40.48 PM.png](..%2F..%2F..%2Fvar%2Ffolders%2Fq_%2Fj5jyjbjj0390ypys98sgrxxm0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_mvcqLL%2FScreenshot%202024-02-26%20at%207.40.48%E2%80%AFPM.png)
+
+![Screenshot 2024-02-26 at 10.11.39 PM.png](frontend%2Fjbio-web-app%2Fsrc%2Fcomponents%2Fabout_images%2FScreenshot%202024-02-26%20at%2010.11.39%E2%80%AFPM.png)
 
 Press the **`1D Electrophoresis`** button on the left.
 

@@ -1,5 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 
 import backend.API.APIRequests.startup as startup
 import backend.API.APIRequests.Electro1D.simulation as electro_1d_simulation
@@ -35,6 +37,14 @@ Good luck developing!
 """
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this in production
+    allow_credentials=True,
+    allow_methods=["*"],  # You can also specify just ["GET", "POST"] etc.
+    allow_headers=["*"],  # Specify your headers or use ["*"] for all
+)
 
 app.include_router(startup.router)
 app.include_router(electro_1d_simulation.router)

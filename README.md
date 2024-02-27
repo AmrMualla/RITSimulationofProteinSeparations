@@ -1,7 +1,8 @@
 # JBioFramework Web Application
-> The JBioFramework Web Application is a more efficient and accurate method of performing 1-Dimensional
-> and 2-Dimensional Electrophoresis through the use of a browser and file selection in the format of 
-> FASTA files.
+> The JBioFramework Web Application is a more efficient method of performing 1-Dimensional
+> through the use of a browser and file selection in the format of 
+> FASTA files. This document will contain information regarding [Download and Installation](#download-and-installation), 
+> [Usage for Development](#usage-for-development), and [Testing Usage](#testing-usage) for the application.
 
 ## Project Sponsor
 - [Dr. Paul Craig](mailto:pac8612@rit.edu)
@@ -50,7 +51,9 @@ A browser will open with the URL: http://localhost:3000/
 
 Press the **`1D Electrophoresis`** button on the left.
 
-Follow the instructions listed beneath the simulation to load the desired FASTA files.
+Follow the instructions listed beneath the simulation to load the desired FASTA files and begin the simulation:
+
+![1DEInstructions.png](READMEImages%2F1DEInstructions.png)
 
 ## Testing Usage
 
@@ -97,12 +100,13 @@ Once the installation is complete, typing
 npm test
 ```
 
-will bring up the watch usage buttons which you can use to run the tests. If there is every an error saying that 
+will bring up the watch usage buttons which you can use to run the tests. If there is every an error saying:
 
-```bash
-npm test
-``` 
-is not recognized, type 
+```bash 
+npm test is not recognized
+```
+
+ type: 
 
 ```bash
 npm install

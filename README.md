@@ -36,9 +36,9 @@ pip install -r requirements.txt
 ```
 
 ### Software Requirements
-- Python v3.x
-- Node.js v21.x
-- React v18.2.0
+- Python 3.7 or higher
+- Node.js 20.11.0 or higher
+- React 18.2.0 or higher
 
 ## Usage for Development
 Navigate to the top level directory by typing in the command line 

@@ -24,8 +24,8 @@ const OneDE = () => {
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
-  const [file, setFile] = useState()
-  const [files, setFiles] = useState([]);
+  const [wellResponses, setWellResponses] = useState({});
+  const [files, setFiles] = useState({});
 
 
   const handleAddWell = () => {
@@ -249,33 +249,39 @@ const OneDE = () => {
   };
 
 
-
-  const selectFile = (event) => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
-    }
-  };
-
-  const getProteinsFile = async () => {
-    if (file) {
+  const handleFileUpload = async (event, wellIndex) => {
+    if (event.target.files && event.target.files[0]) {
+      const fileToUpload = event.target.files[0];
       console.log("Uploading file...");
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", fileToUpload);
 
       try {
-        // You can write the URL of your server or any other endpoint used for file upload
-        const result = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File", {
+        // Assuming "http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File" is your endpoint
+        const response = await fetch("http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File", {
           method: "POST",
           body: formData,
         });
 
-        return await result.json()
+        if (response.ok) {
+          const responseData = await response.json();
+
+          // Store the server response in the wellResponses state, keyed by well index
+          setWellResponses(prevResponses => ({
+            ...prevResponses,
+            [wellIndex]: responseData,
+          }));
+          console.log(`File uploaded successfully for well index ${wellIndex}. Server responded with:`, responseData);
+        } else {
+          console.error("File upload failed", response.statusText);
+        }
       } catch (error) {
-        console.error(error);
+        console.error("File upload error:", error);
       }
     }
-  }
+  };
+
 
   const selectFiles = (event) => {
     setFiles([...event.target.files]);
@@ -401,6 +407,7 @@ const OneDE = () => {
                   <form action="/" className="wellForm">
                     <input type="file" className="wellInput"
                            style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}}
+                           onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
                     />
                   </form>
              

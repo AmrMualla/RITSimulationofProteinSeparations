@@ -5,6 +5,7 @@
 
 ## Project Sponsor
 - [Dr. Paul Craig](mailto:pac8612@rit.edu)
+
 ![PaulPhoto.jpg](frontend%2Fjbio-web-app%2Fsrc%2Fcomponents%2Fabout_images%2FPaulPhoto.jpg)
 ## Download and Installation:
 ### Git

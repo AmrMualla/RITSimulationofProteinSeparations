@@ -25,30 +25,37 @@ pip install -r requirements.txt
 - React v18.2.0
 
 ## Usage for Development
-Navigate to the top level directory by typing in the command line if on Windows:
+Navigate to the top level directory by typing in the command line 
+
+Windows:
 ```bash
 cd RITSimulationofProteinSimulations\
 ```
 
-If on macOS or Linux:
+macOS or Linux:
 ```bash
 cd RITSimulationofProteinSimulations/
 ```
+<br/>
 
 Launch the API server by typing in the command line:
 ```bash
 uvicorn server:app --reload
 ```
 
-Navigate to the jbio-web-app subdirectory by typing in the command line if on Windows:
+Navigate to the jbio-web-app subdirectory by typing in the command line 
+
+Windows:
 ```bash
 cd frontend\jbio-web-app\
 ```
 
-If on macOS or Linux:
+macOS or Linux:
 ```bash
 cd frontend/jbio-web-app/
 ```
+
+<br/>
 
 Launch the application by typing in the command line:
 ```bash
@@ -95,6 +102,8 @@ macOS or Linux:
 ~/RITSimulationofProteinSimulations/frontend/jbio-web-app
 ```
 
+<br/>
+
 To do so, open the terminal, which is usually found under the View tab in most IDEs, and select the Terminal button. It will open up the terminal in the default directory. Then navigate to the desired directory by typing
 
 Windows:
@@ -106,6 +115,8 @@ macOS or Linux:
 ```bash
 cd frontend/jbio-web-app
 ```
+
+<br/>
 
 This should put you in the correct directory, so typing 
 
@@ -165,6 +176,8 @@ If on macOS or Linux, the Jest tests are stored in
 ~/RITSimulationofProteinSimulations/frontend/jbio-web-app/src/components/__tests__
 ```
 
+<br/>
+
 Currently, there is a test class for each frontend component in the project. They all vary depending on the component but all have a similar format that should be used when creating more tests. For starters, these imports are needed for jest tests:
 
 ![FrontendTestingImage3.png](READMEImages%2FFrontendTestingImage3.png)
@@ -202,6 +215,8 @@ python3 -m unittest backend.Electro1DTests.ProteinTest
 OR
 
 Some IDEs have a built-in run function for files that can be executed. If you wish to do this, navigate to the ProteinTest.py or any other test file and click the run button.
+
+<br/>
 
 Analyze results from the tests being run and modify the test or method being tested if failed.
 

@@ -7,6 +7,6 @@ class ProteinInfo(BaseModel):
     frontend system
     """
     name: str
-    molecular_weight: int
-    descent_speed: float
-    ncbi_link: str
+    molecularWeight: int
+    color: str
+    link: str

@@ -3,7 +3,7 @@ import os
 
 from fastapi import APIRouter, UploadFile
 from typing import Any
-import math
+import random
 
 from backend.API.BodyFormats.ResponseClasses import ProteinInfo
 from backend.Electro1D import Protein
@@ -15,7 +15,7 @@ router = APIRouter(
 
 
 @router.get("/standards", response_model=list[ProteinInfo])
-async def standards(acrylamide: float, voltage: float) -> Any:
+async def standards() -> Any:
     """
     This function will get the information for the
     standards in the simulation. This currently includes the
@@ -25,44 +25,28 @@ async def standards(acrylamide: float, voltage: float) -> Any:
     NOTE: we still need to analyze the data to
     :return: The data. Comes in a json format, but accessed easily.
     """
-    return [{'name': 'D Chain D, Beta-galactosidase',
-             'molecular_weight': 116062,
-             'descent_speed': math.log(116062, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/6X1Q'},
-            {'name': 'A Chain A, GLYCOGEN PHOSPHORYLASE B',
-             'molecular_weight': 97158,
-             'descent_speed': math.log(97158, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/2PRI'},
-            {'name': 'B Chain B, Serum albumin',
-             'molecular_weight': 66463,
-             'descent_speed': math.log(66463, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/4F5S'},
-            {'name': 'Ovalbumin [Gallus gallus]',
-             'molecular_weight': 43772,
-             'descent_speed': math.log(43772, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1'},
-            {'name': 'Carbonic anhydrase 2 [Mus musculus]',
-             'molecular_weight': 29003,
-             'descent_speed': math.log(29003, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1'},
-            {'name': 'Pancreatic trypsin inhibitor [Musca domestica]',
-             'molecular_weight': 22709,
-             'descent_speed': math.log(22709, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
-            {'name': 'LYS_OSTED',
-             'molecular_weight': 14918,
-             'descent_speed': math.log(14918, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
-            {'name': 'aprotinin [synthetic construct]',
-             'molecular_weight': 6618,
-             'descent_speed': math.log(6618, 10) * acrylamide * voltage,
-             'ncbi_link': 'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'}
+    return [{'name': "B-Galactosidase", 'molecularWeight': 116250, 'color': '#08c8ae',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/6X1Q'},
+            {'name': "Phosphorylase B", 'molecularWeight': 97400, 'color': '#cacf50',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/2PRI'},
+            {'name': "Serum Albumin", 'molecularWeight': 66200, 'color': '#41add5',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/4F5S'},
+            {'name': "Ovalbumin", 'molecularWeight': 45000, 'color': '#a6106a',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1'},
+            {'name': "Carbonic Anhydrase", 'molecularWeight': 31000, 'color': '#87cba7',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1'},
+            {'name': "Trypsin Inhibitor", 'molecularWeight': 21500, 'color': '#180ea4',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
+            {'name': "Lysozyme", 'molecularWeight': 14400, 'color': '#2e8c7b',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
+            {'name': "Aprotinin", 'molecularWeight': 6500, 'color': '#be2908',
+             'link': 'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
+            {'name': "BlueDye", 'molecularWeight': 500, 'color': '#0000FF', 'link': ''}
             ]
 
 
 @router.post("/ProteinInfo/File", response_model=list[ProteinInfo])
-async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float) \
-        -> Any:
+async def fileGetProteinInfo(file: UploadFile) -> Any:
     """
     This call will take a file (in the fasta format) and parse
     the information, returning a list of proteins ready for
@@ -85,17 +69,17 @@ async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float
         for seq_id in protein_dict.keys():
             if len(protein_dict[seq_id][0].split('|')) > 0:
                 return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
-                                    "molecular_weight": weight_list[i],
-                                    "descent_speed": acrylamide * voltage * math.log(weight_list[i], 10),
-                                    "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/" +
-                                                 protein_dict[seq_id][0].split('|')[1]
+                                    "molecularWeight": weight_list[i],
+                                    "color": '#' + hex(random.randrange(0, 2**24))[2:],
+                                    "link": "https://www.ncbi.nlm.nih.gov/protein/" +
+                                            protein_dict[seq_id][0].split('|')[1]
                                     })
             else:
                 return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
-                                    "molecular_weight": weight_list[i],
-                                    "descent_speed": acrylamide * voltage * weight_list[i],
-                                    "ncbi_link": "https://www.ncbi.nlm.nih.gov/protein/" +
-                                                 protein_dict[seq_id][0].split('|')[0]
+                                    "molecularWeight": weight_list[i],
+                                    "color": '#' + hex(random.randrange(0, 2**24))[2:],
+                                    "link": "https://www.ncbi.nlm.nih.gov/protein/" +
+                                            protein_dict[seq_id][0].split('|')[0]
                                     })
             i += 1
     except Exception:
@@ -108,8 +92,7 @@ async def fileGetProteinInfo(file: UploadFile, acrylamide: float, voltage: float
 
 
 @router.post("/BatchFileProtein/Batch", response_model=list[list[ProteinInfo]])
-async def batchFileGetProteinInfo(files: list[UploadFile], acrylamide: float, voltage: float) \
-        -> Any:
+async def batchFileGetProteinInfo(files: list[UploadFile]) -> Any:
     """
     This function will take a batch of files (in the fasta format),
     and parse the information, returning a dictionary of wells,
@@ -119,6 +102,6 @@ async def batchFileGetProteinInfo(files: list[UploadFile], acrylamide: float, vo
     well_data = []
     i = 0
     for file in files:
-        well_data.append(await fileGetProteinInfo(file, acrylamide, voltage))
+        well_data.append(await fileGetProteinInfo(file))
         i += 1
     return well_data

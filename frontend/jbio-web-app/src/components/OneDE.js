@@ -3,15 +3,15 @@ import '../ElectrophoresisCell.css';
 
 
 const initialProteinStandards = [
-  { name: "B-Galactosidase", molecularWeight: 116250, velocity:0, color: '#08c8ae', link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
-  { name: "Phosphorylase B", molecularWeight: 97400, velocity:0, color: '#cacf50', link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
-  { name: "Serum Albumin", molecularWeight: 66200, velocity:0, color: '#41add5', link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
-  { name: "Ovalbumin", molecularWeight: 45000, velocity:0, color: '#a6106a', link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
-  { name: "Carbonic Anhydrase", molecularWeight: 31000, velocity:0, color: '#87cba7', link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
-  { name: "Trypsin Inhibitor", molecularWeight: 21500, velocity:0, color: '#180ea4', link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
-  { name: "Lysozyme", molecularWeight: 14400, velocity:0, color: '#2e8c7b', link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
-  { name: "Aprotinin", molecularWeight: 6500, velocity:0, color: '#be2908', link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
-  { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
+  { name: "B-Galactosidase", molecularWeight: 116250, color: '#08c8ae', link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
+  { name: "Phosphorylase B", molecularWeight: 97400, color: '#cacf50', link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
+  { name: "Serum Albumin", molecularWeight: 66200, color: '#41add5', link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
+  { name: "Ovalbumin", molecularWeight: 45000, color: '#a6106a', link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, color: '#87cba7', link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, color: '#180ea4', link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
+  { name: "Lysozyme", molecularWeight: 14400, color: '#2e8c7b', link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
+  { name: "Aprotinin", molecularWeight: 6500, color: '#be2908', link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
+  { name: "BlueDye", molecularWeight: 500, color: '#0000FF', link: '' }
 ];
 
 
@@ -24,7 +24,7 @@ const OneDE = () => {
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
-  const [wellResponses, setWellResponses] = useState({});
+  const [wellResponses, setWellResponses] = useState({0: initialProteinStandards});
   const [files, setFiles] = useState({});
 
 
@@ -42,9 +42,9 @@ const OneDE = () => {
   };
 
 
-  const handleProteinClick = (protein) => {
+  const handleProteinClick = (protein, index) => {
     // Find the protein's current data including its Rf value
-    const proteinData = proteinStandards.find(p => p.name === protein.name);
+    const proteinData = wellResponses[index].find(p => p.name === protein.name);
     setSelectedProtein({
       ...proteinData,
       rfValue: proteinData.migrationDistance // Assuming migrationDistance is the Rf value
@@ -185,11 +185,7 @@ const OneDE = () => {
       }, initialMoveDuration * 1000); // Convert the duration from seconds to milliseconds
     }
   };
-  
- 
 
-
- 
  
   const stopAllProteins = () => {
     proteinStandards.forEach(protein => {
@@ -274,7 +270,7 @@ const OneDE = () => {
             ...prevResponses,
             [wellIndex]: responseData,
           }));
-          console.log("File uploaded successfully for well index ${wellIndex}. Server responded with:, responseData");
+          console.log("File uploaded successfully for well index "+ wellIndex + ". Server responded with:" + wellResponses[wellIndex]);
         } else {
           console.error("File upload failed", response.statusText);
         }
@@ -361,7 +357,7 @@ const OneDE = () => {
             <h3>Protein Information</h3>
             <p>Name: {selectedProtein.name}</p>
             <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
-            <p>Rf Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
+            <p>Rm Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
             <p>
             NCBI Link: <a href={selectedProtein.link} target="_blank" rel="noopener noreferrer">
             {selectedProtein.link}
@@ -387,22 +383,31 @@ const OneDE = () => {
                 { idx !== 0 && <div className="divider"></div> }
                 <div className="well">
                   <form action="/" className="wellForm">
-                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}} 
+                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}}
                     onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
                     />
                   </form>
-             
+
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
                     return (
                       <div key={index}
                         className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
-                        onClick={() => handleProteinClick(protein)}
+                        onClick={() => handleProteinClick(protein, 0)}
                         style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}
                       </div>
                     );
                   })}
+
+                  {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
+                      <div key={proteinIndex}
+                           className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
+                           onClick={() => handleProteinClick(protein, idx)}
+                           style={{ cursor: 'pointer', backgroundColor: protein.color }}>
+                        {/* Protein band content */}
+                      </div>
+                  ))}
                 </div>
               </React.Fragment>
             ))}

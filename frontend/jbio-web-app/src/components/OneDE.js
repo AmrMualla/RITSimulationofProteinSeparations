@@ -3,15 +3,15 @@ import '../ElectrophoresisCell.css';
 
 
 const initialProteinStandards = [
-  { name: "B-Galactosidase", molecularWeight: 116250, color: '#08c8ae', link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
-  { name: "Phosphorylase B", molecularWeight: 97400, color: '#cacf50', link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
-  { name: "Serum Albumin", molecularWeight: 66200, color: '#41add5', link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
-  { name: "Ovalbumin", molecularWeight: 45000, color: '#a6106a', link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
-  { name: "Carbonic Anhydrase", molecularWeight: 31000, color: '#87cba7', link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
-  { name: "Trypsin Inhibitor", molecularWeight: 21500, color: '#180ea4', link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
-  { name: "Lysozyme", molecularWeight: 14400, color: '#2e8c7b', link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
-  { name: "Aprotinin", molecularWeight: 6500, color: '#be2908', link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
-  { name: "BlueDye", molecularWeight: 500, color: '#0000FF', link: '' }
+  { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: '#08c8ae', link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
+  { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: '#cacf50', link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
+  { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: '#41add5', link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
+  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: '#a6106a', link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: '#87cba7', link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: '#180ea4', link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
+  { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: '#2e8c7b', link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
+  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: '#be2908', link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
+  { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: '#0000FF', link: '' }
 ];
 
 
@@ -54,54 +54,75 @@ const OneDE = () => {
   useEffect(() => {
     calculateMigrationDistances();
   }, [acrylamidePercentage]);
- 
+
+// Helper function to sanitize protein names to be used as valid CSS class names
+  const sanitizeClassName = (name) => {
+    // This example replaces spaces and semicolons with dashes, and removes brackets.
+    // You might need to adjust the replacement logic based on actual protein names.
+    return name.replace(/[\s;[\]]+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
+  };
+
   const updateAnimationStyles = (protein) => {
-    const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
- 
+    const sanitizedProteinName = sanitizeClassName(protein.name);
+    const animationName = `moveProteinAfterInitial${sanitizedProteinName}`;
+
     // Remove any existing style element for this animation
     const existingStyleElement = document.getElementById(animationName);
     if (existingStyleElement) {
       existingStyleElement.parentNode.removeChild(existingStyleElement);
     }
- 
+
     // Create new keyframes with updated values
     const newKeyframes = `@keyframes ${animationName} {
-      from { transform: translateY(58.7px); }
-      to { transform: translateY(${protein.migrationDistance * 587}px); }
-    }`;
- 
-   
+    from { transform: translateY(58.7px); }
+    to { transform: translateY(${protein.migrationDistance * 587}px); }
+  }`;
+
     const newStyleElement = document.createElement("style");
     newStyleElement.id = animationName;
     newStyleElement.innerText = newKeyframes;
     document.head.appendChild(newStyleElement);
- 
-   
-    document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
+
+    document.querySelectorAll(`.well .protein-${sanitizedProteinName}`).forEach(element => {
       element.style.animation = 'none';
-     
+
+      // Trigger reflow
       void element.offsetWidth;
+
       // Apply new animation
       element.style.animation = `${animationName} ${protein.remainingDuration}s linear forwards`;
     });
   };
 
- 
+
   const calculateMigrationDistances = () => {
     console.log("calculateMigrationDistances function called with acrylamide percentage:", acrylamidePercentage);
-  
+
     const formula = getFormula(acrylamidePercentage);
-    const updatedProteins = proteinStandards.map(protein => { 
-      const logMW = Math.log10(protein.molecularWeight);
-      let migrationDistance = formula(logMW);
-      migrationDistance = Math.min(migrationDistance, 1);
-  
-      return { ...protein, migrationDistance };
-    });
-    console.log("Updated proteins:", updatedProteins); 
-    setProteinStandards(updatedProteins);
-    updatedProteins.forEach(updateAnimationStyles);
+
+    // Updated to iterate over each well in wellResponses
+    const updatedWellResponses = Object.entries(wellResponses).reduce((acc, [wellIndex, proteins]) => {
+      // Calculate migration distance for each protein in the current well
+      const updatedProteins = proteins.map(protein => {
+        const logMW = Math.log10(protein.molecularWeight);
+        let migrationDistance = formula(logMW);
+        migrationDistance = Math.min(migrationDistance, 1); // Ensure migration distance is within bounds
+
+        // Assume updateAnimationStyles needs to be called per protein here as well
+        updateAnimationStyles({...protein, migrationDistance});
+
+        return { ...protein, migrationDistance };
+      });
+
+      // Accumulate the updated proteins back into an object, keyed by well index
+      acc[wellIndex] = updatedProteins;
+      return acc;
+    }, {});
+
+    console.log("Updated wellResponses:", updatedWellResponses);
+    setWellResponses(updatedWellResponses); // Update state with new distances for all wells
   };
+
   
  
 
@@ -126,61 +147,65 @@ const OneDE = () => {
 
   const initialMoveDuration = 1;
   const initialMoveDistance = 58.7;
- 
+
   const startAnimation = () => {
     if (!animationInProgress && isAtStartingPoint) {
       setAnimationInProgress(true);
       setIsAtStartingPoint(false);
       calculateMigrationDistances();
-      
+
       // Parse the numeric part of the voltageValue state
       const voltage = parseInt(voltageValue.replace('V', ''));
       const baseVoltage = 50; // Base voltage for calculation
       const baseDuration = 10; // Base duration for 50V
-  
+
       // Calculate the factor by which to divide the base duration
       // This factor doubles for each doubling of the voltage
       const durationFactor = baseVoltage / voltage;
-  
+
       // Adjusted duration based on the current voltage
       const adjustedDuration = baseDuration * durationFactor;
       console.log(adjustedDuration)
-      proteinStandards.forEach(protein => {
-        document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
-          element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
+      Object.keys(wellResponses).forEach(wellIndex => {
+        wellResponses[wellIndex].forEach(protein => {
+          document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+            element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
+          });
         });
       });
-  
+
       setTimeout(() => {
-        proteinStandards.forEach(protein => {
-          const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
-  
-          document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`).forEach(element => {
-            const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
-            const keyframes = `@keyframes ${animationName} {
+        Object.keys(wellResponses).forEach(wellIndex => {
+          wellResponses[wellIndex].forEach(protein => {
+            const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
+
+            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+              const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
+              const keyframes = `@keyframes ${animationName} {
               from { transform: translateY(${initialMoveDistance * 587}px); }
               to { transform: translateY(${remainingDistance}px); }
             }`;
-  
-            // Append the keyframes if not already present
-            if (!document.getElementById(animationName)) {
-              const styleSheet = document.createElement("style");
-              styleSheet.id = animationName;
-              styleSheet.innerText = keyframes;
-              document.head.appendChild(styleSheet);
+
+              // Append the keyframes if not already present
+              if (!document.getElementById(animationName)) {
+                const styleSheet = document.createElement("style");
+                styleSheet.id = animationName;
+                styleSheet.innerText = keyframes;
+                document.head.appendChild(styleSheet);
+              }
+
+              // Apply the adjusted duration to the animation
+              element.style.animation = `${animationName} ${adjustedDuration}s linear forwards`;
+            });
+
+            if (protein.name === 'BlueDye') {
+              setTimeout(() => {
+                setBlueDyeReachedBottom(true);
+              }, adjustedDuration * 1000); // Convert the duration from seconds to milliseconds
             }
-  
-            // Apply the adjusted duration to the animation
-            element.style.animation = `${animationName} ${adjustedDuration}s linear forwards`;
           });
-  
-          if (protein.name === 'BlueDye') {
-            setTimeout(() => {
-              setBlueDyeReachedBottom(true);
-            }, adjustedDuration * 1000); // Convert the duration from seconds to milliseconds
-          }
         });
-  
+
         setIsAtStartingPoint(false);
       }, initialMoveDuration * 1000); // Convert the duration from seconds to milliseconds
     }
@@ -188,35 +213,41 @@ const OneDE = () => {
 
  
   const stopAllProteins = () => {
-    proteinStandards.forEach(protein => {
-      const elementSelector = `.well .protein-${protein.name.replace(/\s+/g, '-')}`;
-      document.querySelectorAll(elementSelector).forEach(element => {
-        element.style.animationPlayState = 'paused';
+    Object.keys(wellResponses).forEach(wellIndex => {
+      wellResponses[wellIndex].forEach(protein => {
+        const elementSelector = `.well .protein-${sanitizeClassName(protein.name)}`;
+        document.querySelectorAll(elementSelector).forEach(element => {
+          element.style.animationPlayState = 'paused';
+        });
       });
+      setAnimationInProgress(false);
+      setIsAtStartingPoint(false);
+      setBlueDyeReachedBottom(true);
     });
-    setAnimationInProgress(false);
-    setIsAtStartingPoint(false);
-    setBlueDyeReachedBottom(true);
   };
  
  
   const handleStop = () => {
-    proteinStandards.forEach(protein => {
-      document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-        .forEach(element => {
-          element.style.animationPlayState = 'paused';
-        });
+    Object.keys(wellResponses).forEach(wellIndex => {
+      wellResponses[wellIndex].forEach(protein => {
+        document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`)
+            .forEach(element => {
+              element.style.animationPlayState = 'paused';
+            });
+      });
     });
     setAnimationInProgress(false);
   };
  
  
   const handleRefillWells = () => {
-    proteinStandards.forEach(protein => {
-      document.querySelectorAll(`.well .protein-${protein.name.replace(/\s+/g, '-')}`)
-        .forEach(element => {
-          element.style.animation = 'none';
-        });
+    Object.keys(wellResponses).forEach(wellIndex => {
+      wellResponses[wellIndex].forEach(protein => {
+        document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`)
+            .forEach(element => {
+              element.style.animation = 'none';
+            });
+      });
     });
   
     setAnimationInProgress(false);
@@ -234,7 +265,8 @@ const OneDE = () => {
 
  
   const handleClearWells = () => {
-    // Logic to clear wells
+    handleRefillWells()
+    setWellResponses({0: initialProteinStandards});
   };
 
 

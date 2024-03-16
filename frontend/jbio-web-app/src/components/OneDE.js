@@ -302,7 +302,7 @@ const OneDE = () => {
             ...prevResponses,
             [wellIndex]: responseData,
           }));
-          console.log("File uploaded successfully for well index "+ wellIndex + ". Server responded with:" + wellResponses[wellIndex]);
+          console.log(fileToUpload.name + " uploaded successfully for well index "+ wellIndex + ".");
         } else {
           console.error("File upload failed", response.statusText);
         }

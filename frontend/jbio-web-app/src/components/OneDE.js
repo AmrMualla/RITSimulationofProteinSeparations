@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import '../ElectrophoresisCell.css';
 
-
+const bandColors = {
+  "B-Galactosidase": "#08c8ae",
+  "Phosphorylase B": "#cacf50",
+  "Serum Albumin": "#41add5",
+  "Ovalbumin": "#a6106a",
+  "Carbonic Anhydrase": "#87cba7",
+  "Trypsin Inhibitor": "#180ea4",
+  "Lysozyme": "#2e8c7b",
+  "Aprotinin": "#be2908",
+  "BlueDye": "#0000FF",
+}
 const initialProteinStandards = [
-  { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: '#08c8ae', link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
-  { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: '#cacf50', link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
-  { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: '#41add5', link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
-  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: '#a6106a', link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
-  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: '#87cba7', link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
-  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: '#180ea4', link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
-  { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: '#2e8c7b', link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
-  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: '#be2908', link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
-  { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: '#0000FF', link: '' }
+  { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: bandColors["B-Galactosidase"], link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
+  { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: bandColors["Phosphorylase B"], link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
+  { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: bandColors["Serum Albumin"], link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
+  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors["Ovalbumin"], link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: bandColors["Carbonic Anhydrase"], link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: bandColors["Trypsin Inhibitor"], link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
+  { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: bandColors["Lysozyme"], link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
+  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: bandColors["Aprotinin"], link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
+  { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: bandColors["BlueDye"], link: '' }
 ];
 
 
@@ -346,6 +356,7 @@ const OneDE = () => {
                           disabled={!isAtStartingPoint} 
                       />
                       <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                      <span className='span-color' style={{backgroundColor: protein.color}}></span>
                   </div>
               );
           })}
@@ -422,6 +433,8 @@ const OneDE = () => {
 
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
+                    if (bandColors[proteinName]) protein.color = bandColors[proteinName];
+                    else bandColors[proteinName] = protein.color;
                     return (
                       <div key={index}
                         className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}

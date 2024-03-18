@@ -439,6 +439,22 @@
     z-index: 10;
     /* Other styling as needed */
   }
+
+  .span-color {
+    width: 150px;
+    height: 10px;
+    border: #000 2px solid;
+    float: right;
+  }
+
+  input[type=checkbox]:checked + label {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  input[type=checkbox]:not(:checked) ~ .span-color {
+    opacity: 0;
+  }
   
   .close-button {
     position: absolute;

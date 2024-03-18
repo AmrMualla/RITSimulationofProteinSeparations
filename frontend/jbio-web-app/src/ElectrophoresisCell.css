@@ -161,7 +161,7 @@
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
-    background-color: #00FFFF; 
+    background-color: #87CEEB; 
     border-radius: 0 0 5px 5px; 
     z-index: 1; 
 }
@@ -174,7 +174,7 @@
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
-    background-color: #00FFFF; 
+    background-color: #87CEEB; 
     border-radius: 0 0 5px 5px; 
     z-index: 1; 
 }
@@ -210,9 +210,9 @@
     width: 25em;
     height: 49em;
     border: 3px solid #4682A9;
-    background-color: #749BC2; 
+    background-color: #F0F8FF; 
     border-radius: 0 0 5px 5px;
-    padding: 5px;
+    padding: 15px;
 }
 
 .onede-box {

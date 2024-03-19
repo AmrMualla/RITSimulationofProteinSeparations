@@ -215,6 +215,12 @@
     padding: 15px;
 }
 
+.options-box.dark-mode {
+    border-color: #565758;
+    background-color: #333; /* Dark mode background color */
+    color: white; /* Dark mode text color */
+}
+
 .onede-box {
     position: relative;
     top: 74em;

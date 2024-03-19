@@ -1,0 +1,15 @@
+.sidebar {
+    background-color: #93c1e9; 
+}
+
+.sidebar.dark-mode {
+    background-color: #464647; 
+}
+
+.sidebar-header {
+    background-color: #ffffff
+}
+
+.sidebar-header.dark-mode {
+    background-color: #464647
+}

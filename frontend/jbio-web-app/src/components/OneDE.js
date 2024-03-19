@@ -14,6 +14,12 @@ const initialProteinStandards = [
   { name: "BlueDye", molecularWeight: 500, velocity:0, color: '#0000FF' }
 ];
 
+function toggleDarkMode() {
+  // Toggle the dark mode class on the options box
+  const optionsBox = document.querySelector('.options-box');
+  optionsBox.classList.toggle('dark-mode');
+}
+
 
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);

@@ -13,15 +13,15 @@ const bandColors = {
   "BlueDye": "#0000FF",
 }
 const initialProteinStandards = [
-  { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: bandColors["B-Galactosidase"], link:'https://www.ncbi.nlm.nih.gov/protein/6X1Q' },
-  { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: bandColors["Phosphorylase B"], link:'https://www.ncbi.nlm.nih.gov/protein/2PRI' },
-  { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: bandColors["Serum Albumin"], link:'https://www.ncbi.nlm.nih.gov/protein/4F5S' },
-  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors["Ovalbumin"], link:'https://www.ncbi.nlm.nih.gov/protein/AAA68882.1' },
-  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: bandColors["Carbonic Anhydrase"], link:'https://www.ncbi.nlm.nih.gov/protein/NP_001344263.1' },
-  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: bandColors["Trypsin Inhibitor"], link:'https://www.ncbi.nlm.nih.gov/protein/AFP63821.1'},
-  { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: bandColors["Lysozyme"], link:'https://www.ncbi.nlm.nih.gov/protein/Q6L6Q5.1'},
-  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: bandColors["Aprotinin"], link:'https://www.ncbi.nlm.nih.gov/protein/CAA01755.1'},
-  { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: bandColors["BlueDye"], link: '' }
+  { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: bandColors["B-Galactosidase"], id_num: '6X1Q', id_str: 'pdb' },
+  { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: bandColors["Phosphorylase B"],  id_num: '2PRI', id_str: 'pdb' },
+  { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: bandColors["Serum Albumin"],  id_num: '4F5S', id_str: 'pdb' },
+  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors["Ovalbumin"],  id_num: 'AAA68882.1', id_str: '' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: bandColors["Carbonic Anhydrase"],  id_num: 'NP_001344263.1', id_str: '' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: bandColors["Trypsin Inhibitor"],  id_num: 'AFP63821.1', id_str: '' },
+  { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: bandColors["Lysozyme"],  id_num: 'Q6L6Q5.1', id_str: 'sp' },
+  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: bandColors["Aprotinin"], id_num: 'CAA01755.1', id_str: '' },
+  { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: bandColors["BlueDye"], id_num: '', id_str: ''  }
 ];
 
 
@@ -402,8 +402,8 @@ const OneDE = () => {
             <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
             <p>Rm Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
             <p>
-            NCBI Link: <a href={selectedProtein.link} target="_blank" rel="noopener noreferrer">
-            {selectedProtein.link}
+            NCBI Link: <a href={'https://www.ncbi.nlm.nih.gov/protein/' + selectedProtein.id_num} target="_blank" rel="noopener noreferrer">
+            {'https://www.ncbi.nlm.nih.gov/protein/' + selectedProtein.id_num}
             </a>
           </p>
           </div>

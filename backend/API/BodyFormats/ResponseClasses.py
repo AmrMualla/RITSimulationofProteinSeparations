@@ -9,4 +9,5 @@ class ProteinInfo(BaseModel):
     name: str
     molecularWeight: int
     color: str
-    link: str
+    id_num: str
+    id_str: str

@@ -24,7 +24,8 @@ async def getProteinInfo(protein_name: str):
         'short_name': None,
         'long_name': None,
         'molecular_weight': None,
-        'ncbi_id': None
+        'id_num': None,
+        'id_str': None
     }
 
 
@@ -60,6 +61,7 @@ async def fileGetProteinInfo(protein_file: UploadFile):
             'short_name': None,
             'long_name': None,
             'molecular_weight': None,
-            'ncbi_id': None
+            'id_num': None,
+            'id_str': None
         }
     ]

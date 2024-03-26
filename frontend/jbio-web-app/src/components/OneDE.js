@@ -433,8 +433,6 @@ const OneDE = () => {
 
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
-                    if (bandColors[[p.id_str, id_num]]) protein.color = bandColors[[p.id_str, id_num]];
-                    else bandColors[[p.id_str, id_num]] = protein.color;
                     return (
                       <div key={index}
                         className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
@@ -445,6 +443,13 @@ const OneDE = () => {
                     );
                   })}
 
+                  {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
+                    if (bandColors[[protein.id_str, protein.id_num]]) {
+                      protein.color = bandColors[[protein.id_str, protein.id_num]];
+                    } else {
+                      bandColors[[protein.id_str, protein.id_num]] = protein.color;
+                    }
+                  })}
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
                            className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}

@@ -522,8 +522,8 @@ const OneDE = () => {
 
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
-                    if (bandColors[[p.id_str, id_num]]) protein.color = bandColors[[p.id_str, id_num]];
-                    else bandColors[[p.id_str, id_num]] = protein.color;
+                    if (bandColors[[protein.id_str, protein.id_num]]) protein.color = bandColors[[protein.id_str, protein.id_num]];
+                    else bandColors[[protein.id_str, protein.id_num]] = protein.color;
                     return (
                       <div key={index}
                         className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}

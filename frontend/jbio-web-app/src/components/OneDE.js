@@ -25,6 +25,89 @@ const initialProteinStandards = [
 ];
 
 
+const GoogleScatterChart = ({ proteinStandards }) => {
+  useEffect(() => {
+    window.google.charts.load('current', { packages: ['corechart'] });
+    window.google.charts.setOnLoadCallback(drawChart);
+  }, [proteinStandards]);
+
+  const linearRegression = (data) => {
+    let n = data.length;
+    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0, sumYY = 0;
+    data.forEach(point => {
+      let x = point[0], y = point[1];
+      sumX += x;
+      sumY += y;
+      sumXY += x * y;
+      sumXX += x * x;
+      sumYY += y * y;
+    });
+
+    let slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    let intercept = (sumY - slope * sumX) / n;
+    let rSquared = Math.pow((n * sumXY - sumX * sumY) / Math.sqrt((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY)), 2);
+    return { slope, intercept, rSquared };
+  };
+
+  const drawChart = () => {
+    const data = new window.google.visualization.DataTable();
+    data.addColumn('number', 'Relative Migration');
+    data.addColumn('number', 'Log Molecular Weight');
+    data.addColumn({ type: 'string', role: 'style' });
+    data.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
+    proteinStandards.forEach(protein => {
+      const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 16px;">
+                            <strong>${protein.name}</strong><br>
+                            Relative Migration: ${protein.migrationDistance.toFixed(2)}<br>
+                            Log Molecular Weight: ${Math.log10(protein.molecularWeight).toFixed(2)}
+                          </div>`;
+      data.addRow([
+        protein.migrationDistance,
+        Math.log10(protein.molecularWeight),
+        `point { fill-color: ${protein.color}; }`, 
+        tooltipContent
+      ]);
+    });
+
+    const chartData = proteinStandards.map(protein => [
+      protein.migrationDistance, 
+      Math.log10(protein.molecularWeight)
+    ]);
+
+    const { slope, intercept, rSquared } = linearRegression(chartData);
+    const options = {
+      title: 'Log MW vs. Relative Migration',
+      hAxis: { title: 'Relative Migration', minValue: 0 },
+      vAxis: { title: 'Log Molecular Weight', minValue: 0 },
+      legend: 'none',
+      tooltip: { isHtml: true },
+      pointSize: 5,
+      trendlines: { 0: { 
+          type: 'linear', 
+          visibleInLegend: true, 
+          lineWidth: 3, 
+          opacity: 0.3,
+          showR2: true,
+          color: 'black' 
+        } 
+      }
+    };
+    const chart = new window.google.visualization.ScatterChart(document.getElementById('scatter_chart_div'));
+    chart.draw(data, options);
+
+    document.getElementById('regression-info').innerHTML = `Slope: ${slope.toFixed(4)}, Intercept: ${intercept.toFixed(4)}, R²: ${rSquared.toFixed(4)}`;
+  };
+
+  return (
+    <>
+      <div id="scatter_chart_div" style={{ width: '100%', height: '400px' }}></div>
+      <div id="regression-info" style={{ marginTop: '10px' }}></div>
+    </>
+  );
+};
+
+
+
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
@@ -36,8 +119,13 @@ const OneDE = () => {
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
   const [wellResponses, setWellResponses] = useState({0: initialProteinStandards});
   const [files, setFiles] = useState({});
+  const [showChart, setShowChart] = useState(false);
 
-
+  const toggleChart = () => {
+    setShowChart(prevShowChart => !prevShowChart); // Toggles the visibility of the chart
+  };
+  
+  
   const handleAddWell = () => {
     if (wellsCount < 15) {
       setWellsCount(wellsCount + 1);
@@ -93,7 +181,7 @@ const OneDE = () => {
     newStyleElement.innerText = newKeyframes;
     document.head.appendChild(newStyleElement);
 
-    document.querySelectorAll(`.protein-${sanitizedProteinName}`).forEach(element => {
+    document.querySelectorAll(`.well .protein-${sanitizedProteinName}`).forEach(element => {
       element.style.animation = 'none';
 
       // Trigger reflow
@@ -178,7 +266,7 @@ const OneDE = () => {
       console.log(adjustedDuration)
       Object.keys(wellResponses).forEach(wellIndex => {
         wellResponses[wellIndex].forEach(protein => {
-          document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+          document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
             element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
           });
         });
@@ -189,7 +277,7 @@ const OneDE = () => {
           wellResponses[wellIndex].forEach(protein => {
             const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
 
-            document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
               const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
               const keyframes = `@keyframes ${animationName} {
               from { transform: translateY(${initialMoveDistance * 587}px); }
@@ -225,7 +313,7 @@ const OneDE = () => {
   const stopAllProteins = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        const elementSelector = `.protein-${sanitizeClassName(protein.name)}`;
+        const elementSelector = `.well .protein-${sanitizeClassName(protein.name)}`;
         document.querySelectorAll(elementSelector).forEach(element => {
           element.style.animationPlayState = 'paused';
         });
@@ -240,7 +328,7 @@ const OneDE = () => {
   const handleStop = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
+        document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`)
             .forEach(element => {
               element.style.animationPlayState = 'paused';
             });
@@ -253,7 +341,7 @@ const OneDE = () => {
   const handleRefillWells = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
+        document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`)
             .forEach(element => {
               element.style.animation = 'none';
             });
@@ -322,112 +410,49 @@ const OneDE = () => {
     }
   };
 
-  // Handle file selection
-  const handleFilesChange = (event) => {
-    // Store the selected files in the state
-    setFiles(event.target.files);
-  };
-
-  const handleBatchUpload = async () => {
-    // Prevent form submission if no files are selected
-    if (files.length === 0) {
-      alert('Please select a folder to upload.');
-      return;
-    }
-
-    // Prepare the FormData
-    const formData = new FormData();
-    for (const file of files) {
-      formData.append('files', file);
-    }
-
-    // API call to upload files
-    try {
-      // Assuming "http://127.0.0.1:8000/1DElectrophoresis/ProteinInfo/File" is your endpoint
-      const response = await fetch('http://127.0.0.1:8000/1DElectrophoresis/BatchFileProtein/Batch', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-          const responseData = await response.json();
-
-          // Get the next available well index
-          const nextAvailableIndex = Object.keys(wellResponses).length
-                                     ? Math.max(...Object.keys(wellResponses).map(Number)) + 1
-                                     : 0;
-
-          // Update the wellResponses state with the new data
-          for (let i = 0; i < responseData.length; i++)
-             setWellResponses(prevResponses => ({
-            ...prevResponses,
-            [nextAvailableIndex + i]: responseData[i],
-          }));
-        } else {
-          console.error("File upload failed", response.statusText);
-        }
-    } catch (error) {
-      console.error('Error uploading files', error);
-      // Handle error scenario
-    }
-  };
-
-  // Custom submit handler
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the default form submission
-    handleBatchUpload(); // Trigger file upload
-  };
-
-
   return (
     <div className="electrophoresis-wrapper">
       <div className="options-box">
         <div className="control-buttons-container">
-          <button onClick={startAnimation} className="control-button"
-                  disabled={animationInProgress || blueDyeReachedBottom}>Start
-          </button>
-          <button onClick={handleStop} className="control-button"
-                  disabled={!animationInProgress || blueDyeReachedBottom}>Stop
-          </button>
+          <button onClick={startAnimation} className="control-button" disabled={animationInProgress || blueDyeReachedBottom}>Start</button>
+          <button onClick={handleStop} className="control-button" disabled={!animationInProgress || blueDyeReachedBottom}>Stop</button>
           <button onClick={handleRefillWells} className="control-button">Refill Wells</button>
           <button onClick={handleClearWells} className="control-button">Clear Wells</button>
+          <button onClick={toggleChart} className="control-button">Plot</button>
         </div>
         <div className='uploadContainer'>
           <label>Folder upload:</label>
-          <form className='upload' onSubmit={handleSubmit}>
-            <div style={{width: '20em', paddingTop: '10px'}}>
-              <label htmlFor="uploaded" className="submitUpload">Select Files</label>
-              <input type="file" id="uploaded" webkitdirectory=""
-                  directory="" onChange={handleFilesChange} multiple // Allow multiple files to be selected
-              />
+          <form className='upload'>
+            <div style={{width:20 + 'em', paddingTop:10 + 'px'}}>
+              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
+              <input type="file" id="uploaded" webkitdirectory="" />
             </div>
-            <button className="submitUpload" type="submit">Upload</button>
+            <input className="submitUpload" type="submit" />
           </form>
         </div>
         <div className="protein-selection">
           {proteinStandards.map((protein, index) => {
-            if (protein.name === 'BlueDye') return null;
+              if (protein.name === 'BlueDye') return null;
 
 
-            return (
-                <div key={index} className="protein-checkbox">
-                  <input
-                      type="checkbox"
-                      id={`protein-${index}`}
-                      checked={selectedProteins.includes(protein.name)}
-                      onChange={(e) => handleProteinSelection(e, protein.name)}
-                      disabled={!isAtStartingPoint}
-                  />
-                  <label htmlFor={`protein-${index}`}>{protein.name}</label>
-                  <span className='span-color' style={{backgroundColor: protein.color}}></span>
-                </div>
-            );
+              return (
+                  <div key={index} className="protein-checkbox">
+                      <input
+                          type="checkbox"
+                          id={`protein-${index}`}
+                          checked={selectedProteins.includes(protein.name)}
+                          onChange={(e) => handleProteinSelection(e, protein.name)}
+                          disabled={!isAtStartingPoint} 
+                      />
+                      <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                      <span className='span-color' style={{backgroundColor: protein.color}}></span>
+                  </div>
+              );
           })}
         </div>
         <label className="voltage-value-label">Voltage: </label>
         <div>
-          <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}
-                  className="voltage-dropdown-section">
+          <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)} className="voltage-dropdown-section">
             <option value="50V">50V</option>
             <option value="100V">100V</option>
             <option value="150V">150V</option>
@@ -436,11 +461,11 @@ const OneDE = () => {
         </div>
         <label className="acrylamide-percentage-label">Acrylamide %: </label>
         <div>
-          <select
-              value={acrylamidePercentage}
-              onChange={e => setAcrylamidePercentage(e.target.value)}
-              disabled={!isAtStartingPoint}
-              className="acrylamide-dropdown-section">
+          <select 
+            value={acrylamidePercentage} 
+            onChange={e => setAcrylamidePercentage(e.target.value)}
+            disabled={!isAtStartingPoint}
+            className="acrylamide-dropdown-section">
             <option value="7.5%">7.5%</option>
             <option value="10%">10%</option>
             <option value="12%">12%</option>
@@ -459,15 +484,14 @@ const OneDE = () => {
       </div>
       <div className="onede-box">
         {selectedProtein && (
-            <div className="protein-info">
-              <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
-              <h3>Protein Information</h3>
-              <p>Name: {selectedProtein.name}</p>
-              <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
-              <p>Rm Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
-              <p>
-                NCBI Link: <a href={'https://www.ncbi.nlm.nih.gov/protein/' + selectedProtein.id_num} target="_blank"
-                              rel="noopener noreferrer">
+          <div className="protein-info">
+            <button onClick={() => setSelectedProtein(null)} className="close-button">X</button>
+            <h3>Protein Information</h3>
+            <p>Name: {selectedProtein.name}</p>
+            <p>Molecular Weight: {selectedProtein.molecularWeight}</p>
+            <p>Rm Value: {(selectedProtein.rfValue * 100).toFixed(2)}%</p> {/* Converts to percentage */}
+            <p>
+            NCBI Link: <a href={'https://www.ncbi.nlm.nih.gov/protein/' + selectedProtein.id_num} target="_blank" rel="noopener noreferrer">
             {'https://www.ncbi.nlm.nih.gov/protein/' + selectedProtein.id_num}
             </a>
           </p>
@@ -498,6 +522,8 @@ const OneDE = () => {
 
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
+                    if (bandColors[[protein.id_str, protein.id_num]]) protein.color = bandColors[[protein.id_str, protein.id_num]];
+                    else bandColors[[protein.id_str, protein.id_num]] = protein.color;
                     return (
                       <div key={index}
                         className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
@@ -508,13 +534,6 @@ const OneDE = () => {
                     );
                   })}
 
-                  {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
-                    if (bandColors[[protein.id_str, protein.id_num]]) {
-                      protein.color = bandColors[[protein.id_str, protein.id_num]];
-                    } else {
-                      bandColors[[protein.id_str, protein.id_num]] = protein.color;
-                    }
-                  })}
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
                            className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
@@ -535,6 +554,12 @@ const OneDE = () => {
         <label className="acrylamide-label">Acrylamide: {acrylamidePercentage}</label>
         <label className="voltage-label">{voltageValue}</label>
       </div>
+      {showChart && (
+        <div className="chart-overlay">
+          <GoogleScatterChart proteinStandards={proteinStandards} />
+          <button className="close-chart" onClick={() => setShowChart(false)}>Close</button>
+        </div>
+      )}
       <div className="onede-page-instructions-box">
         <h1 className="section-header" id="1de-page-instructions">1DE Simulation Instructions</h1>
         <h2 className="section-header" id="1de-page-instructions">Steps</h2>

@@ -69,7 +69,7 @@ const OneDE = () => {
   const sanitizeClassName = (name) => {
     // This example replaces spaces and semicolons with dashes, and removes brackets.
     // You might need to adjust the replacement logic based on actual protein names.
-    return name.replace(/[\s;[\]]+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
+    return name.replace(/[^a-zA-Z0-9-_]+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
   };
 
   const updateAnimationStyles = (protein) => {
@@ -186,11 +186,13 @@ const OneDE = () => {
 
       setTimeout(() => {
         Object.keys(wellResponses).forEach(wellIndex => {
+          console.log(wellIndex)
           wellResponses[wellIndex].forEach(protein => {
+            console.log(protein.name)
             const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
 
             document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
-              const animationName = `moveProteinAfterInitial${protein.name.replace(/\s+/g, '-')}`;
+              const animationName = `moveProteinAfterInitial${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`;
               const keyframes = `@keyframes ${animationName} {
               from { transform: translateY(${initialMoveDistance * 587}px); }
               to { transform: translateY(${remainingDistance}px); }
@@ -500,7 +502,7 @@ const OneDE = () => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
                     return (
                       <div key={index}
-                        className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
+                        className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
                         onClick={() => handleProteinClick(protein, 0)}
                         style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}
@@ -517,7 +519,7 @@ const OneDE = () => {
                   })}
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
-                           className={`proteinBand protein-${protein.name.replace(/\s+/g, '-')}`}
+                           className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
                            onClick={() => handleProteinClick(protein, idx)}
                            style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}

@@ -195,20 +195,31 @@ const OneDE = () => {
 
   const calculateMigrationDistances = () => {
     console.log("calculateMigrationDistances function called with acrylamide percentage:", acrylamidePercentage);
-  
-    const formula = getFormula(acrylamidePercentage);
-    const updatedProteins = proteinStandards.map(protein => { 
-      const logMW = Math.log10(protein.molecularWeight);
-      let migrationDistance = formula(logMW);
-      migrationDistance = Math.min(migrationDistance, 1);
-  
-      return { ...protein, migrationDistance };
-    });
-    console.log("Updated proteins:", updatedProteins); 
-    setProteinStandards(updatedProteins);
-    updatedProteins.forEach(updateAnimationStyles);
-  };
 
+    const formula = getFormula(acrylamidePercentage);
+
+    // Updated to iterate over each well in wellResponses
+    const updatedWellResponses = Object.entries(wellResponses).reduce((acc, [wellIndex, proteins]) => {
+      // Calculate migration distance for each protein in the current well
+      const updatedProteins = proteins.map(protein => {
+        const logMW = Math.log10(protein.molecularWeight);
+        let migrationDistance = formula(logMW);
+        migrationDistance = Math.min(migrationDistance, 1); // Ensure migration distance is within bounds
+
+        // Assume updateAnimationStyles needs to be called per protein here as well
+        updateAnimationStyles({...protein, migrationDistance});
+
+        return { ...protein, migrationDistance };
+      });
+
+      // Accumulate the updated proteins back into an object, keyed by well index
+      acc[wellIndex] = updatedProteins;
+      return acc;
+    }, {});
+
+    console.log("Updated wellResponses:", updatedWellResponses);
+    setWellResponses(updatedWellResponses); // Update state with new distances for all wells
+  };
   
  
 

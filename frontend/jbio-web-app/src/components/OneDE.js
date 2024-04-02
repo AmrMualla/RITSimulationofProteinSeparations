@@ -24,6 +24,13 @@ const initialProteinStandards = [
   { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: bandColors[["", ""]], id_num: '', id_str: ''  }
 ];
 
+function toggleDarkMode() {
+  // Toggle the dark mode class on the options box
+  const optionsBox = document.querySelector('.options-box');
+  optionsBox.classList.toggle('dark-mode');
+}
+
+
 const GoogleScatterChart = ({ allProteins }) => {
   useEffect(() => {
     window.google.charts.load('current', { packages: ['corechart'] });
@@ -136,8 +143,8 @@ const OneDE = () => {
   const toggleChart = () => {
     setShowChart(prevShowChart => !prevShowChart); // Toggles the visibility of the chart
   };
-
-
+  
+  
   const handleAddWell = () => {
     if (wellsCount < 15) {
       setWellsCount(wellsCount + 1);
@@ -232,7 +239,6 @@ const OneDE = () => {
     console.log("Updated wellResponses:", updatedWellResponses);
     setWellResponses(updatedWellResponses); // Update state with new distances for all wells
   };
-
   
  
 
@@ -291,7 +297,7 @@ const OneDE = () => {
             console.log(protein.name)
             const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
 
-            document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
               const animationName = `moveProteinAfterInitial${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`;
               const keyframes = `@keyframes ${animationName} {
               from { transform: translateY(${initialMoveDistance * 587}px); }

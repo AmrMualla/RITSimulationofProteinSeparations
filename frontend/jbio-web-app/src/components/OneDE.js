@@ -24,6 +24,12 @@ const initialProteinStandards = [
   { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: bandColors[["", ""]], id_num: '', id_str: ''  }
 ];
 
+function toggleDarkMode() {
+  // Toggle the dark mode class on the options box
+  const optionsBox = document.querySelector('.options-box');
+  optionsBox.classList.toggle('dark-mode');
+}
+
 
 const GoogleScatterChart = ({ proteinStandards }) => {
   useEffect(() => {

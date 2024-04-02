@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../components/Sidebar.css';
 
 function Sidebar({ isOpen, toggle }) {
     const [isHoveredGithub, setHoveredGithub] = useState(false);

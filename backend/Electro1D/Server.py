@@ -1,1 +1,0 @@
-from Protein import Protein

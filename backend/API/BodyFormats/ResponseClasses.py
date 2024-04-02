@@ -7,7 +7,7 @@ class ProteinInfo(BaseModel):
     frontend system
     """
     name: str
-    molecularWeight: int
+    molecularWeight: float
     color: str
     id_num: str
     id_str: str

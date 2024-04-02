@@ -492,7 +492,11 @@
     justify-content: center;
     z-index: 100;
   }
+<<<<<<< HEAD
+
+=======
   
+>>>>>>> main
   .close-chart {
     margin-top: 20px;
     padding: 10px 20px;
@@ -500,5 +504,9 @@
     background-color: red;
     color: white;
     cursor: pointer;
+<<<<<<< HEAD
+  }
+=======
   }
   
+>>>>>>> main

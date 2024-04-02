@@ -27,13 +27,14 @@ async def fileGetProteinInfo(file: UploadFile) -> Any:
     """
     protein = Protein
     return_list = []
-    temp_data_file = open("temp_data_file.faa", "w+")
     try:
-        content = file.file.read().decode("utf-8")
-        temp_data_file.write(content)
+        with open("temp_data_file.faa", "w+") as temp_data_file:
+            content = file.file.read().decode("utf-8")
+            temp_data_file.write(content)
 
         protein_dict = protein.parse_protein("temp_data_file.faa")
         weight_list = protein.get_mw("temp_data_file.faa")
+
         i = 0
         for seq_id in protein_dict.keys():
             if len(protein_dict[seq_id][0].split('|')) > 0:
@@ -51,7 +52,7 @@ async def fileGetProteinInfo(file: UploadFile) -> Any:
                                     "id_str": ''
                                     })
             i += 1
-    except Exception:
+    except IOError:
         return {"message": "There was an error uploading the file"}
     finally:
         file.file.close()

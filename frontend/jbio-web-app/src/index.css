@@ -15,7 +15,7 @@ code {
 
 :root {
   /*Blue Theme*/
-  /* --background-color: #f6f6f6;
+  --background-color: #f6f6f6;
   --foreground-color: #6f8ce4;
   --optionsbox-color: #a5cefc;
   --secondary-foreground-color: #7498c2;
@@ -27,10 +27,10 @@ code {
   --primary-text-color: #0a0a0a;
   --secondary-text-color: royalblue;
   --toggle-bg: #f0eb9d;
-  --toggle-fg: #ffd000; */
+  --toggle-fg: #ffd000;
 
   /*Orange Theme*/
-  --background-color: #f6f6f6;
+  /* --background-color: #f6f6f6;
   --foreground-color: #ff9f43;
   --optionsbox-color: #fbd38d;
   --secondary-foreground-color: #f7b76d;
@@ -42,12 +42,12 @@ code {
   --primary-text-color: #0a0a0a;
   --secondary-text-color: #e46e0d;
   --toggle-bg: #f0eb9d;
-  --toggle-fg: #ffd000;
+  --toggle-fg: #ffd000; */
 }
 
 [data-theme="dark"] {
   /*Blue Theme*/
-  /* --background-color: #36393e;
+  --background-color: #36393e;
   --foreground-color: #282b30;
   --optionsbox-color: #282b30;
   --secondary-foreground-color: #1e2124;
@@ -60,10 +60,10 @@ code {
   --secondary-text-color: #7289da;
   --toggle-bg: #283452;
   --toggle-fg: #00a6ff;
-  --check: #ff0000; */
+  --check: #ff0000;
 
   /*Orange Theme*/
-  --background-color: #36393e;
+  /* --background-color: #36393e;
   --foreground-color: #282b30;
   --optionsbox-color: #ffbb55;
   --secondary-foreground-color: #ff8c23;
@@ -74,5 +74,5 @@ code {
   --primary-text-color: #f6f6f6;
   --secondary-text-color: #e46e0d;
   --toggle-bg: #283452;
-  --toggle-fg: #00a6ff;
+  --toggle-fg: #00a6ff; */
 }

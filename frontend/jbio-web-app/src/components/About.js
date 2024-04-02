@@ -39,44 +39,44 @@ function About() {
             <h2 className="section-header" id="current-developers" data-testId = 'currDevs-header'>Current Developers</h2>
             <div className="grid-container">
                 <div className="grid-item">
-                    <img className="profile-icon" src={chase} alt="Chase Amador-pic"/>
-                    <figcaption className="profile-title">Chase Amador</figcaption>
-                    <p>
-                        Bio here...
-                    </p>
-                </div>
-                <div className="grid-item">
-                    <img className="profile-icon" src={beck} alt="Beck Anderson-pic"/>
-                    <figcaption className="profile-title">Beck Anderson</figcaption>
-                    <p>
-                        Bio here...
-                    </p>
-                </div>
-                <div className="grid-item">
                     <img className="profile-icon" src={landon} alt="Landon Heatly-pic"/>
                     <figcaption className="profile-title">Landon Heatly</figcaption>
                     <p>
-                        Bio here...
-                    </p>
-                </div>
-                <div className="grid-item">
-                    <img className="profile-icon" src={mack} alt="Mack Leonard-pic"/>
-                    <figcaption className="profile-title">Mack Leonard</figcaption>
-                    <p>
-                        Bio here...
+                        Project Leader
                     </p>
                 </div>
                 <div className="grid-item">
                     <img className="profile-icon" src={amr} alt="Amr Mualla-pic"/>
                     <figcaption className="profile-title">Amr Mualla</figcaption>
                     <p>
-                        Bio here...
+                        Technical Lead
+                    </p>
+                </div>
+                <div className="grid-item">
+                    <img className="profile-icon" src={beck} alt="Beck Anderson-pic"/>
+                    <figcaption className="profile-title">Beck Anderson</figcaption>
+                    <p>
+                        Head of Communications
+                    </p>
+                </div>
+                <div className="grid-item">
+                    <img className="profile-icon" src={mack} alt="Mack Leonard-pic"/>
+                    <figcaption className="profile-title">Mack Leonard</figcaption>
+                    <p>
+                        Scrum Master
+                    </p>
+                </div>
+                <div className="grid-item">
+                    <img className="profile-icon" src={chase} alt="Chase Amador-pic"/>
+                    <figcaption className="profile-title">Chase Amador</figcaption>
+                    <p>
+                        Testing Lead
                     </p>
                 </div>
             </div>
             <h2 className="section-header" id="project-owner" data-testId = 'projOwner-header'>Project Owner</h2>
             <div className="grid-container">
-                <div className="grid-item">
+                <div className="grid-item-owner">
                     <div style={{
                         display: 'grid',
                         justifyContent: 'center',
@@ -94,7 +94,7 @@ function About() {
                     </p>
                 </div>
             </div>
-            <h2 className="section-header" id="historic-developers" data-testId = 'historicDevs-header'>Historic Developers</h2>
+            <h2 className="section-header" id="historic-developers" data-testId = 'historicDevs-header'></h2>
             <div className="historic-grid">
                 <div className="historic-grid-item">
                     <img className="historic-icon" src={placeholder} alt="profile-icon"/>

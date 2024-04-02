@@ -205,14 +205,15 @@
 .options-box {
     flex-shrink: 0;
     position: relative;
-    top: 102em;
+    top: 98em;
     left: -30em;
     width: 25em;
-    height: 49em;
+    height: 40em;
     border: 3px solid var(--highlight-color);
     background-color: var(--optionsbox-color); 
     border-radius: 0 0 5px 5px;
     padding: 15px;
+    line-height: 2em;
 }
 
 
@@ -446,6 +447,7 @@
     height: 10px;
     border: #000 2px solid;
     float: right;
+    margin-top: .6em;
   }
 
   input[type=checkbox]:checked + label {
@@ -492,11 +494,6 @@
     justify-content: center;
     z-index: 100;
   }
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> main
   .close-chart {
     margin-top: 20px;
     padding: 10px 20px;
@@ -504,9 +501,4 @@
     background-color: red;
     color: white;
     cursor: pointer;
-<<<<<<< HEAD
   }
-=======
-  }
-  
->>>>>>> main

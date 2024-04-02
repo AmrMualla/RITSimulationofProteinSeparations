@@ -3,14 +3,36 @@
     width: 200px;
     height: 200px;
     background: red;
-    margin: 20px;
-    display: grid;
+    margin: 10px;
     justify-content: center;
+}
+
+.grid-item {
+    padding: 0 5px;
+    border: 1px solid var(--highlight-color);
+    border-radius: 5px;
+    box-shadow: 5px 10px var(--highlight-color);
+    margin: 0 20px 20px 0;
+  }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px; 
+}
+
+.grid-item-owner {
+    padding: 0 10px;
+    border: 1px solid var(--highlight-color);
+    border-radius: 5px;
+    box-shadow: 5px 10px var(--highlight-color);
+    margin: 0 20px 20px 0;
+    width: 500px;
 }
 
 .profile-title {
     font-size: 20px;
-    margin-left: 75px;
+    text-align: center;
 }
 
 .historic-icon {
@@ -38,4 +60,6 @@
     border-radius: 5px;
     box-shadow: 5px 10px #6f8ce4;
     margin: 0 20px 20px 0;
+    visibility: hidden; /*Change this to become visible*/
 }
+/*Also add title in js file*/

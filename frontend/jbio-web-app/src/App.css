@@ -268,20 +268,6 @@ button {
   color: var(--icon-color);
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  line-height: 2;
-}
-
-.grid-item {
-  padding: 0 10px;
-  border: 1px solid var(--highlight-color);
-  border-radius: 5px;
-  box-shadow: 5px 10px var(--highlight-color);
-  margin: 0 20px 20px 0;
-}
-
 .navbar-header {
   color: var(--primary-text-color);
   text-decoration: none;

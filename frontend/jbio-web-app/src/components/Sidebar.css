@@ -1,15 +1,7 @@
 .sidebar {
-    background-color: #93c1e9; 
-}
-
-.sidebar.dark-mode {
-    background-color: #464647; 
+    background-color: var(--foreground-color); 
 }
 
 .sidebar-header {
-    background-color: #ffffff
-}
-
-.sidebar-header.dark-mode {
-    background-color: #464647
+    background-color: var(--background-color);
 }

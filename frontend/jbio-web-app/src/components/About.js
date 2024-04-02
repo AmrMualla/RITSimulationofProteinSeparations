@@ -36,26 +36,6 @@ function About() {
                     <li>Publish online: $100000000</li>
                 </ul>
                 <p>Piracy is not a victimless crime</p>
-            <h2 className="section-header" id="project-owner" data-testId = 'projOwner-header'>Project Owner</h2>
-            <div className="grid-container">
-                <div className="grid-item">
-                    <div style={{
-                        display: 'grid',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <img className="profile-icon" src={paul} alt="Paul Craig-pic"/>
-                        <figcaption className="profile-title">Paul Craig</figcaption>
-                    </div>
-                    <p style={{marginLeft: "auto"}}>
-                        Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979,
-                        and his Ph.D. in Biological Chemistry from The University of Michigan in 1985.
-                        Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood clotting;
-                        1985-1988), he spent five years as an analytical biochemistry at BioQuant, Inc., in
-                        Ann Arbor, Michigan before joining RIT in 1993.
-                    </p>
-                </div>
-            </div>
             <h2 className="section-header" id="current-developers" data-testId = 'currDevs-header'>Current Developers</h2>
             <div className="grid-container">
                 <div className="grid-item">
@@ -91,6 +71,26 @@ function About() {
                     <figcaption className="profile-title">Amr Mualla</figcaption>
                     <p>
                         Bio here...
+                    </p>
+                </div>
+            </div>
+            <h2 className="section-header" id="project-owner" data-testId = 'projOwner-header'>Project Owner</h2>
+            <div className="grid-container">
+                <div className="grid-item">
+                    <div style={{
+                        display: 'grid',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <img className="profile-icon" src={paul} alt="Paul Craig-pic"/>
+                        <figcaption className="profile-title">Paul Craig</figcaption>
+                    </div>
+                    <p style={{marginLeft: "auto"}}>
+                        Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979,
+                        and his Ph.D. in Biological Chemistry from The University of Michigan in 1985.
+                        Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood clotting;
+                        1985-1988), he spent five years as an analytical biochemistry at BioQuant, Inc., in
+                        Ann Arbor, Michigan before joining RIT in 1993.
                     </p>
                 </div>
             </div>

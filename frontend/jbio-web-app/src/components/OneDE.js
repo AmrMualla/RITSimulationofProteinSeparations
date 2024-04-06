@@ -128,7 +128,10 @@ const OneDE = () => {
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
   const [voltageValue, setvoltageValue] = useState('50V');
   const [selectedProtein, setSelectedProtein] = useState(null);
+  const [lastSelectedProtein, setLastSelectedProtein] = useState(initialProteinStandards[initialProteinStandards.length - 1]);
   const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [zoomFactor, setZoomFactor] = useState(1);
+  const [startingOffset, setStartingOffset] = useState(0);
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
@@ -166,6 +169,40 @@ const OneDE = () => {
       ...proteinData,
       rfValue: proteinData.migrationDistance // Assuming migrationDistance is the Rf value
     });
+    setLastSelectedProtein({
+      ...proteinData,
+      rfValue: proteinData.migrationDistance
+    });
+  };
+  
+  const handleZoom = (newZoomFactor = 1) => {
+    console.log(newZoomFactor);
+    if (!isAtStartingPoint && !animationInProgress) {
+      if (newZoomFactor == 0) newZoomFactor = 1;
+      else if (newZoomFactor == 1) {
+        newZoomFactor = document.getElementById("zoomSlider").value;
+        document.getElementById("zoomText").value = newZoomFactor;
+      }
+      else if (newZoomFactor == 2) {
+        if (document.getElementById("zoomText").value == "" || document.getElementById("zoomText").value <= 0) return;
+        newZoomFactor = document.getElementById("zoomText").value;
+        document.getElementById("zoomSlider").value = newZoomFactor;
+      }
+      console.log(newZoomFactor);
+      Object.keys(wellResponses).forEach(wellIndex => {
+        wellResponses[wellIndex].forEach(protein => {
+          document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+            let moveDistance = element.getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - startingOffset;
+            element.style.animation = 'none';
+            element.style.transform = `translateY(${(((moveDistance / zoomFactor) * newZoomFactor))}px)`;
+          });
+        });
+      });
+
+      const scrollableWells = document.querySelectorAll(".electrophoresis-cell")[0];
+      scrollableWells.scrollTo(0, document.querySelectorAll(`.protein-${sanitizeClassName(lastSelectedProtein.name)}`)[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - (scrollableWells.clientHeight / 2));
+      setZoomFactor(newZoomFactor);
+    }
   };
  
   useEffect(() => {
@@ -269,6 +306,7 @@ const OneDE = () => {
       setAnimationInProgress(true);
       setIsAtStartingPoint(false);
       calculateMigrationDistances();
+      setStartingOffset(document.querySelectorAll('.protein-BlueDye')[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top);
 
       // Parse the numeric part of the voltageValue state
       const voltage = parseInt(voltageValue.replace('V', ''));
@@ -364,10 +402,12 @@ const OneDE = () => {
         document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
             .forEach(element => {
               element.style.animation = 'none';
+              element.style.transform = 'none';
             });
       });
     });
   
+    setZoomFactor(1);
     setAnimationInProgress(false);
     setIsAtStartingPoint(true);
     setBlueDyeReachedBottom(false);
@@ -385,6 +425,7 @@ const OneDE = () => {
   const handleClearWells = () => {
     handleRefillWells()
     setWellResponses({0: initialProteinStandards});
+    setLastSelectedProtein(initialProteinStandards[initialProteinStandards.length - 1])
   };
 
 
@@ -564,6 +605,10 @@ const OneDE = () => {
           <button className="button1dedrop" onClick={handleDropWell} disabled={wellsCount === 1}>
             Drop Well
           </button>
+        </div>
+        <div>
+          <input onChange={() => handleZoom(1)} type="range" min="1" max="100" defaultValue="1" class="slider" id="zoomSlider"/>
+          <input onInput={() => handleZoom(2)} type="number" min="1" step="1" defaultValue="1" id="zoomText"/>
         </div>
       </div>
       <div className="onede-box">

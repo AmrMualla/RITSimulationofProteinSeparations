@@ -601,15 +601,18 @@ const OneDE = () => {
         
         <div className="electrophoresis-cell">
           <div className="wells-container">
-            {Array.from({ length: wellsCount }).map((_, idx) => (
-              <React.Fragment key={idx}>
-                { idx !== 0 && <div className="divider"></div> }
-                <div className="well">
+          {Array.from({ length: wellsCount }).map((_, idx) => (
+            <React.Fragment key={idx}>
+              {idx !== 0 && <div className="divider"></div>}
+              <div className="well">
+                {/* Conditionally render the input for file uploads only for wells other than the first one */}
+                {idx > 0 && (
                   <form action="/" className="wellForm">
-                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}}
-                    onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
+                    <input type="file" className="wellInput" style={{opacity: 0, position: "absolute", top: 0, left: 0, bottom: 0, right: 0, width: "100%", height: "100%"}}
+                          onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
                     />
                   </form>
+                )}
 
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);

@@ -357,7 +357,13 @@ const OneDE = () => {
     setAnimationInProgress(false);
   };
  
- 
+  const getRandomColor = () => {
+    // Generate a random number between 0 and 0xFFFFFF, then convert it to a hex string
+    const randomColor = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+    // Ensure the string is 6 characters long, padding with leading zeros if necessary
+    return `#${randomColor.padStart(6, '0')}`;
+  };
+  
   const handleRefillWells = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
@@ -618,12 +624,18 @@ const OneDE = () => {
                   })}
 
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
-                    if (bandColors[[protein.id_str, protein.id_num]]) {
-                      protein.color = bandColors[[protein.id_str, protein.id_num]];
-                    } else {
-                      bandColors[[protein.id_str, protein.id_num]] = protein.color;
-                    }
+                    // Check if the color exists in the bandColors mapping, otherwise use a random color
+                    protein.color = bandColors[[protein.id_str, protein.id_num]] || getRandomColor();
+                    return (
+                      <div key={proteinIndex}
+                          className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
+                          onClick={() => handleProteinClick(protein, idx)}
+                          style={{ cursor: 'pointer', backgroundColor: protein.color }}>
+                        {/* Protein band content */}
+                      </div>
+                    );
                   })}
+
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
                            className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}

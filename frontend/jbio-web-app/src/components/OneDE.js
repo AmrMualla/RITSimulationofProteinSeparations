@@ -30,6 +30,13 @@ function toggleDarkMode() {
   optionsBox.classList.toggle('dark-mode');
 }
 
+const persistentColorMapping = {};
+
+const validateHexColor = (color) => {
+  // Regular expression to match the hex color format
+  const regex = /^#[0-9A-Fa-f]{6}$/;
+  return regex.test(color) ? color : '#808080'; // Default to gray if invalid
+};
 
 const GoogleScatterChart = ({ allProteins }) => {
   useEffect(() => {
@@ -63,11 +70,8 @@ const GoogleScatterChart = ({ allProteins }) => {
     data.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
   
     allProteins.forEach(protein => {
-      // Check if `migrationDistance` and `molecularWeight` are defined and are numbers
       const migrationDistance = typeof protein.migrationDistance === 'number' ? protein.migrationDistance.toFixed(2) : null;
       const logMolecularWeight = typeof protein.molecularWeight === 'number' ? Math.log10(protein.molecularWeight).toFixed(2) : null;
-  
-      // Only add the row to the chart data if both values are valid
       if (migrationDistance !== null && logMolecularWeight !== null) {
         const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 16px;">
                                   <strong>${protein.name}</strong><br>
@@ -77,7 +81,7 @@ const GoogleScatterChart = ({ allProteins }) => {
         data.addRow([
           parseFloat(migrationDistance),
           parseFloat(logMolecularWeight),
-          `point { fill-color: ${protein.color}; }`,
+          `point { fill-color: ${validateHexColor(protein.color)}; }`, // Use the validateHexColor function
           tooltipContent
         ]);
       } else {
@@ -147,7 +151,21 @@ const OneDE = () => {
     setShowChart(prevShowChart => !prevShowChart); // Toggles the visibility of the chart
   };
   
+  const updateStandardsWithMigrationDistance = () => {
+    const updatedStandards = proteinStandards.map(protein => {
+      let migrationDistance = getFormula(acrylamidePercentage)(Math.log10(protein.molecularWeight));
+      // Cap the migrationDistance at 1
+      migrationDistance = Math.min(migrationDistance, 1);
+      return { ...protein, migrationDistance };
+    });
   
+    setProteinStandards(updatedStandards);
+  };
+  
+  useEffect(() => {
+    updateStandardsWithMigrationDistance();
+  }, [acrylamidePercentage]); // Add other dependencies as necessary
+
   const handleAddWell = () => {
     if (wellsCount < 15) {
       setWellsCount(wellsCount + 1);
@@ -275,6 +293,7 @@ const OneDE = () => {
 
     console.log("Updated wellResponses:", updatedWellResponses);
     setWellResponses(updatedWellResponses); // Update state with new distances for all wells
+    updateStandardsWithMigrationDistance();
   };
   
  
@@ -395,7 +414,15 @@ const OneDE = () => {
     setAnimationInProgress(false);
   };
  
- 
+  const getRandomColor = () => {
+    const randomColor = Math.floor(Math.random() * (0xFFFFFF - 0x100000) + 0x100000).toString(16);
+    const hexColor = `#${randomColor}`;
+    console.log("COLORALERT");
+    console.log(hexColor);
+    return hexColor;
+  };
+
+
   const handleRefillWells = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
@@ -640,15 +667,18 @@ const OneDE = () => {
         
         <div className="electrophoresis-cell">
           <div className="wells-container">
-            {Array.from({ length: wellsCount }).map((_, idx) => (
-              <React.Fragment key={idx}>
-                { idx !== 0 && <div className="divider"></div> }
-                <div className="well">
+          {Array.from({ length: wellsCount }).map((_, idx) => (
+            <React.Fragment key={idx}>
+              {idx !== 0 && <div className="divider"></div>}
+              <div className="well">
+                {/* Conditionally render the input for file uploads only for wells other than the first one */}
+                {idx > 0 && (
                   <form action="/" className="wellForm">
-                    <input type="file" className="wellInput" style={{opacity:0, position: "absolute", top:0, left:0, bottom:0, right:0, width:100+"%", height:100+"%"}}
-                    onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
+                    <input type="file" className="wellInput" style={{opacity: 0, position: "absolute", top: 0, left: 0, bottom: 0, right: 0, width: "100%", height: "100%"}}
+                          onChange={(event) => handleFileUpload(event, idx)} // Pass the well index here
                     />
                   </form>
+                )}
 
                   {idx === 0 && selectedProteins.map((proteinName, index) => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
@@ -662,13 +692,25 @@ const OneDE = () => {
                     );
                   })}
 
+                  
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
-                    if (bandColors[[protein.id_str, protein.id_num]]) {
-                      protein.color = bandColors[[protein.id_str, protein.id_num]];
-                    } else {
-                      bandColors[[protein.id_str, protein.id_num]] = protein.color;
-                    }
+                      const proteinKey = `${protein.id_str}-${protein.id_num}`;
+                      // If this protein doesn't have a color yet, assign one
+                      if (!persistentColorMapping[proteinKey]) {
+                          persistentColorMapping[proteinKey] = bandColors[[protein.id_str, protein.id_num]] || getRandomColor();
+                      }
+                      
+                      return (
+                          <div key={proteinIndex}
+                              className={`proteinBand protein-${sanitizeClassName(protein.name)}`}
+                              onClick={() => handleProteinClick(protein, idx)}
+                              style={{ cursor: 'pointer', backgroundColor: persistentColorMapping[proteinKey] }}>
+                            {/* Protein band content */}
+                          </div>
+                      );
                   })}
+
+
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
                            className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}

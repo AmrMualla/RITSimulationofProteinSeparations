@@ -194,19 +194,16 @@ const OneDE = () => {
   };
   
   const handleZoom = (newZoomFactor = 1) => {
-    console.log(newZoomFactor);
     if (!isAtStartingPoint && !animationInProgress) {
       if (newZoomFactor == 0) newZoomFactor = 1;
       else if (newZoomFactor == 1) {
         newZoomFactor = document.getElementById("zoomSlider").value;
-        document.getElementById("zoomText").value = newZoomFactor;
       }
       else if (newZoomFactor == 2) {
         if (document.getElementById("zoomText").value == "" || document.getElementById("zoomText").value <= 0) return;
         newZoomFactor = document.getElementById("zoomText").value;
-        document.getElementById("zoomSlider").value = newZoomFactor;
       }
-      console.log(newZoomFactor);
+      setWellLabels(newZoomFactor);
       Object.keys(wellResponses).forEach(wellIndex => {
         wellResponses[wellIndex].forEach(protein => {
           document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
@@ -222,9 +219,23 @@ const OneDE = () => {
       setZoomFactor(newZoomFactor);
     }
   };
+
+  const setWellLabels = (newZoomFactor = 1) => {
+    document.getElementById("zoomSlider").value = newZoomFactor;
+    document.getElementById("zoomText").value = newZoomFactor;
+    const tempStartingOffset = document.querySelectorAll('.wellInput')[0].getBoundingClientRect().bottom - document.querySelector('#well-top').getBoundingClientRect().top;
+    const wellHeight = document.querySelectorAll(".electrophoresis-cell")[0].clientHeight - tempStartingOffset;
+    let multiplier = 0;
+    document.querySelectorAll('.simulationLabel').forEach(element => {
+      element.style.animation = 'none';
+      element.style.transform = `translateY(${(((wellHeight / 18) * newZoomFactor * multiplier) + tempStartingOffset - (element.clientHeight / 2) - (element.clientHeight * multiplier))}px)`;
+      multiplier++;
+    });
+  }
  
   useEffect(() => {
     calculateMigrationDistances();
+    setWellLabels();
   }, [acrylamidePercentage]);
 
 // Helper function to sanitize protein names to be used as valid CSS class names
@@ -376,6 +387,7 @@ const OneDE = () => {
             if (protein.name === 'BlueDye') {
               setTimeout(() => {
                 setBlueDyeReachedBottom(true);
+                setAnimationInProgress(false);
               }, adjustedDuration * 1000); // Convert the duration from seconds to milliseconds
             }
           });
@@ -435,6 +447,7 @@ const OneDE = () => {
     });
   
     setZoomFactor(1);
+    setWellLabels();
     setAnimationInProgress(false);
     setIsAtStartingPoint(true);
     setBlueDyeReachedBottom(false);
@@ -666,6 +679,26 @@ const OneDE = () => {
         </div>
         
         <div className="electrophoresis-cell">
+          <div id='well-top'/>
+          <div class='simulationLabel'>0 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>1 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>2 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>3 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>4 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>5 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>6 - </div>
           <div className="wells-container">
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>

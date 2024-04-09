@@ -224,7 +224,7 @@ button {
 }
 
 .hoverable-text:hover {
-  color: var(--secondary-text-color);
+  color: royalblue;
 }
 
 .menu a, .menu a:visited, .icon-list a, .icon-list a:visited {

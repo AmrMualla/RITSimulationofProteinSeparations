@@ -5,7 +5,7 @@ const bandColors = {
   [["pdb", "6X1Q"]]: "#08c8ae",
   [["pdb", "2PRI"]]: "#cacf50",
   [["pdb", "4F5S"]]: "#41add5",
-  [["pdb", "AAA68882.1"]]: "#a6106a",
+  [["pdb", "1JTI"]]: "#a6106a",
   [["gb", "NP_001344263.1"]]: "#87cba7",
   [["gb", "AFP63821.1"]]: "#180ea4",
   [["sp", "Q6L6Q5.1"]]: "#2e8c7b",
@@ -16,7 +16,7 @@ const initialProteinStandards = [
   { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: bandColors[["pdb", "6X1Q"]], id_num: '6X1Q', id_str: 'pdb' },
   { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: bandColors[["pdb", "2PRI"]],  id_num: '2PRI', id_str: 'pdb' },
   { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: bandColors[["pdb", "4F5S"]],  id_num: '4F5S', id_str: 'pdb' },
-  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors[["pdb", "AAA68882.1"]],  id_num: 'AAA68882.1', id_str: '' },
+  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors[["pdb", "1JTI"]],  id_num: 'AAA68882.1', id_str: '' },
   { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: bandColors[["gb", "NP_001344263.1"]],  id_num: 'NP_001344263.1', id_str: '' },
   { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: bandColors[["gb", "AFP63821.1"]],  id_num: 'AFP63821.1', id_str: '' },
   { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: bandColors[["sp", "Q6L6Q5.1"]],  id_num: 'Q6L6Q5.1', id_str: 'sp' },
@@ -30,7 +30,6 @@ function toggleDarkMode() {
   optionsBox.classList.toggle('dark-mode');
 }
 
-const persistentColorMapping = {};
 
 const validateHexColor = (color) => {
   // Regular expression to match the hex color format
@@ -724,23 +723,13 @@ const OneDE = () => {
                       </div>
                     );
                   })}
-
                   
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
-                      const proteinKey = `${protein.id_str}-${protein.id_num}`;
-                      // If this protein doesn't have a color yet, assign one
-                      if (!persistentColorMapping[proteinKey]) {
-                          persistentColorMapping[proteinKey] = bandColors[[protein.id_str, protein.id_num]] || getRandomColor();
-                      }
-                      
-                      return (
-                          <div key={proteinIndex}
-                              className={`proteinBand protein-${sanitizeClassName(protein.name)}`}
-                              onClick={() => handleProteinClick(protein, idx)}
-                              style={{ cursor: 'pointer', backgroundColor: persistentColorMapping[proteinKey] }}>
-                            {/* Protein band content */}
-                          </div>
-                      );
+                    if (bandColors[[protein.id_str, protein.id_num]]) {
+                      protein.color = bandColors[[protein.id_str, protein.id_num]];
+                    } else {
+                      bandColors[[protein.id_str, protein.id_num]] = protein.color;
+                    }
                   })}
 
 

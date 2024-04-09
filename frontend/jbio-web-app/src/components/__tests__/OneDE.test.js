@@ -12,9 +12,9 @@ describe('OneDE', () => {
     expect(screen.getByText('Current Wells: 10')).toBeInTheDocument();
     expect(screen.getByText('Acrylamide %:')).toBeInTheDocument();
 
-    // Check if the file and folder buttons are rendered
-    expect(screen.getByText('File')).toBeInTheDocument();
-    expect(screen.getByText('Folder')).toBeInTheDocument();
+    // Check if the files and upload buttons are rendered
+    expect(screen.getByText('Select Files')).toBeInTheDocument();
+    expect(screen.getByText('Upload')).toBeInTheDocument();
 
     // Check if the "Add Well" and "Drop Well" buttons are rendered
     expect(screen.getByText('Add Well')).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('OneDE', () => {
     expect(dropdown).toBeInTheDocument();
 
     // Verify that each option is rendered
-    const options = ['7.5%-option', '10%-option', '15%-option'];
+    const options = ['7.5%-option', '10%-option','12%-option', '15%-option'];
     options.forEach((option) => {
       const dropdownOption = screen.getByTestId(option);
       expect(dropdownOption).toBeInTheDocument();

@@ -35,10 +35,6 @@
     overflow-y: scroll;
 }
 
-.electrophoresis-cell::-webkit-scrollbar {
-    display: none;
-}
-
 .buttons-container-1de {
     position: relative;
     flex-shrink: 0;

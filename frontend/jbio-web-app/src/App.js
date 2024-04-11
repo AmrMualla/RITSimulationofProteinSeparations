@@ -14,7 +14,7 @@ function App() {
 
     return (
         <div className="app-container" data-theme={isDark ? "dark" : "light"}>
-            <Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+            <Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} isDark={isDark} />
             <Router isOpen={isSidebarOpen} />
             <DarkToggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />
         </div>

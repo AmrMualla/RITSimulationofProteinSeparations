@@ -532,7 +532,7 @@ const OneDE = () => {
           <label>Folder upload:</label>
           <form className='upload' onSubmit={handleSubmit}>
             <div style={{width: '20em', paddingTop: '10px'}}>
-              <label htmlFor="uploaded" className="submitUpload">Select Files</label>
+              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
               <input type="file" id="uploaded" webkitdirectory=""
                   directory="" onChange={handleFilesChange} multiple // Allow multiple files to be selected
               />

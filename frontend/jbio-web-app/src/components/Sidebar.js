@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import App from '../App';
 import '../components/Sidebar.css';
 
 function Sidebar({ isOpen, toggle, isDark }) {
@@ -90,7 +91,15 @@ function Sidebar({ isOpen, toggle, isDark }) {
                 )}
             </div>
             <div className="sidebar-header">
-                <img id="basil-logo" src={isDark ? '/basil-logo-blue.png' : '/basil-logo.png'} alt="Basil" />
+                <a href="/">
+                    <span>
+                        <img 
+                            id="basil-logo" 
+                            src={isDark ? "/basil-logo-darkmode.png" : "/basil-logo.png"} 
+                            alt="Basil"
+                        />
+                    </span>
+                </a>
             </div>
         </div>
     );

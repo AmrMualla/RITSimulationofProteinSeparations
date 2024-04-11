@@ -13,8 +13,8 @@ HOW TO START UP API SERVER:
    This activates the FastAPI system. The terminal window will
    have to stay open for as long as you have the server running
    
-   (or if this is for debugging, you can start it up using the stat up call at the bottom.
-   it is recomended you co the command line start however.)
+   (or if this is for debugging, you can start it up using the start up call at the bottom.
+   it is recommended you co the command line start however.)
    
 2. Open up http://127.0.0.1:8000/ in your browser.
    You should see the message:

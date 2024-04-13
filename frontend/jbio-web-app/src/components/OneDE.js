@@ -38,64 +38,57 @@ const validateHexColor = (color) => {
   return regex.test(color) ? color : '#808080'; // Default to gray if invalid
 };
 
-const GoogleScatterChart = ({ allProteins }) => {
+const GoogleScatterChart = ({ proteinStandards }) => {
   useEffect(() => {
     window.google.charts.load('current', { packages: ['corechart'] });
     window.google.charts.setOnLoadCallback(drawChart);
-  }, [allProteins]);
+  }, [proteinStandards]);
 
   const linearRegression = (data) => {
-    let n = data.length;
-    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0, sumYY = 0;
+    let n = data.length, sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
     data.forEach(point => {
       let x = point[0], y = point[1];
       sumX += x;
       sumY += y;
       sumXY += x * y;
       sumXX += x * x;
-      sumYY += y * y;
     });
-
     let slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
     let intercept = (sumY - slope * sumX) / n;
-    let rSquared = Math.pow((n * sumXY - sumX * sumY) / Math.sqrt((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY)), 2);
-    return { slope, intercept, rSquared };
+    return { slope: slope, intercept: intercept };
   };
-  console.log("All proteins for chart:", allProteins);
+
   const drawChart = () => {
     const data = new window.google.visualization.DataTable();
     data.addColumn('number', 'Relative Migration');
     data.addColumn('number', 'Log Molecular Weight');
     data.addColumn({ type: 'string', role: 'style' });
     data.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
-  
-    allProteins.forEach(protein => {
+
+    let chartData = [];
+    proteinStandards.forEach(protein => {
       const migrationDistance = typeof protein.migrationDistance === 'number' ? protein.migrationDistance.toFixed(2) : null;
       const logMolecularWeight = typeof protein.molecularWeight === 'number' ? Math.log10(protein.molecularWeight).toFixed(2) : null;
       if (migrationDistance !== null && logMolecularWeight !== null) {
         const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 16px;">
                                   <strong>${protein.name}</strong><br>
                                   Relative Migration: ${migrationDistance}<br>
-                                  Log Molecular Weight: ${logMolecularWeight}
+                                  Log Molecular Weight: ${logMolecularWeight}<br>
+                                  Molecular Weight: ${protein.molecularWeight.toLocaleString()} 
                                 </div>`;
         data.addRow([
           parseFloat(migrationDistance),
           parseFloat(logMolecularWeight),
-          `point { fill-color: ${validateHexColor(protein.color)}; }`, // Use the validateHexColor function
+          `point { fill-color: ${validateHexColor(protein.color)}; }`,
           tooltipContent
         ]);
-      } else {
-        // Optionally, handle the case where data is not valid, e.g., logging, showing an error, etc.
-        console.warn(`Invalid or incomplete data for protein: ${protein.name}. Molecular Weight: ${protein.molecularWeight}, Migration Distance: ${protein.migrationDistance}`);
+        chartData.push([parseFloat(migrationDistance), parseFloat(logMolecularWeight)]);
       }
     });
 
-    const chartData = allProteins.map(protein => [
-      protein.migrationDistance, 
-      Math.log10(protein.molecularWeight)
-    ]);
+    const { slope, intercept } = linearRegression(chartData);
+    const equation = `y = ${slope.toFixed(4)}x + ${intercept.toFixed(4)}`;
 
-    const { slope, intercept, rSquared } = linearRegression(chartData);
     const options = {
       title: 'Log MW vs. Relative Migration',
       hAxis: { title: 'Relative Migration', minValue: 0 },
@@ -105,18 +98,19 @@ const GoogleScatterChart = ({ allProteins }) => {
       pointSize: 5,
       trendlines: { 0: { 
           type: 'linear', 
-          visibleInLegend: true, 
-          lineWidth: 3, 
-          opacity: 0.3,
-          showR2: true,
-          color: 'black' 
-        } 
+          color: 'gray', 
+          lineWidth: 2, 
+          opacity: 0.3, 
+          showR2: true, 
+          visibleInLegend: true 
+        }
       }
     };
     const chart = new window.google.visualization.ScatterChart(document.getElementById('scatter_chart_div'));
     chart.draw(data, options);
 
-    document.getElementById('regression-info').innerHTML = `Slope: ${slope.toFixed(4)}, Intercept: ${intercept.toFixed(4)}, R²: ${rSquared.toFixed(4)}`;
+    // Displaying equation below the chart
+    document.getElementById('regression-info').innerHTML = `Equation: ${equation}`;
   };
 
   return (
@@ -126,6 +120,9 @@ const GoogleScatterChart = ({ allProteins }) => {
     </>
   );
 };
+
+
+
 
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
@@ -688,7 +685,7 @@ const OneDE = () => {
       </div>
       {showChart && (
         <div className="chart-overlay">
-          <GoogleScatterChart proteinStandards={proteinStandards} allProteins={allProteins} />
+          <GoogleScatterChart proteinStandards={proteinStandards} />
           <button className="close-chart" onClick={() => setShowChart(false)}>Close</button>
         </div>
       )}

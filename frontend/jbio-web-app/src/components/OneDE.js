@@ -205,7 +205,7 @@ const OneDE = () => {
       setWellLabels(newZoomFactor);
       Object.keys(wellResponses).forEach(wellIndex => {
         wellResponses[wellIndex].forEach(protein => {
-          document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+          document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
             let moveDistance = element.getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - startingOffset;
             element.style.animation = 'none';
             element.style.transform = `translateY(${(((moveDistance / zoomFactor) * newZoomFactor))}px)`;
@@ -214,7 +214,7 @@ const OneDE = () => {
       });
 
       const scrollableWells = document.querySelectorAll(".electrophoresis-cell")[0];
-      scrollableWells.scrollTo(0, document.querySelectorAll(`.protein-${sanitizeClassName(lastSelectedProtein.name)}`)[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - (scrollableWells.clientHeight / 2));
+      scrollableWells.scrollTo(0, document.querySelectorAll(`.protein-${sanitizeClassName(lastSelectedProtein.id_str + "-" + lastSelectedProtein.id_num)}`)[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - (scrollableWells.clientHeight / 2));
       setZoomFactor(newZoomFactor);
     }
   };
@@ -241,7 +241,7 @@ const OneDE = () => {
   const sanitizeClassName = (name) => {
     // This example replaces spaces and semicolons with dashes, and removes brackets.
     // You might need to adjust the replacement logic based on actual protein names.
-    return name.replace(/[^a-zA-Z0-9-_]+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
+    return name.replace(/[^a-zA-Z0-9-_]+/g, '-').replace(/[^a-zA-Z0-9-_\.]/g, '');
   };
 
   const updateAnimationStyles = (protein) => {
@@ -265,7 +265,7 @@ const OneDE = () => {
     newStyleElement.innerText = newKeyframes;
     document.head.appendChild(newStyleElement);
 
-    document.querySelectorAll(`.protein-${sanitizedProteinName}`).forEach(element => {
+    document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
       element.style.animation = 'none';
 
       // Trigger reflow
@@ -335,7 +335,7 @@ const OneDE = () => {
       setAnimationInProgress(true);
       setIsAtStartingPoint(false);
       calculateMigrationDistances();
-      setStartingOffset(document.querySelectorAll('.protein-BlueDye')[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top);
+      setStartingOffset(document.querySelectorAll('.protein--')[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top);
 
       // Parse the numeric part of the voltageValue state
       const voltage = parseInt(voltageValue.replace('V', ''));
@@ -351,7 +351,7 @@ const OneDE = () => {
       console.log(adjustedDuration)
       Object.keys(wellResponses).forEach(wellIndex => {
         wellResponses[wellIndex].forEach(protein => {
-          document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+          document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
             element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
           });
         });
@@ -364,7 +364,7 @@ const OneDE = () => {
             console.log(protein.name)
             const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
 
-            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
               const animationName = `moveProteinAfterInitial${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`;
               const keyframes = `@keyframes ${animationName} {
               from { transform: translateY(${initialMoveDistance * 587}px); }
@@ -401,7 +401,7 @@ const OneDE = () => {
   const stopAllProteins = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        const elementSelector = `.protein-${sanitizeClassName(protein.name)}`;
+        const elementSelector = `.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`;
         document.querySelectorAll(elementSelector).forEach(element => {
           element.style.animationPlayState = 'paused';
         });
@@ -416,7 +416,7 @@ const OneDE = () => {
   const handleStop = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
+        document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`)
             .forEach(element => {
               element.style.animationPlayState = 'paused';
             });
@@ -437,7 +437,7 @@ const OneDE = () => {
   const handleRefillWells = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
+        document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`)
             .forEach(element => {
               element.style.animation = 'none';
               element.style.transform = 'none';
@@ -602,12 +602,12 @@ const OneDE = () => {
                 <div key={index} className="protein-checkbox">
                   <input
                       type="checkbox"
-                      id={`protein-${index}`}
+                      id={`protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}
                       checked={selectedProteins.includes(protein.name)}
                       onChange={(e) => handleProteinSelection(e, protein.name)}
                       disabled={!isAtStartingPoint}
                   />
-                  <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                  <label htmlFor={`protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}>{protein.name}</label>
                   <span className='span-color' style={{backgroundColor: protein.color}}></span>
                 </div>
             );
@@ -646,10 +646,10 @@ const OneDE = () => {
             Drop Well
           </button>
         </div>
-        <div>
+        <div id='zoomInputs'>
           <label className="wellCountLabel">Zoom:    </label>
-          <input style={{width: "60%"}} onChange={() => handleZoom(1)} type="range" min="1" max="100" defaultValue="1" class="slider" id="zoomSlider"/>
-          <input onInput={() => handleZoom(2)} type="number" min="1" step="1" defaultValue="1" id="zoomText"/>
+          <input onChange={() => handleZoom(1)} type="range" min="1" max="100" defaultValue="1" class="slider" id="zoomSlider"/>
+          <input style={{zIndex: 2}} onInput={() => handleZoom(2)} type="input" min="1" step="1" defaultValue="1" id="zoomText"/>
         </div>
       </div>
       <div className="onede-box">
@@ -718,7 +718,7 @@ const OneDE = () => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
                     return (
                       <div key={index}
-                        className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
+                        className={`proteinBand protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}
                         onClick={() => handleProteinClick(protein, 0)}
                         style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}
@@ -737,7 +737,7 @@ const OneDE = () => {
 
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
-                           className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
+                           className={`proteinBand protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}
                            onClick={() => handleProteinClick(protein, idx)}
                            style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}

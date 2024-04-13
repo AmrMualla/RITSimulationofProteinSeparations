@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../components/Sidebar.css';
 
-function Sidebar({ isOpen, toggle }) {
+function Sidebar({ isOpen, toggle, isDark }) {
     const [isHoveredGithub, setHoveredGithub] = useState(false);
     const [isHoveredInfo, setHoveredInfo] = useState(false);
     const [isHoveredUser, setHoveredUser] = useState(false);
@@ -90,7 +90,7 @@ function Sidebar({ isOpen, toggle }) {
                 )}
             </div>
             <div className="sidebar-header">
-                <a href="/"><span><img id="basil-logo" src="/basil-logo.png" alt="Basil" /></span></a>
+                <img id="basil-logo" src={isDark ? '/basil-logo-blue.png' : '/basil-logo.png'} alt="Basil" />
             </div>
         </div>
     );

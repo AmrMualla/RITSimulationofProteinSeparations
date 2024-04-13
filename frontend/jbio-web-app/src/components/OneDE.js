@@ -529,7 +529,7 @@ const OneDE = () => {
           <label>Folder upload:</label>
           <form className='upload' onSubmit={handleSubmit}>
             <div style={{width: '20em', paddingTop: '10px'}}>
-              <label htmlFor="uploaded" className="submitUpload">Select Files</label>
+              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
               <input type="file" id="uploaded" webkitdirectory=""
                   directory="" onChange={handleFilesChange} multiple // Allow multiple files to be selected
               />
@@ -559,12 +559,13 @@ const OneDE = () => {
         </div>
         <label className="voltage-value-label">Voltage: </label>
         <div>
-          <select value={voltageValue} onChange={e => setvoltageValue(e.target.value)}
-                  className="voltage-dropdown-section">
-            <option value="50V">50V</option>
-            <option value="100V">100V</option>
-            <option value="150V">150V</option>
-            <option value="200V">200V</option>
+          <select value={voltageValue} 
+                  onChange={e => setvoltageValue(e.target.value)}
+                  className="voltage-dropdown-section" data-testid="voltage-dropdown">
+            <option value="50V" data-testid="50V-option">50V</option>
+            <option value="100V" data-testid="100V-option">100V</option>
+            <option value="150V" data-testid="150V-option">150V</option>
+            <option value="200V" data-testid="200V-option">200V</option>
           </select>
         </div>
         <label className="acrylamide-percentage-label">Acrylamide %: </label>
@@ -573,11 +574,11 @@ const OneDE = () => {
               value={acrylamidePercentage}
               onChange={e => setAcrylamidePercentage(e.target.value)}
               disabled={!isAtStartingPoint}
-              className="acrylamide-dropdown-section">
-            <option value="7.5%">7.5%</option>
-            <option value="10%">10%</option>
-            <option value="12%">12%</option>
-            <option value="15%">15%</option>
+              className="acrylamide-dropdown-section" data-testid="acrylamide-dropdown">
+            <option value="7.5%" data-testid="7.5%-option">7.5%</option>
+            <option value="10%" data-testid="10%-option">10%</option>
+            <option value="12%" data-testid="12%-option">12%</option>
+            <option value="15%" data-testid="15%-option">15%</option>
           </select>
         </div>
         <label className="wellCountLabel">Current Wells: {wellsCount}</label>
@@ -622,7 +623,7 @@ const OneDE = () => {
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>
               {idx !== 0 && <div className="divider"></div>}
-              <div className="well">
+              <div className="well" data-testid="wells#">
                 {/* Conditionally render the input for file uploads only for wells other than the first one */}
                 {idx > 0 && (
                   <form action="/" className="wellForm">

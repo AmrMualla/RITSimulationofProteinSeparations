@@ -25,9 +25,14 @@ const initialProteinStandards = [
 ];
 
 function toggleDarkMode() {
-  // Toggle the dark mode class on the options box
   const optionsBox = document.querySelector('.options-box');
   optionsBox.classList.toggle('dark-mode');
+
+  const isDark = optionsBox.classList.contains('dark-mode');
+  const logoImage = document.getElementById('logoImage');
+  if (logoImage) {
+    logoImage.src = isDark ? '/basil-logo-blue.png' : '/basil-logo.png';
+  }
 }
 
 
@@ -37,94 +42,86 @@ const validateHexColor = (color) => {
   return regex.test(color) ? color : '#808080'; // Default to gray if invalid
 };
 
-const GoogleScatterChart = ({ allProteins }) => {
+const GoogleScatterChart = ({ proteinStandards }) => {
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
   useEffect(() => {
-    window.google.charts.load('current', { packages: ['corechart'] });
-    window.google.charts.setOnLoadCallback(drawChart);
-  }, [allProteins]);
+    if (window.google && window.google.visualization) {
+      // Google Charts is already loaded
+      setIsGoogleLoaded(true);
+    } else {
+      // Load Google Charts
+      const script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/charts/loader.js';
+      script.onload = () => {
+        window.google.charts.load('current', {packages: ['corechart']});
+        window.google.charts.setOnLoadCallback(() => setIsGoogleLoaded(true));
+      };
+      script.onerror = () => console.error("Failed to load Google Charts script.");
+      document.head.appendChild(script);
+    }
+  }, []);
 
-  const linearRegression = (data) => {
-    let n = data.length;
-    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0, sumYY = 0;
-    data.forEach(point => {
-      let x = point[0], y = point[1];
-      sumX += x;
-      sumY += y;
-      sumXY += x * y;
-      sumXX += x * x;
-      sumYY += y * y;
-    });
+  useEffect(() => {
+    if (isGoogleLoaded) {
+      drawChart();
+    }
+  }, [isGoogleLoaded, proteinStandards]);
 
-    let slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-    let intercept = (sumY - slope * sumX) / n;
-    let rSquared = Math.pow((n * sumXY - sumX * sumY) / Math.sqrt((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY)), 2);
-    return { slope, intercept, rSquared };
-  };
-  console.log("All proteins for chart:", allProteins);
   const drawChart = () => {
     const data = new window.google.visualization.DataTable();
     data.addColumn('number', 'Relative Migration');
     data.addColumn('number', 'Log Molecular Weight');
-    data.addColumn({ type: 'string', role: 'style' });
-    data.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
-  
-    allProteins.forEach(protein => {
-      const migrationDistance = typeof protein.migrationDistance === 'number' ? protein.migrationDistance.toFixed(2) : null;
-      const logMolecularWeight = typeof protein.molecularWeight === 'number' ? Math.log10(protein.molecularWeight).toFixed(2) : null;
-      if (migrationDistance !== null && logMolecularWeight !== null) {
-        const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 16px;">
+    data.addColumn({type: 'string', role: 'style'});
+    data.addColumn({type: 'string', role: 'tooltip', p: {html: true}});
+
+    proteinStandards.forEach((protein) => {
+      if (protein.name !== "BlueDye") { // Check to ensure "BlueDye" is not added
+        const migrationDistance = protein.migrationDistance;
+        const logMolecularWeight = Math.log10(protein.molecularWeight).toFixed(2);
+        const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 14px;">
                                   <strong>${protein.name}</strong><br>
                                   Relative Migration: ${migrationDistance}<br>
-                                  Log Molecular Weight: ${logMolecularWeight}
+                                  Log Molecular Weight: ${logMolecularWeight}<br>
+                                  Molecular Weight: ${protein.molecularWeight.toLocaleString()}
                                 </div>`;
         data.addRow([
-          parseFloat(migrationDistance),
+          migrationDistance,
           parseFloat(logMolecularWeight),
-          `point { fill-color: ${validateHexColor(protein.color)}; }`, // Use the validateHexColor function
+          `point { fill-color: ${protein.color}; }`,
           tooltipContent
         ]);
-      } else {
-        // Optionally, handle the case where data is not valid, e.g., logging, showing an error, etc.
-        console.warn(`Invalid or incomplete data for protein: ${protein.name}. Molecular Weight: ${protein.molecularWeight}, Migration Distance: ${protein.migrationDistance}`);
       }
     });
 
-    const chartData = allProteins.map(protein => [
-      protein.migrationDistance, 
-      Math.log10(protein.molecularWeight)
-    ]);
-
-    const { slope, intercept, rSquared } = linearRegression(chartData);
     const options = {
       title: 'Log MW vs. Relative Migration',
-      hAxis: { title: 'Relative Migration', minValue: 0 },
-      vAxis: { title: 'Log Molecular Weight', minValue: 0 },
+      hAxis: {title: 'Relative Migration', minValue: 0},
+      vAxis: {title: 'Log Molecular Weight', minValue: 0},
       legend: 'none',
-      tooltip: { isHtml: true },
-      pointSize: 5,
-      trendlines: { 0: { 
-          type: 'linear', 
-          visibleInLegend: true, 
-          lineWidth: 3, 
-          opacity: 0.3,
-          showR2: true,
-          color: 'black' 
-        } 
-      }
+      tooltip: {isHtml: true},
+      pointSize: 7,
+      trendlines: {0: {
+        type: 'linear',
+        color: 'gray',
+        lineWidth: 2,
+        opacity: 0.3,
+        showR2: true,
+        visibleInLegend: true
+      }}
     };
+
     const chart = new window.google.visualization.ScatterChart(document.getElementById('scatter_chart_div'));
     chart.draw(data, options);
-
-    document.getElementById('regression-info').innerHTML = `Slope: ${slope.toFixed(4)}, Intercept: ${intercept.toFixed(4)}, R²: ${rSquared.toFixed(4)}`;
   };
 
   return (
     <>
       <div id="scatter_chart_div" style={{ width: '100%', height: '400px' }}></div>
-      <div id="regression-info" style={{ marginTop: '10px' }}></div>
     </>
   );
 };
+
 
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
@@ -140,6 +137,7 @@ const OneDE = () => {
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
   const [wellResponses, setWellResponses] = useState({0: initialProteinStandards});
   const [files, setFiles] = useState({});
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showChart, setShowChart] = useState(false);
   const allProteins = [
     ...proteinStandards,
@@ -569,6 +567,9 @@ const OneDE = () => {
 
   return (
     <div className="electrophoresis-wrapper">
+      <div className="header">
+        <img src={isDarkMode ? '/basil-logo-blue.png' : '/basil-logo.png'} alt="Basil Logo" />
+      </div>
       <div className="options-box">
         <div className="control-buttons-container">
           <button onClick={startAnimation} className="control-button"
@@ -757,7 +758,7 @@ const OneDE = () => {
       </div>
       {showChart && (
         <div className="chart-overlay">
-          <GoogleScatterChart proteinStandards={proteinStandards} allProteins={allProteins} />
+          <GoogleScatterChart proteinStandards={proteinStandards} />
           <button className="close-chart" onClick={() => setShowChart(false)}>Close</button>
         </div>
       )}

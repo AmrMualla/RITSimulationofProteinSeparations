@@ -32,6 +32,7 @@
     z-index: 3;
     left: 20.5em;
     top: -70em;
+    overflow-y: scroll;
 }
 
 .buttons-container-1de {
@@ -214,6 +215,16 @@
     border-radius: 0 0 5px 5px;
     padding: 15px;
     line-height: 2em;
+}
+
+#zoomText::-webkit-outer-spin-button,
+#zoomText::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#zoomText {
+    width: 30px;
 }
 
 

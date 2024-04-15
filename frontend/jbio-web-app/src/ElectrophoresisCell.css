@@ -3,14 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 88vh;
     overflow: auto;
 }
 
 .electrophoresis-cell::before {
     content: "";
     position: absolute;
-    top: 0;
     left: 5%;
     right: 5%;
     height: 150px;
@@ -31,8 +30,9 @@
     border-radius: 5px;
     box-shadow: 0 0 0.9375em 0.1875em rgba(0, 0, 0, 0.1) inset;
     z-index: 3;
-    left: 17em;
+    left: 20.5em;
     top: -70em;
+    overflow-y: scroll;
 }
 
 .buttons-container-1de {
@@ -40,9 +40,7 @@
     flex-shrink: 0;
     display: flex;
     gap: 1em;
-    bottom: 60.3em;
-    z-index: 2;
-    left: -35.2em;            
+    z-index: 2;         
 }
 
 
@@ -59,6 +57,10 @@
     display: flex;
     justify-content: space-between;
     z-index: 2;
+}
+
+.wellInput:hover {
+    cursor: pointer;
 }
 
 .divider {
@@ -113,7 +115,7 @@
     transition: background-color 0.3s ease;
 }
 
-.typeFile, .typeFolder, .submitUpload {
+.typeFile, .submitUpload {
     position: relative;
     padding: 10px 20px;
     height: 3em;
@@ -122,8 +124,11 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: .8em; 
-    bottom: 90em;
+    font-size: .8em;
+}
+
+#uploaded {
+    width: 15em;
 }
 
 .typeFile {
@@ -157,7 +162,7 @@
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
-    background-color: #00FFFF; 
+    background-color: #a5cefc; 
     border-radius: 0 0 5px 5px; 
     z-index: 1; 
 }
@@ -170,7 +175,7 @@
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
-    background-color: #00FFFF; 
+    background-color: #a5cefc; 
     border-radius: 0 0 5px 5px; 
     z-index: 1; 
 }
@@ -179,16 +184,14 @@
 .acrylamide-label {
     flex-shrink: 0;
     font-weight: bold;
-    left: -5em;
+    left: 17.5em;
     bottom: 89.6em;
     position: relative;
     z-index: 1;
-
+    color: #000000;
 }
 
 .acrylamide-dropdown-section {
-    right: 30rem; 
-    bottom: 124rem;
     position: relative;
     z-index: 1;
     padding: 10px 20px;
@@ -203,21 +206,38 @@
 .options-box {
     flex-shrink: 0;
     position: relative;
+    top: 98em;
     left: -30em;
-    bottom: 20em;
     width: 25em;
-    height: 49em;
-    border: 3px solid #4682A9;
-    background-color: #749BC2; 
-    border-radius: 0 0 5px 5px; 
-    z-index: 1; 
+    height: 40em;
+    border: 3px solid var(--highlight-color);
+    background-color: var(--optionsbox-color); 
+    border-radius: 0 0 5px 5px;
+    padding: 15px;
+    line-height: 2em;
+}
+
+#zoomText::-webkit-outer-spin-button,
+#zoomText::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#zoomText {
+    width: 30px;
+}
+
+
+.onede-box {
+    position: relative;
+    top: 74em;
+    left: 0;
 }
 
 .uploadContainer {
-    top: 142em;
-    left: -31.7em;
     flex-shrink: 0;
     position: relative;
+    padding-top: 10px;
     z-index: 2;
 }
 
@@ -237,65 +257,31 @@
 .wellCountLabel{
     flex-shrink: 0;
     position: relative;
-    left: -31em;
-    bottom: 8em;
     z-index: 2; 
     font-weight: bold;
     font-size: 1.2em;
-    
+    padding-top: 10px;
 }
 
 .acrylamide-percentage-label{
     flex-shrink: 0;
     position: relative;
-    left: -31.5em;
-    bottom: 1.5em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
-}
-
-.redwire-image{
-    flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-    width: 3.75em;
-    top: 38.5em;
-    left: 41.85em;
-}
-
-.blackwire-image{
-    flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-    width: 3.75em;
-    top: -14.3em;
-    right: 7.8em;
-}
-
-.redwireextended-image{
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-    height: 50em;
-    width: 60px;
-    top: 40em;
-    left: 41.85em;
+    padding-top: 10px;
 }
 
 .voltage-value-label{
     flex-shrink: 0;
     position: relative;
-    left: -30.1em;
-    top: 60.5em;
     z-index: 2;
     font-weight: bold;
     font-size: 1.2em; 
+    padding-top: 10px;
 }
 
 .voltage-dropdown-section {
-    right: 30rem;
-    top: 75em; 
     position: relative;
     z-index: 2;
     padding: 10px 20px;
@@ -307,35 +293,69 @@
     transition: background-color 0.3s ease;
 }
 
+.wires {
+    position: relative;
+    top: -75em;
+    left: 15em;
+}
+
+.redwire-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    width: 3.75em;
+    top: 46em;
+    left: 28.25em;
+}
+
+.blackwire-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    width: 3.75em;
+    top: 6.5em;
+    left: -25em;
+}
+
+.redwireextended-image{
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    height: 50em;
+    width: 60px;
+    top: 38.75em;
+    left: 32em;
+}
+
 .blackwireextended-image{
     flex-shrink: 0;
     position: relative;
     z-index: 1;
     width: 3.99em;
-    top: 63.4em;
-    right: 7.83em;
+    top: 2em;
+    left: -13.65em;
 }
 
 .blackwireextendedhorizontal-image{
     flex-shrink: 0;
     position: relative;
     z-index: 1;
+    height: 22em;
     width: 3.99em;
-    top: 75em;
-    right: -3em;
     rotate: -90deg;
-    height: 23em;
+    top: 0.63em;
+    left: 1em;
 }
 
 .redwireextendedhorizontal-image{
     flex-shrink: 0;
     position: relative;
     z-index: 1;
-    width: 3.99em;
-    top: 98em;
-    right: -30.9em;
-    rotate: -90deg;
     height: 23em;
+    width: 3.99em;
+    rotate: -90deg;
+    top: 1.13em;
+    left: 32em;
 }
 
 .blackwireextendedmiddle-image{
@@ -343,9 +363,9 @@
     position: relative;
     z-index: 1;
     width: 3.99em;
-    top: 133.5em;
-    right: -15em;
     height: 10em;
+    top: -5.4em;
+    left: 24em;
 }
 
 .redwireextendedmiddle-image{
@@ -354,17 +374,143 @@
     z-index: 1;
     height: 20em;
     width: 60px;
-    top: 119em;
-    left: 19.8em;
+    top: -.4;
+    left: 25em;
 }
 
 .voltage-label {
     flex-shrink: 0;
     font-size: 20px;
     font-weight: bold;
-    left: 14em;
-    bottom: 126em;
+    top: -121.5em;
+    left: 27.3em;
     position: relative;
     z-index: 1;
-
 }
+
+.onede-page-instructions-box {
+    position: relative;
+    top: -13em;
+    left: -18em;
+}
+
+.control-buttons-container {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    z-index: 2;
+  }
+  
+  .control-button {
+    position: relative;
+    padding: 10px 15px;
+    background-color: #2253e7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .control-button:hover {
+    position: relative;
+    background-color: #5e7bef;
+  }
+
+  .control-button:disabled {
+    background-color: #cccccc; /* Gray color for disabled state */
+    color: #666666; /* Darker gray text to ensure readability */
+    cursor: not-allowed; /* Change cursor to indicate the button is not clickable */
+  }
+
+  @keyframes initialMove {
+    from { top: 100px; } /* Starting from the bottom of the well */
+    to { top: calc(52.5% + 100px); } /* Move to 10% into the gel */
+  }
+  
+  @keyframes moveProtein {
+    from { top: calc(52.5% + 100px); }
+    to { top: 680%; } /* Adjust as needed */
+  }
+  
+  .proteinBand {
+    position: absolute;
+    width: 100%; /* or an appropriate width */
+    height: 7px; /* or an appropriate height */
+    background-color: blue; 
+    z-index: 10;
+    bottom: 0;
+  }
+
+  .protein-info {
+    position: absolute; /* or 'fixed' depending on your layout */
+    background-color: white;
+    color: #000;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 10;
+    /* Other styling as needed */
+  }
+
+  .span-color {
+    width: 150px;
+    height: 10px;
+    border: #000 2px solid;
+    float: right;
+    margin-top: .6em;
+  }
+
+  input[type=checkbox]:checked + label {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  input[type=checkbox]:not(:checked) ~ .span-color {
+    opacity: 0;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+  }
+  
+  .protein-selection {
+    position: relative;
+    padding: 10px 0;
+    z-index: 2;
+  }
+
+  ::-webkit-file-upload-button,
+  ::file-selector-button {
+    display: none;
+  }
+
+  .chart-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* semi-transparent white */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .close-chart {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+  }

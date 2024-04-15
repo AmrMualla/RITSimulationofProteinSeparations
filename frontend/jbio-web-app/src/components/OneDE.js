@@ -5,32 +5,36 @@ const bandColors = {
   [["pdb", "6X1Q"]]: "#08c8ae",
   [["pdb", "2PRI"]]: "#cacf50",
   [["pdb", "4F5S"]]: "#41add5",
-  [["", "AAA68882.1"]]: "#a6106a",
-  [["", "NP_001344263.1"]]: "#87cba7",
-  [["", "AFP63821.1"]]: "#180ea4",
+  [["pdb", "1JTI"]]: "#a6106a",
+  [["gb", "NP_001344263.1"]]: "#87cba7",
+  [["gb", "AFP63821.1"]]: "#180ea4",
   [["sp", "Q6L6Q5.1"]]: "#2e8c7b",
-  [["", "CAA01755.1"]]: "#be2908",
+  [["gb", "CAA01755.1"]]: "#be2908",
   [["", ""]]: "#0000FF",
 }
 const initialProteinStandards = [
   { name: "B-Galactosidase", molecularWeight: 116250, migrationDistance: 0, color: bandColors[["pdb", "6X1Q"]], id_num: '6X1Q', id_str: 'pdb' },
   { name: "Phosphorylase B", molecularWeight: 97400, migrationDistance: 0, color: bandColors[["pdb", "2PRI"]],  id_num: '2PRI', id_str: 'pdb' },
   { name: "Serum Albumin", molecularWeight: 66200, migrationDistance: 0, color: bandColors[["pdb", "4F5S"]],  id_num: '4F5S', id_str: 'pdb' },
-  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors[["", "AAA68882.1"]],  id_num: 'AAA68882.1', id_str: '' },
-  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: bandColors[["", "NP_001344263.1"]],  id_num: 'NP_001344263.1', id_str: '' },
-  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: bandColors[["", "AFP63821.1"]],  id_num: 'AFP63821.1', id_str: '' },
+  { name: "Ovalbumin", molecularWeight: 45000, migrationDistance: 0, color: bandColors[["pdb", "1JTI"]],  id_num: 'AAA68882.1', id_str: '' },
+  { name: "Carbonic Anhydrase", molecularWeight: 31000, migrationDistance: 0, color: bandColors[["gb", "NP_001344263.1"]],  id_num: 'NP_001344263.1', id_str: '' },
+  { name: "Trypsin Inhibitor", molecularWeight: 21500, migrationDistance: 0, color: bandColors[["gb", "AFP63821.1"]],  id_num: 'AFP63821.1', id_str: '' },
   { name: "Lysozyme", molecularWeight: 14400, migrationDistance: 0, color: bandColors[["sp", "Q6L6Q5.1"]],  id_num: 'Q6L6Q5.1', id_str: 'sp' },
-  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: bandColors[["", "CAA01755.1"]], id_num: 'CAA01755.1', id_str: '' },
+  { name: "Aprotinin", molecularWeight: 6500, migrationDistance: 0, color: bandColors[["gb", "CAA01755.1"]], id_num: 'CAA01755.1', id_str: '' },
   { name: "BlueDye", molecularWeight: 500, migrationDistance: 0, color: bandColors[["", ""]], id_num: '', id_str: ''  }
 ];
 
 function toggleDarkMode() {
-  // Toggle the dark mode class on the options box
   const optionsBox = document.querySelector('.options-box');
   optionsBox.classList.toggle('dark-mode');
+
+  const isDark = optionsBox.classList.contains('dark-mode');
+  const logoImage = document.getElementById('logoImage');
+  if (logoImage) {
+    logoImage.src = isDark ? '/basil-logo-blue.png' : '/basil-logo.png';
+  }
 }
 
-const persistentColorMapping = {};
 
 const validateHexColor = (color) => {
   // Regular expression to match the hex color format
@@ -38,106 +42,102 @@ const validateHexColor = (color) => {
   return regex.test(color) ? color : '#808080'; // Default to gray if invalid
 };
 
-const GoogleScatterChart = ({ allProteins }) => {
+const GoogleScatterChart = ({ proteinStandards }) => {
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
   useEffect(() => {
-    window.google.charts.load('current', { packages: ['corechart'] });
-    window.google.charts.setOnLoadCallback(drawChart);
-  }, [allProteins]);
+    if (window.google && window.google.visualization) {
+      // Google Charts is already loaded
+      setIsGoogleLoaded(true);
+    } else {
+      // Load Google Charts
+      const script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/charts/loader.js';
+      script.onload = () => {
+        window.google.charts.load('current', {packages: ['corechart']});
+        window.google.charts.setOnLoadCallback(() => setIsGoogleLoaded(true));
+      };
+      script.onerror = () => console.error("Failed to load Google Charts script.");
+      document.head.appendChild(script);
+    }
+  }, []);
 
-  const linearRegression = (data) => {
-    let n = data.length;
-    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0, sumYY = 0;
-    data.forEach(point => {
-      let x = point[0], y = point[1];
-      sumX += x;
-      sumY += y;
-      sumXY += x * y;
-      sumXX += x * x;
-      sumYY += y * y;
-    });
+  useEffect(() => {
+    if (isGoogleLoaded) {
+      drawChart();
+    }
+  }, [isGoogleLoaded, proteinStandards]);
 
-    let slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-    let intercept = (sumY - slope * sumX) / n;
-    let rSquared = Math.pow((n * sumXY - sumX * sumY) / Math.sqrt((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY)), 2);
-    return { slope, intercept, rSquared };
-  };
-  console.log("All proteins for chart:", allProteins);
   const drawChart = () => {
     const data = new window.google.visualization.DataTable();
     data.addColumn('number', 'Relative Migration');
     data.addColumn('number', 'Log Molecular Weight');
-    data.addColumn({ type: 'string', role: 'style' });
-    data.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
-  
-    allProteins.forEach(protein => {
-      const migrationDistance = typeof protein.migrationDistance === 'number' ? protein.migrationDistance.toFixed(2) : null;
-      const logMolecularWeight = typeof protein.molecularWeight === 'number' ? Math.log10(protein.molecularWeight).toFixed(2) : null;
-      if (migrationDistance !== null && logMolecularWeight !== null) {
-        const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 16px;">
+    data.addColumn({type: 'string', role: 'style'});
+    data.addColumn({type: 'string', role: 'tooltip', p: {html: true}});
+
+    proteinStandards.forEach((protein) => {
+      if (protein.name !== "BlueDye") { // Check to ensure "BlueDye" is not added
+        const migrationDistance = protein.migrationDistance;
+        const logMolecularWeight = Math.log10(protein.molecularWeight).toFixed(2);
+        const tooltipContent = `<div style="padding:10px; line-height: 1.5; min-width: 150px; font-family: Arial, sans-serif; font-size: 14px;">
                                   <strong>${protein.name}</strong><br>
                                   Relative Migration: ${migrationDistance}<br>
-                                  Log Molecular Weight: ${logMolecularWeight}
+                                  Log Molecular Weight: ${logMolecularWeight}<br>
+                                  Molecular Weight: ${protein.molecularWeight.toLocaleString()}
                                 </div>`;
         data.addRow([
-          parseFloat(migrationDistance),
+          migrationDistance,
           parseFloat(logMolecularWeight),
-          `point { fill-color: ${validateHexColor(protein.color)}; }`, // Use the validateHexColor function
+          `point { fill-color: ${protein.color}; }`,
           tooltipContent
         ]);
-      } else {
-        // Optionally, handle the case where data is not valid, e.g., logging, showing an error, etc.
-        console.warn(`Invalid or incomplete data for protein: ${protein.name}. Molecular Weight: ${protein.molecularWeight}, Migration Distance: ${protein.migrationDistance}`);
       }
     });
 
-    const chartData = allProteins.map(protein => [
-      protein.migrationDistance, 
-      Math.log10(protein.molecularWeight)
-    ]);
-
-    const { slope, intercept, rSquared } = linearRegression(chartData);
     const options = {
       title: 'Log MW vs. Relative Migration',
-      hAxis: { title: 'Relative Migration', minValue: 0 },
-      vAxis: { title: 'Log Molecular Weight', minValue: 0 },
+      hAxis: {title: 'Relative Migration', minValue: 0},
+      vAxis: {title: 'Log Molecular Weight', minValue: 0},
       legend: 'none',
-      tooltip: { isHtml: true },
-      pointSize: 5,
-      trendlines: { 0: { 
-          type: 'linear', 
-          visibleInLegend: true, 
-          lineWidth: 3, 
-          opacity: 0.3,
-          showR2: true,
-          color: 'black' 
-        } 
-      }
+      tooltip: {isHtml: true},
+      pointSize: 7,
+      trendlines: {0: {
+        type: 'linear',
+        color: 'gray',
+        lineWidth: 2,
+        opacity: 0.3,
+        showR2: true,
+        visibleInLegend: true
+      }}
     };
+
     const chart = new window.google.visualization.ScatterChart(document.getElementById('scatter_chart_div'));
     chart.draw(data, options);
-
-    document.getElementById('regression-info').innerHTML = `Slope: ${slope.toFixed(4)}, Intercept: ${intercept.toFixed(4)}, R²: ${rSquared.toFixed(4)}`;
   };
 
   return (
     <>
       <div id="scatter_chart_div" style={{ width: '100%', height: '400px' }}></div>
-      <div id="regression-info" style={{ marginTop: '10px' }}></div>
     </>
   );
 };
+
 
 const OneDE = () => {
   const [wellsCount, setWellsCount] = useState(10);
   const [acrylamidePercentage, setAcrylamidePercentage] = useState('7.5%');
   const [voltageValue, setvoltageValue] = useState('50V');
   const [selectedProtein, setSelectedProtein] = useState(null);
+  const [lastSelectedProtein, setLastSelectedProtein] = useState(initialProteinStandards[initialProteinStandards.length - 1]);
   const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [zoomFactor, setZoomFactor] = useState(1);
+  const [startingOffset, setStartingOffset] = useState(0);
   const [isAtStartingPoint, setIsAtStartingPoint] = useState(true);
   const [blueDyeReachedBottom, setBlueDyeReachedBottom] = useState(false);
   const [proteinStandards, setProteinStandards] = useState(initialProteinStandards);
   const [wellResponses, setWellResponses] = useState({0: initialProteinStandards});
   const [files, setFiles] = useState({});
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showChart, setShowChart] = useState(false);
   const allProteins = [
     ...proteinStandards,
@@ -184,17 +184,62 @@ const OneDE = () => {
       ...proteinData,
       rfValue: proteinData.migrationDistance // Assuming migrationDistance is the Rf value
     });
+    setLastSelectedProtein({
+      ...proteinData,
+      rfValue: proteinData.migrationDistance
+    });
   };
+  
+  const handleZoom = (newZoomFactor = 1) => {
+    if (!isAtStartingPoint && !animationInProgress) {
+      if (newZoomFactor == 0) newZoomFactor = 1;
+      else if (newZoomFactor == 1) {
+        newZoomFactor = document.getElementById("zoomSlider").value;
+      }
+      else if (newZoomFactor == 2) {
+        if (document.getElementById("zoomText").value == "" || document.getElementById("zoomText").value <= 0) return;
+        newZoomFactor = document.getElementById("zoomText").value;
+      }
+      setWellLabels(newZoomFactor);
+      Object.keys(wellResponses).forEach(wellIndex => {
+        wellResponses[wellIndex].forEach(protein => {
+          document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
+            let moveDistance = element.getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - startingOffset;
+            element.style.animation = 'none';
+            element.style.transform = `translateY(${(((moveDistance / zoomFactor) * newZoomFactor))}px)`;
+          });
+        });
+      });
+
+      const scrollableWells = document.querySelectorAll(".electrophoresis-cell")[0];
+      scrollableWells.scrollTo(0, document.querySelectorAll(`.protein-${sanitizeClassName(lastSelectedProtein.id_str + "-" + lastSelectedProtein.id_num)}`)[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top - (scrollableWells.clientHeight / 2));
+      setZoomFactor(newZoomFactor);
+    }
+  };
+
+  const setWellLabels = (newZoomFactor = 1) => {
+    document.getElementById("zoomSlider").value = newZoomFactor;
+    document.getElementById("zoomText").value = newZoomFactor;
+    const tempStartingOffset = document.querySelectorAll('.wellInput')[0].getBoundingClientRect().bottom - document.querySelector('#well-top').getBoundingClientRect().top;
+    const wellHeight = document.querySelectorAll(".electrophoresis-cell")[0].clientHeight - tempStartingOffset;
+    let multiplier = 0;
+    document.querySelectorAll('.simulationLabel').forEach(element => {
+      element.style.animation = 'none';
+      element.style.transform = `translateY(${(((wellHeight / 18) * newZoomFactor * multiplier) + tempStartingOffset - (element.clientHeight / 2) - (element.clientHeight * multiplier))}px)`;
+      multiplier++;
+    });
+  }
  
   useEffect(() => {
     calculateMigrationDistances();
+    setWellLabels();
   }, [acrylamidePercentage]);
 
 // Helper function to sanitize protein names to be used as valid CSS class names
   const sanitizeClassName = (name) => {
     // This example replaces spaces and semicolons with dashes, and removes brackets.
     // You might need to adjust the replacement logic based on actual protein names.
-    return name.replace(/[^a-zA-Z0-9-_]+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
+    return name.replace(/[^a-zA-Z0-9-_]+/g, '-').replace(/[^a-zA-Z0-9-_\.]/g, '');
   };
 
   const updateAnimationStyles = (protein) => {
@@ -218,7 +263,7 @@ const OneDE = () => {
     newStyleElement.innerText = newKeyframes;
     document.head.appendChild(newStyleElement);
 
-    document.querySelectorAll(`.protein-${sanitizedProteinName}`).forEach(element => {
+    document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
       element.style.animation = 'none';
 
       // Trigger reflow
@@ -288,6 +333,7 @@ const OneDE = () => {
       setAnimationInProgress(true);
       setIsAtStartingPoint(false);
       calculateMigrationDistances();
+      setStartingOffset(document.querySelectorAll('.protein--')[0].getBoundingClientRect().top - document.querySelectorAll('.wellInput')[0].getBoundingClientRect().top);
 
       // Parse the numeric part of the voltageValue state
       const voltage = parseInt(voltageValue.replace('V', ''));
@@ -303,7 +349,7 @@ const OneDE = () => {
       console.log(adjustedDuration)
       Object.keys(wellResponses).forEach(wellIndex => {
         wellResponses[wellIndex].forEach(protein => {
-          document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+          document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
             element.style.animation = `initialMove ${initialMoveDuration}s linear forwards`;
           });
         });
@@ -316,7 +362,7 @@ const OneDE = () => {
             console.log(protein.name)
             const remainingDistance = protein.migrationDistance * 587; // Assuming 587 is the scaling factor for distance
 
-            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.name)}`).forEach(element => {
+            document.querySelectorAll(`.well .protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`).forEach(element => {
               const animationName = `moveProteinAfterInitial${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`;
               const keyframes = `@keyframes ${animationName} {
               from { transform: translateY(${initialMoveDistance * 587}px); }
@@ -338,6 +384,7 @@ const OneDE = () => {
             if (protein.name === 'BlueDye') {
               setTimeout(() => {
                 setBlueDyeReachedBottom(true);
+                setAnimationInProgress(false);
               }, adjustedDuration * 1000); // Convert the duration from seconds to milliseconds
             }
           });
@@ -352,7 +399,7 @@ const OneDE = () => {
   const stopAllProteins = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        const elementSelector = `.protein-${sanitizeClassName(protein.name)}`;
+        const elementSelector = `.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`;
         document.querySelectorAll(elementSelector).forEach(element => {
           element.style.animationPlayState = 'paused';
         });
@@ -367,7 +414,7 @@ const OneDE = () => {
   const handleStop = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
+        document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`)
             .forEach(element => {
               element.style.animationPlayState = 'paused';
             });
@@ -388,13 +435,16 @@ const OneDE = () => {
   const handleRefillWells = () => {
     Object.keys(wellResponses).forEach(wellIndex => {
       wellResponses[wellIndex].forEach(protein => {
-        document.querySelectorAll(`.protein-${sanitizeClassName(protein.name)}`)
+        document.querySelectorAll(`.protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`)
             .forEach(element => {
               element.style.animation = 'none';
+              element.style.transform = 'none';
             });
       });
     });
   
+    setZoomFactor(1);
+    setWellLabels();
     setAnimationInProgress(false);
     setIsAtStartingPoint(true);
     setBlueDyeReachedBottom(false);
@@ -412,6 +462,7 @@ const OneDE = () => {
   const handleClearWells = () => {
     handleRefillWells()
     setWellResponses({0: initialProteinStandards});
+    setLastSelectedProtein(initialProteinStandards[initialProteinStandards.length - 1])
   };
 
 
@@ -516,6 +567,9 @@ const OneDE = () => {
 
   return (
     <div className="electrophoresis-wrapper">
+      <div className="header">
+        <img src={isDarkMode ? '/basil-logo-blue.png' : '/basil-logo.png'} alt="Basil Logo" />
+      </div>
       <div className="options-box">
         <div className="control-buttons-container">
           <button onClick={startAnimation} className="control-button"
@@ -532,7 +586,7 @@ const OneDE = () => {
           <label>Folder upload:</label>
           <form className='upload' onSubmit={handleSubmit}>
             <div style={{width: '20em', paddingTop: '10px'}}>
-              <label htmlFor="uploaded" className="submitUpload">Select Files</label>
+              <label htmlFor="uploaded" className="submitUpload">Select Folder</label>
               <input type="file" id="uploaded" webkitdirectory=""
                   directory="" onChange={handleFilesChange} multiple // Allow multiple files to be selected
               />
@@ -549,12 +603,12 @@ const OneDE = () => {
                 <div key={index} className="protein-checkbox">
                   <input
                       type="checkbox"
-                      id={`protein-${index}`}
+                      id={`protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}
                       checked={selectedProteins.includes(protein.name)}
                       onChange={(e) => handleProteinSelection(e, protein.name)}
                       disabled={!isAtStartingPoint}
                   />
-                  <label htmlFor={`protein-${index}`}>{protein.name}</label>
+                  <label htmlFor={`protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}>{protein.name}</label>
                   <span className='span-color' style={{backgroundColor: protein.color}}></span>
                 </div>
             );
@@ -593,6 +647,11 @@ const OneDE = () => {
             Drop Well
           </button>
         </div>
+        <div id='zoomInputs'>
+          <label className="wellCountLabel">Zoom:    </label>
+          <input onChange={() => handleZoom(1)} type="range" min="1" max="100" defaultValue="1" class="slider" id="zoomSlider"/>
+          <input style={{zIndex: 2}} onInput={() => handleZoom(2)} type="number" min="1" step="1" defaultValue="1" id="zoomText"/>
+        </div>
       </div>
       <div className="onede-box">
         {selectedProtein && (
@@ -622,6 +681,26 @@ const OneDE = () => {
         </div>
         
         <div className="electrophoresis-cell">
+          <div id='well-top'/>
+          <div class='simulationLabel'>0 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>1 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>2 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>3 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>4 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>5 - </div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>-</div>
+          <div class='simulationLabel'>6 - </div>
           <div className="wells-container">
           {Array.from({ length: wellsCount }).map((_, idx) => (
             <React.Fragment key={idx}>
@@ -640,36 +719,26 @@ const OneDE = () => {
                     const protein = proteinStandards.find(p => p.name === proteinName);
                     return (
                       <div key={index}
-                        className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
+                        className={`proteinBand protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}
                         onClick={() => handleProteinClick(protein, 0)}
                         style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}
                       </div>
                     );
                   })}
-
                   
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
-                      const proteinKey = `${protein.id_str}-${protein.id_num}`;
-                      // If this protein doesn't have a color yet, assign one
-                      if (!persistentColorMapping[proteinKey]) {
-                          persistentColorMapping[proteinKey] = bandColors[[protein.id_str, protein.id_num]] || getRandomColor();
-                      }
-                      
-                      return (
-                          <div key={proteinIndex}
-                              className={`proteinBand protein-${sanitizeClassName(protein.name)}`}
-                              onClick={() => handleProteinClick(protein, idx)}
-                              style={{ cursor: 'pointer', backgroundColor: persistentColorMapping[proteinKey] }}>
-                            {/* Protein band content */}
-                          </div>
-                      );
+                    if (bandColors[[protein.id_str, protein.id_num]]) {
+                      protein.color = bandColors[[protein.id_str, protein.id_num]];
+                    } else {
+                      bandColors[[protein.id_str, protein.id_num]] = protein.color;
+                    }
                   })}
 
 
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => (
                       <div key={proteinIndex}
-                           className={`proteinBand protein-${protein.name.replace(/[^a-zA-Z0-9-_]+/g, '-')}`}
+                           className={`proteinBand protein-${sanitizeClassName(protein.id_str + "-" + protein.id_num)}`}
                            onClick={() => handleProteinClick(protein, idx)}
                            style={{ cursor: 'pointer', backgroundColor: protein.color }}>
                         {/* Protein band content */}
@@ -689,7 +758,7 @@ const OneDE = () => {
       </div>
       {showChart && (
         <div className="chart-overlay">
-          <GoogleScatterChart proteinStandards={proteinStandards} allProteins={allProteins} />
+          <GoogleScatterChart proteinStandards={proteinStandards} />
           <button className="close-chart" onClick={() => setShowChart(false)}>Close</button>
         </div>
       )}

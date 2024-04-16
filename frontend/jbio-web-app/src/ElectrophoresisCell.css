@@ -454,6 +454,10 @@
     /* Other styling as needed */
   }
 
+  .simulationLabel {
+    color:#000;
+  }
+
   .span-color {
     width: 150px;
     height: 10px;

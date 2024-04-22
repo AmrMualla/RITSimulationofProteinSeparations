@@ -10,6 +10,7 @@ import backend.API.APIRequests.Electro1D.simulation as electro_1d_simulation
 HOW TO START UP API SERVER:
    
 1. Run the command: uvicorn server:app --reload
+        (If that command doesn't work, try: python -m uvicorn server:app --reload)
    This activates the FastAPI system. The terminal window will
    have to stay open for as long as you have the server running
    

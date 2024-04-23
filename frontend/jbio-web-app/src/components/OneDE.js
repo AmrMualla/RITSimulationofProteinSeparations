@@ -649,7 +649,7 @@ const OneDE = () => {
         </div>
         <div id='zoomInputs'>
           <label className="wellCountLabel">Zoom:    </label>
-          <input onChange={() => handleZoom(1)} type="range" min="1" max="100" defaultValue="1" class="slider" id="zoomSlider"/>
+          <input onChange={() => handleZoom(1)} type="range" min="1" max="5" defaultValue="1" class="slider" id="zoomSlider"/>
           <input style={{zIndex: 2}} onInput={() => handleZoom(2)} type="number" min="1" step="1" defaultValue="1" id="zoomText"/>
         </div>
       </div>

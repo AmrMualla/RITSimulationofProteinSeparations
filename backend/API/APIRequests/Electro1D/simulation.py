@@ -55,8 +55,24 @@ async def fileGetProteinInfo(file: UploadFile) -> Any:
                                         "id_str": ''
                                         })
                 i += 1
+            else:
+                return_list = [
+                    {'name': 'unsupported file format',
+                    'molecularWeight': 0,
+                    'color': '',
+                    'id_num': '',
+                    'id_str': '',
+                    }
+                ]
     except:
-        return {"message": "There was an error uploading the file"}
+        return_list = [
+            {'name': 'error',
+            'molecularWeight': 0,
+            'color': '',
+            'id_num': '',
+            'id_str': '',
+            }
+        ]
     finally:
         file.file.close()
         temp_data_file.close()

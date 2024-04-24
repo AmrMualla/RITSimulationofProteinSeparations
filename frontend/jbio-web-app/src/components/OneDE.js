@@ -544,6 +544,9 @@ const OneDE = () => {
                                      : 0;
 
           // Update the wellResponses state with the new data
+        if (responseData.length + nextAvailableIndex > wellsCount){
+          setWellsCount(responseData.length + nextAvailableIndex)
+        }
           for (let i = 0; i < responseData.length; i++)
              setWellResponses(prevResponses => ({
             ...prevResponses,

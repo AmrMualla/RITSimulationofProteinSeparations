@@ -13,6 +13,7 @@ router = APIRouter(
     tags=['1D Simulation']
 )
 
+ACCEPTED_FILE_TYPES = ['fasta', 'fas', 'fa', 'fna', 'ffn', 'faa', 'mpfa', 'frn']
 
 @router.post("/ProteinInfo/File", response_model=list[ProteinInfo])
 async def fileGetProteinInfo(file: UploadFile) -> Any:
@@ -28,31 +29,33 @@ async def fileGetProteinInfo(file: UploadFile) -> Any:
     protein = Protein
     return_list = []
     try:
-        with open("temp_data_file.faa", "w+") as temp_data_file:
-            content = file.file.read().decode("utf-8")
-            temp_data_file.write(content)
+        filetype = file.filename.split('.')[-1]
+        if filetype in ACCEPTED_FILE_TYPES:
+            with open("temp_data_file.faa", "w+") as temp_data_file:
+                content = file.file.read().decode("utf-8")
+                temp_data_file.write(content)
 
-        protein_dict = protein.parse_protein("temp_data_file.faa")
-        weight_list = protein.get_mw("temp_data_file.faa")
+            protein_dict = protein.parse_protein("temp_data_file.faa")
+            weight_list = protein.get_mw("temp_data_file.faa")
 
-        i = 0
-        for seq_id in protein_dict.keys():
-            if len(protein_dict[seq_id][0].split('|')) > 0:
-                return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
-                                    "molecularWeight": weight_list[i],
-                                    "color": '#' + hex(random.randrange(0, 2**24))[2:],
-                                    "id_num": protein_dict[seq_id][0].split('|')[1],
-                                    "id_str": protein_dict[seq_id][0].split('|')[0]
-                                    })
-            else:
-                return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
-                                    "molecularWeight": weight_list[i],
-                                    "color": '#' + hex(random.randrange(0, 2**24))[2:],
-                                    "id_num": protein_dict[seq_id][0].split('|')[0],
-                                    "id_str": ''
-                                    })
-            i += 1
-    except IOError:
+            i = 0
+            for seq_id in protein_dict.keys():
+                if len(protein_dict[seq_id][0].split('|')) > 0:
+                    return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
+                                        "molecularWeight": weight_list[i],
+                                        "color": '#' + hex(random.randrange(0, 2**24))[2:],
+                                        "id_num": protein_dict[seq_id][0].split('|')[1],
+                                        "id_str": protein_dict[seq_id][0].split('|')[0]
+                                        })
+                else:
+                    return_list.append({"name": " ".join(protein_dict[seq_id][0].split(' ')[1:]),
+                                        "molecularWeight": weight_list[i],
+                                        "color": '#' + hex(random.randrange(0, 2**24))[2:],
+                                        "id_num": protein_dict[seq_id][0].split('|')[0],
+                                        "id_str": ''
+                                        })
+                i += 1
+    except:
         return {"message": "There was an error uploading the file"}
     finally:
         file.file.close()

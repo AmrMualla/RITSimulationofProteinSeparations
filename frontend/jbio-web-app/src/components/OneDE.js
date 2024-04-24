@@ -504,6 +504,7 @@ const OneDE = () => {
         }
       } catch (error) {
         console.error("File upload error:", error);
+        alert("The file you uploaded was not a compatible file type.\n Supported file types:.fasta, .fas, .fa, .fna, .ffn, .faa, .mpfa, .frn")
       }
     }
   };
@@ -544,6 +545,9 @@ const OneDE = () => {
                                      : 0;
 
           // Update the wellResponses state with the new data
+        if (responseData.length + nextAvailableIndex > wellsCount){
+          setWellsCount(responseData.length + nextAvailableIndex)
+        }
           for (let i = 0; i < responseData.length; i++)
              setWellResponses(prevResponses => ({
             ...prevResponses,
@@ -554,6 +558,8 @@ const OneDE = () => {
         }
     } catch (error) {
       console.error('Error uploading files', error);
+      alert("One or more of the files you uploaded was not a compatible file type. Please verify the folder you are uploading." +
+          "\n Supported file types:.fasta, .fas, .fa, .fna, .ffn, .faa, .mpfa, .frn")
       // Handle error scenario
     }
   };

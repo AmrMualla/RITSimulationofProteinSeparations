@@ -41,7 +41,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust this in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],  # You can also specify just ["GET", "POST"] etc.
     allow_headers=["*"],  # Specify your headers or use ["*"] for all
@@ -49,6 +49,17 @@ app.add_middleware(
 
 app.include_router(startup.router)
 app.include_router(electro_1d_simulation.router)
+""" 
+NOTE FOR FUTURE DEVELOPERS:
+in order to add additional files for the API, such as the addition of 2DE,
+simply do the following:
+1. Make the file (look at Electro1D.simulation.py in the API Requests folder for reference)
+2. import the file (ex: import backend.API.APIRequests.startup as startup)
+3. above this comment, add: app.include_router(FILE_VARIABLE_HERE.router)
+
+It should now be all good to go!
+"""
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

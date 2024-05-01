@@ -55,15 +55,15 @@ async def fileGetProteinInfo(file: UploadFile) -> Any:
                                         "id_str": ''
                                         })
                 i += 1
-            else:
-                return_list = [
-                    {'name': 'unsupported file format',
-                    'molecularWeight': 0,
-                    'color': '',
-                    'id_num': '',
-                    'id_str': '',
-                    }
-                ]
+        else:
+            return_list = [
+                {'name': 'unsupported file format',
+                'molecularWeight': 0,
+                'color': '',
+                'id_num': '',
+                'id_str': '',
+                }
+            ]
     except:
         return_list = [
             {'name': 'error',
@@ -91,6 +91,8 @@ async def batchFileGetProteinInfo(files: list[UploadFile]) -> Any:
     well_data = []
     i = 0
     for file in files:
-        well_data.append(await fileGetProteinInfo(file))
+        filetype = file.filename.split('.')[-1]
+        if filetype in ACCEPTED_FILE_TYPES:
+            well_data.append(await fileGetProteinInfo(file))
         i += 1
     return well_data

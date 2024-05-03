@@ -80,6 +80,21 @@ async def fileGetProteinInfo(file: UploadFile) -> Any:
     return return_list
 
 
+def sort_files(file_list: list[UploadFile]):
+    n = len(file_list)
+    for i in range(n - 1):
+
+        swapped = False
+        for j in range(0, n - i - 1):
+
+            if file_list[j].filename > file_list[j + 1].filename:
+                swapped = True
+                file_list[j], file_list[j + 1] = file_list[j + 1], file_list[j]
+
+        if not swapped:
+            return
+
+
 @router.post("/BatchFileProtein/Batch", response_model=list[list[ProteinInfo]])
 async def batchFileGetProteinInfo(files: list[UploadFile]) -> Any:
     """
@@ -90,6 +105,7 @@ async def batchFileGetProteinInfo(files: list[UploadFile]) -> Any:
     """
     well_data = []
     i = 0
+    sort_files(files)
     for file in files:
         filetype = file.filename.split('.')[-1]
         if filetype in ACCEPTED_FILE_TYPES:
